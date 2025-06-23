@@ -252,7 +252,7 @@ export default function Hero() {
         <div className="portrait">
           <img src="https://picsum.photos/200/300" alt="Portrait" />
         </div>
-        <div className="profile text-red-500">
+        <div className="profile text-white">
           <h2> I'm Diky Rahmatillah and I'am a foolish programmer</h2>
           <p>
             {" "}

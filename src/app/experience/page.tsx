@@ -66,7 +66,6 @@ export default function Experience() {
       });
     };
 
-    // Small delay to ensure DOM is ready
     const timer = setTimeout(() => {
       initAnimations();
     }, 100);
@@ -88,7 +87,7 @@ export default function Experience() {
   }, []);
   return (
     <>
-      <section className="services-header">
+      {/* <section className="services-header">
         <div className="services-header-content">
           <div className="services-profile-icon">
             <img
@@ -105,7 +104,7 @@ export default function Experience() {
             <h1>&#8595;</h1>
           </div>
         </div>
-      </section>
+      </section> */}
       <section className="services">
         <div className="service-card" id="service-card-1">
           <div className="service-card-inner">

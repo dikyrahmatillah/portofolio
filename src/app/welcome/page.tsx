@@ -5,7 +5,7 @@ import { GiDeadHead } from "react-icons/gi";
 
 export default function Welcome() {
   return (
-    <main>
+    <section className="z-10">
       {/* <div className="skill none"></div> */}
       <div className="spline-container h-screen w-screen flex justify-center items-center">
         {/* <Spline scene="https://prod.spline.design/BNaurVSeS57NeyWI/scene.splinecode" /> */}
@@ -20,6 +20,6 @@ export default function Welcome() {
       <div className="absolute top-8 right-10 -translate-x-1/2 -translate-y-1/2 text-center text-white">
         <LiveClock />
       </div>
-    </main>
+    </section>
   );
 }

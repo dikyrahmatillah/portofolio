@@ -21,17 +21,14 @@ export default function Home() {
   gsap.ticker.lagSmoothing(0);
   return (
     <>
-      <div className="relative z-10">
-        <Hero />
-        {/* <About /> */}
-        <Skills />
-        <Portfolio />
-        <Experience />
-        <Testimonials />
-        {/* Spacer to allow scrolling past testimonials to reveal contact */}
-        <div className="h-screen"></div>
-        {/* <Contact /> */}
-      </div>
+      <Hero />
+      {/* <About /> */}
+      <Skills />
+      <Portfolio />
+      <Experience />
+      <Testimonials />
+      <div className="h-screen"></div>
+      {/* <Contact /> */}
     </>
   );
 }

@@ -7,31 +7,21 @@ import { useGSAP } from "@gsap/react";
 import { carouselItems } from "@/components/data";
 import "./testimonials.css";
 
-// Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Testimonials() {
   const container = useRef<HTMLDivElement>(null);
-  // Initialize GSAP animations for the carousel
   useEffect(() => {
     // Safety check for SSR
     if (typeof window === "undefined") return;
-
     const projects = gsap.utils.toArray<HTMLElement>(".project");
-
     if (projects.length === 0) return;
-
-    // Initialize all projects as hidden first
     gsap.set(projects, {
       clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
     });
-
-    // Make first project visible initially
     gsap.set(projects[0], {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
     });
-
-    // Set up the scroll trigger animation
     const scrollTrigger = ScrollTrigger.create({
       trigger: ".carousel",
       start: "top top",
@@ -41,7 +31,6 @@ export default function Testimonials() {
       scrub: 1,
       refreshPriority: -1,
       onRefresh: () => {
-        // Ensure first slide is visible on refresh
         gsap.set(projects[0], {
           clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
         });
@@ -52,12 +41,9 @@ export default function Testimonials() {
         const slideProgress = progress - currentSlide;
 
         if (currentSlide < projects.length - 1) {
-          // Current slide is fully visible
           gsap.set(projects[currentSlide], {
             clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
           });
-
-          // Next slide is animating in
           const nextSlideProgress = gsap.utils.interpolate(
             "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
             "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
@@ -68,8 +54,6 @@ export default function Testimonials() {
             clipPath: nextSlideProgress,
           });
         }
-
-        // Handle other slides
         projects.forEach((project, index) => {
           if (index < currentSlide) {
             gsap.set(project, {
@@ -85,7 +69,6 @@ export default function Testimonials() {
     });
 
     return () => {
-      // Clean up animation when component unmounts
       scrollTrigger.kill();
     };
   }, []);

@@ -171,7 +171,7 @@ export default function Skills() {
   }, []);
 
   return (
-    <section className="featured-work">
+    <section className="featured-work bg-black">
       <div className="featured-images"></div>
       <div className="featured-titles">
         <div className="featured-title-wrapper">
