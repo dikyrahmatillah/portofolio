@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --background-dark: #182a2a;
+
+  --background-light: #eee1ce;
 }
 
 @theme inline {
@@ -16,6 +20,10 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --accent1: #ed6a5a;
+    --accent2: #b3ae5e;
+    --accent3: #6a918b;
+    --accent4: #5d576b;
   }
 }
 
@@ -31,18 +39,18 @@ body {
 }
 
 #intro {
+  height: 100vh;
+  width: 100vw;
+}
+
+#about {
   width: 100vw;
   height: 100vh;
 }
 
-/* #about {
-  width: 100vw;
-  height: 100vh;
-} */
-
 .portrait {
   position: absolute;
-  transform: translateX(35%) translateY(40%);
+  transform: translateX(100%) translateY(75%);
   width: 20%;
   aspect-ratio: 5/3;
   will-change: transform;
@@ -50,9 +58,9 @@ body {
 
 .profile {
   position: absolute;
-  transform: translateX(75%) translateY(25%);
+  transform: translateX(150%) translateY(40%);
   width: 30%;
-  aspect-ratio: 4/5;
+  aspect-ratio: 4/6;
   will-change: transform;
 }
 
@@ -174,11 +182,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: var(--background);
-  padding: 4em 0;
-}
-
-.case-studies-header {
-  width: 70%;
+  padding: 4em 4em;
 }
 
 .case-studies-content .container {
@@ -205,6 +209,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+  padding: 0 4em;
   display: flex;
   background-color: var(--background);
   margin-top: -0.125em;
@@ -453,8 +458,88 @@ footer {
   justify-content: flex-end;
 }
 
+/* abstract */
+.abstract-bg {
+  position: relative;
+  width: 100vw;
+  height: max-content;
+  background-color: var(--background-light);
+}
+
+.strip {
+  width: 100%;
+  height: 15px;
+  background-color: var(--background);
+}
+
+.strip:nth-child(1) {
+  margin-bottom: 5px;
+  height: 200px;
+}
+
+.strip:nth-child(2) {
+  margin-bottom: 10px;
+}
+
+.strip:nth-child(3) {
+  margin-bottom: 20px;
+}
+
+.strip:nth-child(4) {
+  margin-bottom: 30px;
+}
+
+.strip:nth-child(5) {
+  margin-bottom: 50px;
+}
+
+.strip:nth-child(6) {
+  margin-bottom: 80px;
+}
+
+.strip:nth-child(7) {
+  margin-bottom: 120px;
+}
+
+/* works */
+.works {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-light);
+  color: var(--foreground-light);
+  padding: 4em 0;
+}
+
+.works p {
+  color: #726755;
+}
+
+.works p.primary {
+  color: var(--foreground-light);
+}
+
+.works-content .container {
+  display: flex;
+  gap: 2em;
+}
+
+.works-content .container .col {
+  flex: 1;
+}
+
+.works-content .container .col h2 {
+  text-transform: none;
+  font-size: 5rem;
+  margin-bottom: 1em;
+}
+
 /* contact cta */
-/* .contact-cta {
+.contact-cta {
+  position: absolute;
+  z-index: 0;
+  height: 100vh;
+  width: 100vw;
   padding: 2em;
   display: flex;
   justify-content: center;
@@ -525,4 +610,26 @@ footer {
 
 .contact-cta .contact-text-large h1 {
   font-size: 7rem;
-} */
+}
+
+/* Missing keyframe animations */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes stripeMove {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}

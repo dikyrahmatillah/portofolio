@@ -54,25 +54,22 @@ export default function Portfolio() {
   return (
     <>
       <section className="case-studies" id="case-studies">
-        <div className="case-studies-header">
-          <div className="container">
-            <h2>E-commerce Platform for XYZ Retailer</h2>
-            {/* <ShuffleText
-              as="h2"
-              text="Dive Into New Success Stories"
-              triggerOnScroll={true}
-            /> */}
-          </div>
-        </div>
         <div className="case-studies-content">
           <div className="container">
             <div className="col">
-              <p className="primary">[ Case Studies ]</p>
-            </div>
-            <div className="col">
+              <div className="col">
+                <p className="primary">[ Potofolio ]</p>
+              </div>
               <div className="case-studies-copy">
                 <h2>E-commerce Platform for XYZ Retailer</h2>
-                <p>Short Desc</p>
+                <p>
+                  This project involved developing a full-stack e-commerce
+                  platform for XYZ Retail, a traditional retail business
+                  transitioning to online sales. The goal was to create a
+                  scalable, user-friendly web application that catered to both
+                  desktop and mobile users, with features like secure checkout,
+                  product reviews, and real-time inventory updates.
+                </p>
               </div>
             </div>
           </div>

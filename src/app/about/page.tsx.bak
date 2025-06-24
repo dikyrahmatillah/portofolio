@@ -1,0 +1,185 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function About() {
+  const aboutRef = useRef<HTMLElement>(null);
+  const paragraph1Ref = useRef<HTMLParagraphElement>(null);
+  const paragraph2Ref = useRef<HTMLParagraphElement>(null);
+  const paragraph3Ref = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !aboutRef.current) return;
+
+    const aboutSection = aboutRef.current;
+    const paragraphs = [
+      paragraph1Ref.current,
+      paragraph2Ref.current,
+      paragraph3Ref.current,
+    ].filter(Boolean);
+
+    if (paragraphs.length === 0) return;
+
+    const aboutSectionPinnedHeight = window.innerHeight * 2; // Pin about section
+    const pinTrigger = ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "top top",
+      end: `+=${aboutSectionPinnedHeight}`,
+      pin: true,
+      pinSpacing: false,
+      markers: true,
+      id: "pin-section",
+    });
+
+    // Initially hide all paragraphs and center them
+    gsap.set(paragraphs, {
+      opacity: 0,
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 10,
+    });
+
+    // Show first paragraph
+    const showParagraph1 = ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "top 100%",
+      end: "center 90%",
+      scrub: 1,
+      markers: true,
+      id: "show-p1",
+      onUpdate: (self) => {
+        if (paragraphs[0]) {
+          const opacity = gsap.utils.interpolate(0, 1, self.progress);
+          gsap.set(paragraphs[0], { opacity });
+        }
+      },
+    });
+
+    // Hide first paragraph
+    const hideParagraph1 = ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "center 90%",
+      end: "center 85%",
+      scrub: 1,
+      markers: true,
+      id: "hide-p1",
+      onUpdate: (self) => {
+        if (paragraphs[0]) {
+          const opacity = gsap.utils.interpolate(1, 0, self.progress);
+          gsap.set(paragraphs[0], { opacity });
+        }
+      },
+    });
+
+    // Show second paragraph
+    const showParagraph2 = ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "center 85%",
+      end: "center 70%",
+      scrub: 1,
+      markers: true,
+      id: "show-p2",
+      onUpdate: (self) => {
+        if (paragraphs[1]) {
+          const opacity = gsap.utils.interpolate(0, 1, self.progress);
+          gsap.set(paragraphs[1], { opacity });
+        }
+      },
+    });
+
+    // Hide second paragraph
+    const hideParagraph2 = ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "center 65%",
+      end: "top 60%",
+      scrub: 1,
+      markers: true,
+      id: "hide-p2",
+      onUpdate: (self) => {
+        if (paragraphs[1]) {
+          const opacity = gsap.utils.interpolate(1, 0, self.progress);
+          gsap.set(paragraphs[1], { opacity });
+        }
+      },
+    });
+
+    // Show third paragraph
+    const showParagraph3 = ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "center 60%",
+      end: "center 50%",
+      scrub: 1,
+      markers: true,
+      id: "show-p3",
+      onUpdate: (self) => {
+        if (paragraphs[2]) {
+          const opacity = gsap.utils.interpolate(0, 1, self.progress);
+          gsap.set(paragraphs[2], { opacity });
+        }
+      },
+    });
+
+    // Hide third paragraph
+    const hideParagraph3 = ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "center 50%",
+      end: "bottom 45%",
+      scrub: 1,
+      markers: true,
+      id: "hide-p3",
+      onUpdate: (self) => {
+        if (paragraphs[2]) {
+          const opacity = gsap.utils.interpolate(1, 0, self.progress);
+          gsap.set(paragraphs[2], { opacity });
+        }
+      },
+    });
+
+    // Cleanup function
+    return () => {
+      pinTrigger.kill();
+      showParagraph1.kill();
+      hideParagraph1.kill();
+      showParagraph2.kill();
+      hideParagraph2.kill();
+      showParagraph3.kill();
+      hideParagraph3.kill();
+    };
+  }, []);
+
+  return (
+    <section
+      ref={aboutRef}
+      id="about"
+      className="h-screen flex items-center justify-center"
+    >
+      <div className="about-content text-white text-center max-w-4xl px-8">
+        <p ref={paragraph1Ref} className="text-element text-2xl mb-6">
+          I have a strong interest in web development, especially building
+          interactive and visually engaging user interfaces. My experience
+          includes working on several freelance and personal projects using
+          React, TypeScript, and modern web technologies. I enjoy learning new
+          frameworks and continuously improving my skills to deliver
+          high-quality software solutions.
+        </p>
+        <p ref={paragraph2Ref} className="text-element text-2xl mb-6">
+          <strong>Main Skills:</strong> JavaScript, TypeScript, React, Next.js,
+          Node.js, Python, GSAP, Tailwind CSS, HTML, CSS, Git, REST APIs.
+        </p>
+        <p ref={paragraph3Ref} className="text-element text-2xl">
+          <strong>Core Work Principles:</strong> Timeliness, attention to
+          detail, and clear communication are at the heart of my workflow. I
+          strive to deliver work on schedule, ensure every aspect meets high
+          standards, and maintain open, effective communication throughout every
+          project.
+        </p>
+      </div>
+    </section>
+  );
+}

@@ -25,12 +25,10 @@ export default function Experience() {
 
       const services = gsap.utils.toArray(".service-card") as HTMLElement[];
 
-      if (services.length === 0) return; // Exit if no service cards found
-
       const mainTrigger = ScrollTrigger.create({
         trigger: services[0],
-        start: "top 50%",
-        endTrigger: services[services.length - 1],
+        start: "top 70%",
+        endTrigger: services[services.length],
         end: "top 150%",
       });
       scrollTriggerInstances.current.push(mainTrigger);
@@ -87,24 +85,15 @@ export default function Experience() {
   }, []);
   return (
     <>
-      {/* <section className="services-header">
+      <section className="services-header">
         <div className="services-header-content">
-          <div className="services-profile-icon">
-            <img
-              src="/images/services-header/portrait.jpeg"
-              alt="Otis Valen Portrait"
-            />
-          </div>
-          <p>Your ideas. My toolbox.</p>
-          <div className="services-header-title">
-            <h1>Pixel wizardry</h1>
-            <h1>served fresh</h1>
-          </div>
+          <div className="services-header-title"></div>
           <div className="services-header-arrow-icon">
+            <h1 className="text-9xl">Experience</h1>
             <h1>&#8595;</h1>
           </div>
         </div>
-      </section> */}
+      </section>
       <section className="services">
         <div className="service-card" id="service-card-1">
           <div className="service-card-inner">
@@ -216,18 +205,7 @@ export default function Experience() {
                 alt="Experience Design"
               />
             </div>
-          </div>
-        </div>
-      </section>
-      <section className="contact-cta">
-        <div className="contact-button">
-          <a href="/contact"></a>
-          <div className="contact-text-small">
-            <p>Collabs, or cosmic brainstorms welcome</p>
-          </div>
-          <div className="contact-text-large">
-            <h1>Hit Me Up</h1>
-          </div>
+          </div>{" "}
         </div>
       </section>
     </>

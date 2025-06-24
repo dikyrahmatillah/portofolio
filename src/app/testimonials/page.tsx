@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import { carouselItems } from "@/components/data";
 import "./testimonials.css";
 
@@ -12,7 +11,6 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Testimonials() {
   const container = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    // Safety check for SSR
     if (typeof window === "undefined") return;
     const projects = gsap.utils.toArray<HTMLElement>(".project");
     if (projects.length === 0) return;
@@ -73,21 +71,45 @@ export default function Testimonials() {
     };
   }, []);
   return (
-    <section className="carousel" ref={container}>
-      {carouselItems.map((item) => (
-        <div className="project" id={`project-${item.id}`} key={item.id}>
-          <div className="project-bg">
-            <img src={item.bg} alt="" />
-          </div>
-          <div className="project-main">
-            <img src={item.main} alt={`${item.title}'s portrait`} />
-          </div>
-          <div className="project-header">
-            <h2>{item.title}</h2>
-            <div className="review-text">"{item.review}"</div>
+    <>
+      <section className="abstract-bg">
+        <div className="strip"></div>
+        <div className="strip"></div>
+        <div className="strip"></div>
+        <div className="strip"></div>
+        <div className="strip"></div>
+        <div className="strip"></div>
+        <div className="strip"></div>
+        <div className="strip"></div>
+      </section>
+      <section className="works" id="works">
+        <div className="w-screen flex justify-center items-center text-center">
+          <div className="container">
+            <h2 className="text-black text-8xl ">Testimonials</h2>
+            {/* <ShuffleText
+              as="h2"
+              text="Timeless Art Through a New Lens"
+              triggerOnScroll={true}
+            /> */}
           </div>
         </div>
-      ))}
-    </section>
+      </section>
+      <section className="carousel" ref={container}>
+        {carouselItems.map((item) => (
+          <div className="project" id={`project-${item.id}`} key={item.id}>
+            <div className="project-bg">
+              <img src={item.bg} alt="" />
+            </div>
+            <div className="project-main">
+              <img src={item.main} alt={`${item.title}'s portrait`} />
+            </div>
+            <div className="project-header">
+              <h2>{item.title}</h2>
+              <div className="review-text">"{item.review}"</div>
+            </div>
+          </div>
+        ))}
+      </section>
+    </>
   );
 }

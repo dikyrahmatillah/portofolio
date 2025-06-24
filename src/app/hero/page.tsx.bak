@@ -13,8 +13,9 @@ export default function Hero() {
     gsap.registerPlugin(ScrollTrigger);
     const finishAboutHeaderClipReveal = window.innerHeight;
     const introSectionPinnedHeight = window.innerHeight * 1;
-    const heroSectionPinnedHeight = window.innerHeight * 4;
     const aboutSectionPinnedHeight = window.innerHeight * 1;
+    const heroSectionPinnedHeight = window.innerHeight * 3;
+
     // Disable scrolling initially until hero animation completes
     document.body.style.overflow = "hidden";
 
@@ -86,19 +87,6 @@ export default function Hero() {
       pinSpacing: true,
     });
 
-    ScrollTrigger.create({
-      trigger: "#intro",
-      start: "top bottom",
-      end: `+=${introSectionPinnedHeight}`,
-      scrub: 1,
-      onUpdate: (self) => {
-        const topPosition = gsap.utils.interpolate(100, 0, self.progress);
-
-        gsap.set(".portrait", {
-          yPercent: `${topPosition}`,
-        });
-      },
-    }); // Move about-header to the top when about section starts
     // Portrait animations
     ScrollTrigger.create({
       trigger: "#intro",
@@ -108,35 +96,131 @@ export default function Hero() {
       onUpdate: (self) => {
         const topPosition = gsap.utils.interpolate(40, 30, self.progress);
 
+        gsap.set(".portrait", {
+          yPercent: `${topPosition}`,
+        });
+      },
+    });
+
+    ScrollTrigger.create({
+      trigger: "#intro",
+      start: "top bottom",
+      end: `+=${introSectionPinnedHeight}`,
+      scrub: 1,
+      onUpdate: (self) => {
+        const topPosition = gsap.utils.interpolate(100, 0, self.progress);
+
         gsap.set(".profile", {
           yPercent: `${topPosition}`,
         });
       },
-    });
+    }); // Move about-header to the top when about section starts
 
-    ScrollTrigger.create({
-      trigger: "#about",
-      start: "top bottom",
-      end: `+=${aboutSectionPinnedHeight}`,
-      pin: true,
-      pinSpacing: true,
-    });
-
+    // Pin about section in the center of viewport and keep it fixed    // Pin about section
     ScrollTrigger.create({
       trigger: "#about",
       start: "top top",
-      end: `+=${aboutSectionPinnedHeight}`,
-      scrub: 1,
-      markers: true,
-      onUpdate: (self) => {
-        const topPosition = gsap.utils.interpolate(100, 0, self.progress);
+      end: `+=${aboutSectionPinnedHeight}`, // Increased to 4 screen heights for longer display
+      pin: true,
+      pinSpacing: false,
+    });
 
-        gsap.set(".about-content", {
-          yPercent: `${topPosition}`,
+    // Show about paragraphs one by one with longer display times
+    const aboutParagraphs = document.querySelectorAll("#about p"); // Initially hide all paragraphs and center them
+    gsap.set(aboutParagraphs, {
+      opacity: 0,
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 10,
+    });
+
+    // Show first paragraph - balanced display time
+    ScrollTrigger.create({
+      trigger: "#about",
+      start: "top 100%",
+      end: "center 90%",
+      scrub: 1,
+      onUpdate: (self) => {
+        const opacity = gsap.utils.interpolate(0, 1, self.progress);
+        gsap.set(aboutParagraphs[0], {
+          opacity: opacity,
         });
       },
     });
 
+    // Hide first paragraph
+    ScrollTrigger.create({
+      trigger: "#about",
+      start: "center 90%",
+      end: "center 85%",
+      scrub: 1,
+      onUpdate: (self) => {
+        const opacity = gsap.utils.interpolate(1, 0, self.progress);
+        gsap.set(aboutParagraphs[0], {
+          opacity: opacity,
+        });
+      },
+    });
+
+    // Show second paragraph - balanced display time
+    ScrollTrigger.create({
+      trigger: "#about",
+      start: "center 85%",
+      end: "center 75%",
+      scrub: 1,
+      onUpdate: (self) => {
+        const opacity = gsap.utils.interpolate(0, 1, self.progress);
+        gsap.set(aboutParagraphs[1], {
+          opacity: opacity,
+        });
+      },
+    });
+
+    // Hide second paragraph
+    ScrollTrigger.create({
+      trigger: "#about",
+      start: "center 75%",
+      end: "top  60%",
+      scrub: 1,
+      onUpdate: (self) => {
+        const opacity = gsap.utils.interpolate(1, 0, self.progress);
+        gsap.set(aboutParagraphs[1], {
+          opacity: opacity,
+        });
+      },
+    });
+
+    // Show third paragraph - balanced display time
+    ScrollTrigger.create({
+      trigger: "#about",
+      start: "center 60%",
+      end: "center 50%",
+      scrub: 1,
+      onUpdate: (self) => {
+        const opacity = gsap.utils.interpolate(0, 1, self.progress);
+        gsap.set(aboutParagraphs[2], {
+          opacity: opacity,
+        });
+      },
+    });
+
+    // Hide third paragraph
+    ScrollTrigger.create({
+      trigger: "#about",
+      start: "center 50%",
+      end: "bottom 45%",
+      scrub: 1,
+      onUpdate: (self) => {
+        const opacity = gsap.utils.interpolate(1, 0, self.progress);
+        gsap.set(aboutParagraphs[2], {
+          opacity: opacity,
+        });
+      },
+    });
+
+    // Cleanup function
     return () => {
       document.body.style.overflow = "auto";
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -166,7 +250,7 @@ export default function Hero() {
       </section>{" "}
       <section id="intro" className="h-screen relative">
         <div className="portrait">
-          <img src="https://picsum.photos/700/800" alt="Portrait" />
+          <img src="https://picsum.photos/200/300" alt="Portrait" />
         </div>
         <div className="profile text-white">
           <h2> I'm Diky Rahmatillah and I'am a foolish programmer</h2>
@@ -179,33 +263,29 @@ export default function Hero() {
           </p>
           <a href="#">Contact Me</a>
         </div>
-      </section>
-      <section id="about" className="h-screen w-screen relative">
-        <div className="about-content text-white absolute grid place-items-center left-1/2 -translate-x-1/2 md:grid-cols-1">
-          <div className="flex justify-between py-8 border-t-1 gap-x-10 px-20 w-screen">
-            <h2 className="text-xl mb-4">About Me</h2>
-            <p className="text-xl mb-4">
-              I build interactive web interfaces using React, TypeScript, and
-              modern technologies. Always learning new frameworks to deliver
-              quality solutions.
-            </p>
-          </div>
-          <div className="flex justify-between py-8 border-t-1 gap-x-10 px-20 w-screen">
-            <h2 className="text-xl mb-4">Main Skills</h2>
-            <p className="text-element-2 text-xl mb-4">
-              JavaScript, TypeScript, React, Next.js, Node.js, Python, GSAP,
-              Tailwind CSS, HTML, CSS, Git, REST APIs.
-            </p>
-          </div>
-          <div className="flex justify-between py-8 border-t-1 gap-x-10 px-20 w-screen">
-            <h2 className="text-xl mb-4">Core Work Principles</h2>
-            <p className="text-elemen-3 text-xl">
-              Timeliness, attention to detail, and clear communication are at
-              the heart of my workflow. I strive to deliver work on schedule,
-              ensure every aspect meets high standards, and maintain open,
-              effective communication throughout every project.
-            </p>
-          </div>
+      </section>{" "}
+      <section id="about" className="h-screen flex items-center justify-center">
+        <div className="about-content text-white text-center max-w-4xl px-8">
+          <p className="text-2xl">
+            I have a background in computer science and a strong interest in web
+            development, especially building interactive and visually engaging
+            user interfaces. My experience includes working on several freelance
+            and personal projects using React, TypeScript, and modern web
+            technologies. I enjoy learning new frameworks and continuously
+            improving my skills to deliver high-quality software solutions.
+          </p>
+          <p className="text-2xl">
+            <strong>Main Skills:</strong> JavaScript, TypeScript, React,
+            Next.js, Node.js, Python, GSAP, Tailwind CSS, HTML, CSS, Git, REST
+            APIs.
+          </p>
+          <p className="text-2xl">
+            <strong>Core Work Principles:</strong> Timeliness, attention to
+            detail, and clear communication are at the heart of my workflow. I
+            strive to deliver work on schedule, ensure every aspect meets high
+            standards, and maintain open, effective communication throughout
+            every project.
+          </p>
         </div>
       </section>
     </>

@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import Welcome from "./welcome/page";
-import About from "./about/page";
+// import About from "./about/page"; // Now part of Hero component
 import Contact from "./contact/page";
 import Experience from "./experience/page";
 import Hero from "./hero/page";
@@ -13,12 +14,22 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 
 export default function Home() {
-  const lenis = new Lenis();
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
-  });
-  gsap.ticker.lagSmoothing(0);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const lenis = new Lenis();
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+
+      return () => {
+        lenis.destroy();
+        gsap.ticker.remove(() => {});
+      };
+    }
+  }, []);
+
   return (
     <>
       <Hero />
@@ -27,8 +38,7 @@ export default function Home() {
       <Portfolio />
       <Experience />
       <Testimonials />
-      <div className="h-screen"></div>
-      {/* <Contact /> */}
+      <Contact />
     </>
   );
 }
