@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Welcome from "./welcome/page";
-// import About from "./about/page"; // Now part of Hero component
+import About from "./about/page";
 import Contact from "./contact/page";
 import Experience from "./experience/page";
 import Hero from "./hero/page";
@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* <About /> */}
+      <About />
       <Skills />
       <Portfolio />
       <Experience />

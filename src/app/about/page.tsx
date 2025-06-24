@@ -7,28 +7,29 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
-  const aboutRef = useRef<HTMLElement>(null);
-  const introSectionPinnedHeight = window.innerHeight * 1;
   useEffect(() => {
+    const aboutSectionPinnedHeight = window.innerHeight * 1;
     // Pin the about section - starts when it reaches the top
+
     ScrollTrigger.create({
       trigger: "#about",
-      start: "top top",
-      end: `+=${introSectionPinnedHeight}`,
+      start: "top bottom",
+      end: `+=${aboutSectionPinnedHeight}`,
       pin: true,
       pinSpacing: true,
-    }); // About content scrolls up animation - moves content into .about-header space
+    });
+
     ScrollTrigger.create({
       trigger: "#about",
       start: "top top",
-      end: `+=${introSectionPinnedHeight}`,
+      end: `+=${aboutSectionPinnedHeight}`,
       scrub: 1,
+      markers: true,
       onUpdate: (self) => {
-        const topPosition = gsap.utils.interpolate(100, -50, self.progress);
+        const topPosition = gsap.utils.interpolate(100, 0, self.progress);
 
         gsap.set(".about-content", {
           yPercent: `${topPosition}`,
-          zIndex: 1000, // Ensure it appears above other content
         });
       },
     });
@@ -38,32 +39,30 @@ export default function About() {
     };
   }, []);
   return (
-    <section
-      ref={aboutRef}
-      id="about"
-      className="h-screen relative overflow-hidden"
-    >
-      <div className="about-content text-white max-w-4xl px-8 absolute bottom-0 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="text-center space-y-6">
-          <p className="text-element text-xl mb-4">
-            I have a strong interest in web development, especially building
-            interactive and visually engaging user interfaces. My experience
-            includes working on several freelance and personal projects using
-            React, TypeScript, and modern web technologies. I enjoy learning new
-            frameworks and continuously improving my skills to deliver
-            high-quality software solutions.
+    <section id="about" className="h-screen w-screen relative">
+      <div className="about-content text-white absolute grid place-items-center left-1/2 -translate-x-1/2 md:grid-cols-1">
+        <div className="flex justify-between py-8 border-t-1 gap-x-10 px-20 w-screen">
+          <h2 className="text-xl mb-4">About Me</h2>
+          <p className="text-xl mb-4">
+            I build interactive web interfaces using React, TypeScript, and
+            modern technologies. Always learning new frameworks to deliver
+            quality solutions.
           </p>
-          <p className="text-element text-xl mb-4">
-            <strong>Main Skills:</strong> JavaScript, TypeScript, React,
-            Next.js, Node.js, Python, GSAP, Tailwind CSS, HTML, CSS, Git, REST
-            APIs.
+        </div>
+        <div className="flex justify-between py-8 border-t-1 gap-x-10 px-20 w-screen">
+          <h2 className="text-xl mb-4">Main Skills</h2>
+          <p className="text-element-2 text-xl mb-4">
+            JavaScript, TypeScript, React, Next.js, Node.js, Python, GSAP,
+            Tailwind CSS, HTML, CSS, Git, REST APIs.
           </p>
-          <p className="text-element text-xl">
-            <strong>Core Work Principles:</strong> Timeliness, attention to
-            detail, and clear communication are at the heart of my workflow. I
-            strive to deliver work on schedule, ensure every aspect meets high
-            standards, and maintain open, effective communication throughout
-            every project.
+        </div>
+        <div className="flex justify-between py-8 border-t-1 gap-x-10 px-20 w-screen">
+          <h2 className="text-xl mb-4">Core Work Principles</h2>
+          <p className="text-elemen-3 text-xl">
+            Timeliness, attention to detail, and clear communication are at the
+            heart of my workflow. I strive to deliver work on schedule, ensure
+            every aspect meets high standards, and maintain open, effective
+            communication throughout every project.
           </p>
         </div>
       </div>

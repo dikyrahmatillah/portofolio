@@ -1,3 +1,4 @@
+import "./contact.css";
 export default function Contact() {
   return (
     <section className="w-full h-screen ">
