@@ -2,6 +2,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "./experience.css";
+import { experienceData } from "@/components/data";
 
 export default function Experience() {
   const scrollTriggerInstances = useRef<(ScrollTrigger | undefined)[]>([]);
@@ -36,6 +38,7 @@ export default function Experience() {
       services.forEach((service, index) => {
         const isLastServiceCard = index === services.length - 1;
         const serviceCardInner = service.querySelector(".service-card-inner");
+        console.log(serviceCardInner);
 
         if (!isLastServiceCard && serviceCardInner) {
           const pinTrigger = ScrollTrigger.create({
@@ -95,118 +98,28 @@ export default function Experience() {
         </div>
       </section>
       <section className="services">
-        <div className="service-card" id="service-card-1">
-          <div className="service-card-inner">
-            <div className="service-card-content">
-              <h1>Frontend Developer</h1>
-            </div>
-            <p>SmartEdu Systems | Remote | Jul 2015 – Jul 2018</p>
-            <ul>
-              <li>
-                Developed and maintained responsive web applications, improving
-                user engagement by 30%.
-              </li>
-              <li>
-                Collaborated with UX/UI designers to implement modern design
-                principles, enhancing user experience.
-              </li>
-              <li>
-                Optimized web applications for maximum speed and scalability,
-                resulting in a 20% reduction in load times.
-              </li>
-            </ul>
-            <div className="service-card-img">
-              <img
-                src="/images/services/service-1.jpg"
-                alt="Experience Design"
-              />
+        {experienceData.map((experience, index) => (
+          <div
+            key={experience.id}
+            className="service-card"
+            id={`service-card-${index + 1}`}
+          >
+            <div className="service-card-inner">
+              <h1>{experience.title}</h1>
+              <p>{experience.company}</p>
+              <ul>
+                {experience.achievements.map(
+                  (achievement, achievementIndex) => (
+                    <li key={achievementIndex}>{achievement}</li>
+                  )
+                )}
+              </ul>
+              <div className="service-card-img">
+                <img src={experience.image} alt="Experience Design" />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="service-card" id="service-card-2">
-          <div className="service-card-inner">
-            <div className="service-card-content">
-              <h1>Junior Web Developer</h1>
-            </div>
-            <p>Global MedTech Inc. | Chicago, IL | Aug 2018 – Dec 2020</p>
-            <ul>
-              <li>
-                Collaborated on a team to develop a web application for medical
-                device management, enhancing operational efficiency by 25%.
-              </li>
-              <li>
-                Implemented responsive design principles, ensuring accessibility
-                across devices and platforms.
-              </li>
-              <li>
-                Assisted in migrating legacy systems to modern web technologies,
-                reducing maintenance costs by 40%.
-              </li>
-            </ul>
-            <div className="service-card-img">
-              <img
-                src="/images/services/service-2.jpg"
-                alt="Experience Design"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="service-card" id="service-card-3">
-          <div className="service-card-inner">
-            <div className="service-card-content">
-              <h1>Mobile App Developer (Freelance Contract)</h1>
-            </div>
-            <p>LocalStart Gym App | Remote | Mar 2020 – Oct 2020</p>
-            <ul>
-              <li>
-                Developed a cross-platform fitness app using React Native and
-                Firebase, with over 10,000 downloads in the first six months.
-              </li>
-              <li>
-                Integrated features such as class schedules, membership
-                management, and workout tracking.
-              </li>
-              <li>
-                Collaborated with the client to ensure the app met user needs
-                and business goals.
-              </li>
-            </ul>
-            <div className="service-card-img">
-              <img
-                src="/images/services/service-3.jpg"
-                alt="Experience Design"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="service-card" id="service-card-4">
-          <div className="service-card-inner">
-            <div className="service-card-content">
-              <h1>Student</h1>
-            </div>
-            <p>Purwadhika | On Campus | May 2025 - August 2025</p>
-            <ul>
-              <li>
-                Engaged in a comprehensive curriculum covering advanced web
-                development, including React, next.js, and database management.
-              </li>
-              <li>
-                Completed hands-on projects that simulated real-world scenarios,
-                enhancing practical skills.
-              </li>
-              <li>
-                Collaborated with peers on group projects, fostering teamwork
-                and communication skills.
-              </li>
-            </ul>
-            <div className="service-card-img">
-              <img
-                src="/images/services/service-4.jpg"
-                alt="Experience Design"
-              />
-            </div>
-          </div>{" "}
-        </div>
+        ))}
       </section>
     </>
   );

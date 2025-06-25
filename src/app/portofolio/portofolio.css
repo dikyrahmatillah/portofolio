@@ -1,0 +1,131 @@
+/* case studies */
+.case-studies {
+  position: relative;
+  margin-top: -0.125em;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  padding: 4em 4em;
+}
+
+.case-studies-content .container {
+  display: flex;
+  gap: 2em;
+}
+
+.case-studies-content .container .col {
+  flex: 1;
+}
+
+.case-studies-content .container .col h2 {
+  text-transform: none;
+  font-size: 5rem;
+  margin-bottom: 1em;
+}
+
+.case-studies-copy {
+  width: 70%;
+}
+
+/* case studies items */
+.case-studies-items {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0 4em;
+  display: flex;
+  background-color: var(--background);
+  margin-top: -0.125em;
+}
+
+.case-studies-items .col {
+  flex: 1;
+}
+
+.case-studies-item,
+.case-studies-img {
+  width: 100%;
+  height: 100svh;
+}
+
+.case-studies-items-images {
+  position: relative;
+}
+
+.case-studies-items-content {
+  position: relative;
+  z-index: 2;
+}
+
+.case-studies-items-content .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.case-studies-items-content .container h3 {
+  text-transform: none;
+  font-family: "Nippo";
+  font-weight: 400;
+  font-size: 4rem;
+  margin-bottom: 0.5em;
+}
+
+.case-studies-items-content .container p.primary {
+  margin-bottom: 0.5em;
+}
+
+.case-studies-img {
+  position: relative;
+  will-change: transform;
+  border-radius: 1em;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.case-studies-img img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2);
+  transform-origin: top top;
+  will-change: transform;
+}
+
+.case-studies-item-inner-img {
+  display: none;
+}
+
+.case-studies-item-inner-link {
+  display: none;
+}
+
+.link-icon {
+  position: relative;
+  top: 0.125rem;
+}
+
+.case-studies-img-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.case-studies-img-link span {
+  display: flex;
+  align-items: center;
+}
+
+.case-studies-img-link a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

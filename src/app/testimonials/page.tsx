@@ -88,7 +88,7 @@ export default function Testimonials() {
             <h2 className="text-black text-8xl ">Testimonials</h2>
             {/* <ShuffleText
               as="h2"
-              text="Timeless Art Through a New Lens"
+              text="Testimonials"
               triggerOnScroll={true}
             /> */}
           </div>

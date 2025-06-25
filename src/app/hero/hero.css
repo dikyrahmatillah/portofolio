@@ -1,0 +1,53 @@
+.hero {
+  width: 100vw;
+  height: 100vh;
+}
+
+#intro {
+  height: 100vh;
+  width: 100vw;
+}
+
+#about {
+  width: 100vw;
+  height: 100vh;
+}
+
+.portrait {
+  position: absolute;
+  transform: translateX(95%) translateY(75%);
+  width: 22%;
+  aspect-ratio: 5/3;
+  will-change: transform;
+}
+
+.profile {
+  position: absolute;
+  transform: translateX(150%) translateY(40%);
+  width: 30%;
+  aspect-ratio: 4/6;
+  will-change: transform;
+}
+
+.hero-contact {
+  position: absolute;
+  transform: translateX(190%) translateY(205%);
+  width: 40%;
+  aspect-ratio: 6/2;
+  will-change: transform;
+}
+
+.welcome {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  clip-path: polygon(0% 50%, 100% 50%, 100% 50%, 0% 50%);
+  will-change: clip-path;
+}

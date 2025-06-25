@@ -2,11 +2,11 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "./portofolio.css";
 
 export default function Portfolio() {
-  gsap.registerPlugin(ScrollTrigger); // handles case studies image pinning and scale animations on scroll
+  gsap.registerPlugin(ScrollTrigger);
   useEffect(() => {
-    // Add a delay to ensure the page has fully loaded
     const timer = setTimeout(() => {
       const scaleAnimation = ScrollTrigger.create({
         trigger: ".case-studies-img-1",
@@ -35,7 +35,6 @@ export default function Portfolio() {
       });
 
       return () => {
-        // Clean up ScrollTrigger instances
         scaleAnimation.kill();
         pinAnimation.kill();
       };
