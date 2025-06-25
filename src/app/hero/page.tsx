@@ -82,7 +82,7 @@ export default function Hero() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
           <h1 className="text-6xl">An Independent Full-Stack Web Developer</h1>
         </div>
-        <div className="absolute bottom-4 left-4 w-2xl">
+        <div className="absolute bottom-4 left-4 w-[30rem]">
           <p>
             I build, break, and rebuild with code, coffee, and curiosity.
             Passionate about software, art, anime & solving weird problems. I’m

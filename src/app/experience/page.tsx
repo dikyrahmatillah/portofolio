@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./experience.css";
-import { experienceData } from "@/components/data";
+import { experienceData } from "@/app/data/data";
 
 export default function Experience() {
   const scrollTriggerInstances = useRef<(ScrollTrigger | undefined)[]>([]);
