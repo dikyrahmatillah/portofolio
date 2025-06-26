@@ -1,4 +1,3 @@
-// components/ShuffleText/ShuffleText.jsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -6,16 +5,24 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 
+interface ShuffleTextProps {
+  text: string;
+  as?: React.ElementType;
+  className?: string;
+  triggerOnScroll?: boolean;
+  [key: string]: any;
+}
+
 const ShuffleText = ({
   text,
   as: Component = "div",
   className = "",
   triggerOnScroll = false,
   ...props
-}) => {
+}: ShuffleTextProps) => {
   const containerRef = useRef(null);
   const [isDesktop, setIsDesktop] = useState(false);
-  const splitInstance = useRef(null);
+  const splitInstance = useRef<SplitType | null>(null);
 
   useEffect(() => {
     const checkSize = () => {
@@ -31,7 +38,6 @@ const ShuffleText = ({
 
   useEffect(() => {
     if (!isDesktop) {
-      // show the text without animation on mobile
       if (splitInstance.current) {
         splitInstance.current.revert();
         splitInstance.current = null;
@@ -40,6 +46,8 @@ const ShuffleText = ({
       return;
     }
 
+    if (!containerRef.current) return;
+
     splitInstance.current = new SplitType(containerRef.current, {
       types: "lines,words,chars",
       tagName: "span",
@@ -47,6 +55,8 @@ const ShuffleText = ({
 
     const chars = splitInstance.current.chars;
     const signs = ["+", "-"];
+
+    if (!chars) return;
 
     gsap.set(chars, { opacity: 0 });
 

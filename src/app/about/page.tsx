@@ -8,47 +8,46 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   useEffect(() => {
-    const aboutSectionPinnedHeight = window.innerHeight * 1;
+    const aboutSectionPinnedHeight = window.innerHeight * 2;
 
     ScrollTrigger.create({
       trigger: ".about",
       start: "top bottom",
-      end: `+=${aboutSectionPinnedHeight}`,
+      end: `center bottom`,
       pin: true,
       pinSpacing: true,
     });
 
     ScrollTrigger.create({
       trigger: ".about",
-      start: "top top",
+      start: "center center",
       end: `+=${aboutSectionPinnedHeight}`,
       scrub: 1,
       onUpdate: (self) => {
-        const topPosition = gsap.utils.interpolate(100, 0, self.progress);
-
+        const moveAmount = self.progress * -1000;
         gsap.set(".about-content", {
-          yPercent: `${topPosition}`,
+          x: moveAmount,
         });
       },
     });
-    // Cleanup function
+
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
   return (
-    <section className="about h-screen w-screen relative">
-      <div className="flex flex-col justify-center items-align">
-        <p className="w-screen text-xl my-2 py-8 border-y-1 text-center">
+    <section className="about w-full h-[200vh] relative overflow-x-hidden">
+      <div className="about-content flex flex-col justify-center items-center">
+        <p className="w-full text-xl my-2 py-8 border-y-1 text-center px-4">
           I build interactive web interfaces using React, TypeScript, and modern
           technologies. Always learning new frameworks to deliver quality
           solutions.
         </p>
-        <p className="w-screen text-xl my-2 py-8 border-y-1 text-center">
+        <p className="w-full text-xl my-2 py-8 border-y-1 text-center px-4">
           Focusing on JavaScript, TypeScript, React, Next.js, GSAP, Tailwind
           CSS, HTML, CSS, Git, REST APIs.
         </p>
-        <p className="w-screen text-xl my-2 py-8 border-y-1 text-center">
+        <p className="w-full text-xl my-2 py-8 border-y-1 text-center px-4">
           I strive to deliver work on schedule, ensure every aspect meets high
           standards, and maintain open, effective communication throughout every
           project.

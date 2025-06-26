@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import Welcome from "./welcome/page";
 import About from "./about/page";
-import Contact from "./contact/page";
 import Experience from "./experience/page";
 import Hero from "./hero/page";
 import Portfolio from "./portofolio/page";
@@ -12,6 +11,8 @@ import Testimonials from "./testimonials/page";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+import Cursor from "@/components/cursor/cursor";
+import Contact from "./contact/page";
 
 export default function Home() {
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function Home() {
 
   return (
     <>
+      <Cursor />
       <Hero />
       <About />
       <Skills />

@@ -2,8 +2,10 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import "./experience.css";
-import { experienceData } from "@/app/data/data";
+import { experienceData } from "@/data/data";
+import ShuffleText from "@/components/shuffleText/ShuffleText";
 
 export default function Experience() {
   const scrollTriggerInstances = useRef<(ScrollTrigger | undefined)[]>([]);
@@ -92,8 +94,13 @@ export default function Experience() {
         <div className="services-header-content">
           <div className="services-header-title"></div>
           <div className="services-header-arrow-icon">
-            <h1 className="text-9xl">Experience</h1>
-            <h1>&#8595;</h1>
+            <ShuffleText
+              as="h2"
+              text="Experience"
+              className="text-9xl"
+              triggerOnScroll={true}
+            />
+            <h2>&#8595;</h2>
           </div>
         </div>
       </section>
@@ -115,7 +122,12 @@ export default function Experience() {
                 )}
               </ul>
               <div className="service-card-img">
-                <img src={experience.image} alt="Experience Design" />
+                <Image
+                  src={experience.image}
+                  alt="Experience Design"
+                  width={250}
+                  height={250}
+                />
               </div>
             </div>
           </div>

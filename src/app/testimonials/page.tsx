@@ -3,8 +3,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { carouselItems } from "@/app/data/data";
+import { carouselItems } from "@/data/data";
 import "./testimonials.css";
+import ShuffleText from "@/components/shuffleText/ShuffleText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -84,13 +85,13 @@ export default function Testimonials() {
       </section>
       <section className="works" id="works">
         <div className="w-screen flex justify-center items-center text-center">
-          <div className="container">
-            <h2 className="text-black text-8xl ">Testimonials</h2>
-            {/* <ShuffleText
+          <div className="testimonial">
+            <ShuffleText
               as="h2"
               text="Testimonials"
+              className="text-white"
               triggerOnScroll={true}
-            /> */}
+            />
           </div>
         </div>
       </section>

@@ -3,8 +3,10 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./portofolio.css";
+import ShuffleText from "@/components/shuffleText/ShuffleText";
 
 export default function Portfolio() {
+  // const manifestoRef = useRef(null);
   gsap.registerPlugin(ScrollTrigger);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -59,9 +61,13 @@ export default function Portfolio() {
               <div className="col">
                 <p className="primary">[ Potofolio ]</p>
               </div>
-              <div className="case-studies-copy">
-                <h2>E-commerce Platform for XYZ Retailer</h2>
-                <p>
+              <div>
+                <ShuffleText
+                  as="h2"
+                  text="E-commerce Platform for XYZ Retailer"
+                  triggerOnScroll={true}
+                />
+                <p className="w-[60%]">
                   This project involved developing a full-stack e-commerce
                   platform for XYZ Retail, a traditional retail business
                   transitioning to online sales. The goal was to create a
