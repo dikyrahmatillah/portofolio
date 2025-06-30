@@ -4,20 +4,19 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./skills.css";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Skills() {
   const scrollTriggerInstance = useRef<ScrollTrigger | null>(null);
-  const featuredTitlesRef = useRef<HTMLDivElement>(null);
-  const featuredImagesRef = useRef<HTMLDivElement>(null);
-  const indicatorRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const skillTitlesRef = useRef<HTMLDivElement>(null);
+  const skillImagesRef = useRef<HTMLDivElement>(null);
   const imageCardRefs = useRef<(HTMLDivElement | null)[]>([]);
-
   const [windowWidth, setWindowWidth] = useState(0);
 
-  const featuredCardPosSmall = useMemo(
-    () => [
+  const skillCardPos = {
+    small: [
       { y: 100, x: 1000 },
       { y: 1500, x: 100 },
       { y: 1250, x: 1950 },
@@ -25,15 +24,11 @@ export default function Skills() {
       { y: 200, x: 2100 },
       { y: 250, x: 600 },
       { y: 1100, x: 1650 },
+      { y: 200, x: 1400 },
       { y: 1000, x: 800 },
-      { y: 900, x: 2200 },
       { y: 150, x: 1600 },
     ],
-    []
-  );
-
-  const featuredCardPosLarge = useMemo(
-    () => [
+    large: [
       { y: 800, x: 5000 },
       { y: 2000, x: 3000 },
       { y: 240, x: 4450 },
@@ -41,30 +36,15 @@ export default function Skills() {
       { y: 500, x: 2200 },
       { y: 750, x: 1100 },
       { y: 1850, x: 3350 },
+      { y: 800, x: 2600 },
       { y: 2200, x: 1300 },
-      { y: 3000, x: 1950 },
       { y: 500, x: 4500 },
     ],
-    []
-  );
+  };
+  const currentCardPos =
+    windowWidth >= 1600 ? skillCardPos.large : skillCardPos.small;
 
-  const featuredCardPos = useMemo(
-    () => (windowWidth >= 1600 ? featuredCardPosLarge : featuredCardPosSmall),
-    [windowWidth, featuredCardPosLarge, featuredCardPosSmall]
-  );
-
-  const indicators = useMemo(() => {
-    const indicatorArray = [];
-    for (let section = 1; section <= 5; section++) {
-      indicatorArray.push({ type: "number", value: `0${section}` });
-      for (let i = 0; i < 10; i++) {
-        indicatorArray.push({ type: "indicator", value: `${section}-${i}` });
-      }
-    }
-    return indicatorArray;
-  }, []);
-
-  const workItems = useMemo(
+  const skillItems = useMemo(
     () => Array.from({ length: 10 }, (_, i) => i + 1),
     []
   );
@@ -96,11 +76,11 @@ export default function Skills() {
         scrollTriggerInstance.current.kill();
       }
 
-      const moveDistance = windowWidth * 4;
+      const moveDistance = windowWidth * 5;
 
       imageCardRefs.current.forEach((card, index) => {
         if (card) {
-          const position = featuredCardPos[index];
+          const position = currentCardPos[index];
           gsap.set(card, {
             x: position.x,
             y: position.y,
@@ -111,7 +91,7 @@ export default function Skills() {
       });
 
       scrollTriggerInstance.current = ScrollTrigger.create({
-        trigger: ".featured-work",
+        trigger: ".skill",
         start: "top top",
         end: `+=${windowWidth * 5}px`,
         pin: true,
@@ -119,8 +99,8 @@ export default function Skills() {
         onUpdate: (self) => {
           const xPosition = -moveDistance * self.progress;
 
-          if (featuredTitlesRef.current) {
-            gsap.set(featuredTitlesRef.current, {
+          if (skillTitlesRef.current) {
+            gsap.set(skillTitlesRef.current, {
               x: xPosition,
             });
           }
@@ -143,21 +123,6 @@ export default function Skills() {
               });
             }
           });
-
-          const totalIndicators = indicatorRefs.current.filter(Boolean).length;
-          const progressPerIndicator = 1 / totalIndicators;
-
-          indicatorRefs.current.forEach((indicator, index) => {
-            if (indicator) {
-              const indicatorStart = index * progressPerIndicator;
-              const indicatorOpacity = self.progress > indicatorStart ? 1 : 0.2;
-
-              gsap.to(indicator, {
-                opacity: indicatorOpacity,
-                duration: 0.3,
-              });
-            }
-          });
         },
       });
     };
@@ -171,78 +136,48 @@ export default function Skills() {
         scrollTriggerInstance.current = null;
       }
     };
-  }, [windowWidth, featuredCardPos]);
+  }, [windowWidth, currentCardPos]);
   return (
-    <section className="featured-work">
-      <div className="featured-images" ref={featuredImagesRef}>
-        {workItems.map((item, index) => (
+    <section className="skill">
+      <div className="skill-images" ref={skillImagesRef}>
+        {skillItems.map((item, index) => (
           <div
             key={item}
             ref={(el) => {
               imageCardRefs.current[index] = el;
             }}
-            className={`featured-img-card featured-img-card-${item}`}
+            className={`skill-img-card skill-img-card-${item}`}
           >
-            <img
-              src={`/images/work-items/work-item-${item}.jpg`}
-              alt={`featured work image ${item}`}
+            <Image
+              src={`/images/skill-items/skill-item-${item}.png`}
+              alt={`skill skill image ${item}`}
+              width={250}
+              height={250}
             />
           </div>
         ))}
       </div>
 
-      <div className="featured-titles" ref={featuredTitlesRef}>
-        <div className="featured-title-wrapper">
-          <h1 className="featured-title">Work Playground</h1>
+      <div className="skill-titles" ref={skillTitlesRef}>
+        <div className="skill-title-wrapper">
+          <h1 className="skill-title text-6xl">Skill Playground</h1>
         </div>
-        <div className="featured-title-wrapper">
-          <h1 className="featured-title">
-            Front-End Skills: Technologies like HTML, CSS, JavaScript, React,
-            Angular, etc.
-          </h1>
+        <div className="skill-title-wrapper text-4xl">
+          <h2 className="skill-title">
+            Front-End Skills: React, TypeScript, Next.js, GSAP, Tailwind CSS,
+            HTML, CSS.
+          </h2>
         </div>
-        <div className="featured-title-wrapper">
-          <div className="featured-title-img">
-            <img src="/images/work-items/work-item-1.jpg" alt="" />
-          </div>
-          <h1 className="featured-title">
-            Back-End Skills: Frameworks and languages like Node.js, Express,
-            Django, or Ruby on Rails.
-          </h1>
+        <div className="skill-title-wrapper text-4xl">
+          <h2 className="skill-title">
+            Back-End Skills: Node.js, Express, REST APIs, and databases.
+          </h2>
         </div>
-        <div className="featured-title-wrapper">
-          <div className="featured-title-img">
-            <img src="/images/work-items/work-item-2.jpg" alt="" />
-          </div>
-          <h1 className="featured-title">
-            DevOps & Tools: Tools used in development, such as Docker, Git,
-            Jenkins, AWS, or CI/CD solutions.
-          </h1>
+        <div className="skill-title-wrapper text-4xl">
+          <h2 className="skill-title">
+            DevOps & Tools: Docker, Git and GitHub, CI/CD pipelines.
+          </h2>
         </div>
-      </div>
-
-      <div className="featured-work-indicator">
-        {indicators.map((indicator, index) =>
-          indicator.type === "number" ? (
-            <p
-              key={indicator.value}
-              ref={(el) => {
-                indicatorRefs.current[index] = el;
-              }}
-              className="mn"
-            >
-              {indicator.value}
-            </p>
-          ) : (
-            <div
-              key={indicator.value}
-              ref={(el) => {
-                indicatorRefs.current[index] = el;
-              }}
-              className="indicator"
-            />
-          )
-        )}
       </div>
     </section>
   );

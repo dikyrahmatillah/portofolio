@@ -6,21 +6,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { carouselItems } from "@/data/data";
 import "./testimonials.css";
 import ShuffleText from "@/components/shuffleText/ShuffleText";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Testimonials() {
   const container = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (typeof window === "undefined") return;
     const projects = gsap.utils.toArray<HTMLElement>(".project");
-    if (projects.length === 0) return;
+
     gsap.set(projects, {
       clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
     });
     gsap.set(projects[0], {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
     });
+
     const scrollTrigger = ScrollTrigger.create({
       trigger: ".carousel",
       start: "top top",
@@ -53,6 +54,7 @@ export default function Testimonials() {
             clipPath: nextSlideProgress,
           });
         }
+
         projects.forEach((project, index) => {
           if (index < currentSlide) {
             gsap.set(project, {
@@ -83,30 +85,23 @@ export default function Testimonials() {
         <div className="strip"></div>
         <div className="strip"></div>
       </section>
-      <section className="works" id="works">
-        <div className="w-screen flex justify-center items-center text-center">
-          <div className="testimonial">
-            <ShuffleText
-              as="h2"
-              text="Testimonials"
-              className="text-white"
-              triggerOnScroll={true}
-            />
-          </div>
+      <section className="abstract-bg">
+        <div className="testimonial grid grid-rows-1 place-content-center text-center text-white pt-6">
+          <ShuffleText as="h2" text="What People Say" triggerOnScroll={true} />
         </div>
       </section>
       <section className="carousel" ref={container}>
         {carouselItems.map((item) => (
           <div className="project" id={`project-${item.id}`} key={item.id}>
             <div className="project-bg">
-              <img src={item.bg} alt="" />
+              <Image src={item.bg} alt={item.title} fill />
             </div>
             <div className="project-main">
-              <img src={item.main} alt={`${item.title}'s portrait`} />
+              <Image src={item.main} alt={`${item.title}'s portrait`} fill />
             </div>
             <div className="project-header">
-              <h2>{item.title}</h2>
-              <div className="review-text">"{item.review}"</div>
+              <h2 className="text-2xl">{item.title}</h2>
+              <div className="review-text text-3xl">"{item.review}"</div>
             </div>
           </div>
         ))}

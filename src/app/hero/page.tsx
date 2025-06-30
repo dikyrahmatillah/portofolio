@@ -10,7 +10,7 @@ export default function Hero() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const finishAboutHeaderClipReveal = window.innerHeight;
-    const heroSectionPinnedHeight = window.innerHeight * 3;
+    const heroSectionPinnedHeight = window.innerHeight * 5;
     document.body.style.overflow = "hidden";
 
     ScrollTrigger.create({
@@ -33,29 +33,29 @@ export default function Hero() {
       },
     });
 
-    ScrollTrigger.create({
-      trigger: "#hero",
-      start: "top top",
-      end: `+=${finishAboutHeaderClipReveal}`,
-      scrub: 0.5,
-      onUpdate: (self) => {
-        const scale = gsap.utils.interpolate(0.75, 1, self.progress);
-        const opacity = gsap.utils.interpolate(0.25, 0.5, self.progress);
+    // ScrollTrigger.create({
+    //   trigger: "#hero",
+    //   start: "top top",
+    //   end: `+=${finishAboutHeaderClipReveal}`,
+    //   scrub: 0.4,
+    //   onUpdate: (self) => {
+    //     const scale = gsap.utils.interpolate(0.75, 1, self.progress);
+    //     const opacity = gsap.utils.interpolate(0.25, 0.4, self.progress);
 
-        gsap.set(".welcome h1", {
-          scale: scale,
-          opacity: opacity,
-        });
-      },
-    });
+    //     gsap.set(".welcome h1", {
+    //       scale: scale,
+    //       opacity: opacity,
+    //     });
+    //   },
+    // });
 
     ScrollTrigger.create({
       trigger: "#hero",
       start: "bottom top",
       end: `+=${finishAboutHeaderClipReveal}`,
-      scrub: 0.3,
+      scrub: 0.25,
       onUpdate: (self) => {
-        const opacity = gsap.utils.interpolate(0.4, 0.1, self.progress);
+        const opacity = gsap.utils.interpolate(0.3, 0.1, self.progress);
 
         gsap.set(".welcome h1", {
           opacity: opacity,
@@ -99,7 +99,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="welcome overflow-hidden flex items-center justify-center">
-          <h1 className="text-[25rem] whitespace-nowrap">Hello!</h1>
+          <h1 className="text-[25rem] whitespace-nowrap opacity-30">Hello!</h1>
         </div>
       </section>
     </>

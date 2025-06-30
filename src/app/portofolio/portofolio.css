@@ -1,108 +1,150 @@
-/* case studies */
-.case-studies {
+:root {
+  --portfolio-bg: var(--background, #fff);
+  --portfolio-padding: 4em;
+  --portfolio-radius: 1em;
+  --portfolio-img-radius: 1em;
+}
+
+.portofolio {
   position: relative;
   margin-top: -0.125em;
   width: 100%;
   height: 100%;
-  background-color: var(--background);
-  padding: 4em 4em;
+  background-color: var(--portfolio-bg);
+  padding: var(--portfolio-padding);
+  display: flex;
+  flex-direction: column;
 }
 
-.case-studies-content .container {
+.portofolio-header {
+  width: 70%;
+}
+
+.portofolio-content .container,
+.works-content .container {
   display: flex;
   gap: 2em;
+  flex-direction: column-reverse;
 }
 
-.case-studies-content .container .col {
+.portofolio-content .container .col {
   flex: 1;
 }
 
-.case-studies-content .container .col h2 {
+.portofolio-content .container .col h2,
+.works-content .container .col h2 {
   text-transform: none;
-  font-size: 5rem;
+  font-size: 2.5rem;
   margin-bottom: 1em;
 }
 
+.portofolio-desc,
+.works-copy {
+  width: 70%;
+}
+
+.portofolio .portofolio-items-images {
+  position: absolute;
+  top: 0;
+  right: 4em;
+  width: 40%;
+  height: 100vh;
+  z-index: 1;
+  overflow: hidden;
+}
+
 /* case studies items */
-.case-studies-items {
+.portofolio-items {
   position: relative;
   width: 100%;
   height: 100%;
-  padding: 0 4em;
+  padding: 0 var(--portfolio-padding);
   display: flex;
-  background-color: var(--background);
+  background-color: var(--portfolio-bg);
   margin-top: -0.125em;
 }
 
-.case-studies-items .col {
+.portofolio-items .col {
   flex: 1;
 }
 
-.case-studies-item,
-.case-studies-img {
+.portofolio-item,
+.portofolio-img {
   width: 100%;
   height: 100svh;
 }
 
-.case-studies-items-images {
+.portofolio-items-images {
   position: relative;
+  height: 100vh;
 }
 
-.case-studies-items-content {
+.portofolio-items-content {
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
-.case-studies-items-content .container {
+.portofolio-items-content .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   height: 100%;
 }
 
-.case-studies-items-content .container h3 {
+.portofolio-items-content .container h3 {
   text-transform: none;
-  font-family: "Nippo";
   font-weight: 400;
   font-size: 4rem;
   margin-bottom: 0.5em;
 }
 
-.case-studies-items-content .container p.primary {
+.portofolio-items-content .container p.primary {
   margin-bottom: 0.5em;
 }
 
-.case-studies-img {
+.portofolio-img {
   position: relative;
+  width: 100%;
+  height: 100vh;
   will-change: transform;
-  border-radius: 1em;
+  border-radius: var(--portfolio-img-radius);
   overflow: hidden;
-  z-index: 1;
+  transform-origin: top center;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #e0e0e0;
 }
 
-.case-studies-img img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(2);
-  transform-origin: top top;
-  will-change: transform;
+.portofolio-img::-webkit-scrollbar {
+  width: 8px;
+  background: #e0e0e0;
+  border-radius: 8px;
 }
 
-.case-studies-item-inner-img {
+.portofolio-img::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #888 30%, #555 100%);
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+}
+
+.portofolio-img::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #555 30%, #222 100%);
+}
+
+.portofolio-img img {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.portofolio-item-inner-img,
+.portofolio-item-inner-link {
   display: none;
 }
 
-.case-studies-item-inner-link {
-  display: none;
-}
-
-.link-icon {
-  position: relative;
-  top: 0.125rem;
-}
-
-.case-studies-img-link {
+.portofolio-img-link {
   position: absolute;
   top: 0;
   left: 0;
@@ -113,15 +155,31 @@
   align-items: center;
 }
 
-.case-studies-img-link span {
+.portofolio-img-link span {
   display: flex;
   align-items: center;
 }
 
-.case-studies-img-link a {
+.portofolio-img-link a {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.portofolio h2 {
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 7rem;
+  line-height: 100%;
+}
+
+@media (max-width: 900px) {
+  .portofolio h2 {
+    font-size: 2.75rem;
+  }
+  .container {
+    padding: 2em;
+  }
 }

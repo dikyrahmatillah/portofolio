@@ -12,29 +12,35 @@ export const portfolioData = {
     title: "E-commerce Platform for XYZ Retailer",
     description:
       "This project involved developing a full-stack e-commerce platform for XYZ Retail, a traditional retail business transitioning to online sales. The goal was to create a scalable, user-friendly web application that catered to both desktop and mobile users, with features like secure checkout, product reviews, and real-time inventory updates.",
-    imgSrc: "/images/portofolio/portofolio-1.jpg",
-    imgAlt: "E-commerce platform for XYZ Retail",
   },
   projectSteps: [
     {
       title: "Situation:",
       description:
         "XYZ Retail, an established retail company, sought to expand into e-commerce to reach a wider audience and streamline its sales processes. They needed a scalable, user-friendly platform to support both desktop and mobile users with features like product browsing, user reviews, secure checkout, and real-time inventory updates.",
+      imgSrc: "/images/portofolio/case-study-1.jpeg",
+      imgAlt: "E-commerce platform for XYZ Retail",
     },
     {
       title: "Task",
       description:
         "I was responsible for building the front-end and back-end components of the platform, ensuring seamless integration with the client’s inventory and payment systems. The project goal was to create an efficient, high-performing application with a smooth user experience.",
+      imgSrc: "/images/portofolio/case-study-2.jpeg",
+      imgAlt: "Front-end and back-end development for a scalable platform",
     },
     {
       title: "Action",
       description:
         "Using React for the front-end, I designed a responsive, intuitive UI focused on user engagement and easy navigation. On the back end, I developed RESTful APIs with Node.js and MongoDB for data management. Additionally, I integrated the platform with AWS to optimize loading times and set up a CI/CD pipeline for faster deployment and testing. I worked closely with designers and QA to address usability and accessibility standards.",
+      imgSrc: "/images/portofolio/case-study-3.jpeg",
+      imgAlt: "Responsive design and RESTful APIs for seamless user experience",
     },
     {
       title: "Result",
       description:
         "The project was completed on time, leading to a 35% increase in online sales within the first three months. User feedback highlighted the site's speed and ease of use, and the client reported a substantial reduction in manual inventory management tasks.",
+      imgSrc: "/images/portofolio/case-study-4.jpeg",
+      imgAlt: "35% increase in online sales within three months",
     },
   ],
 };
@@ -43,40 +49,44 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Portfolio() {
   const stepItemRef = useRef<HTMLDivElement>(null);
-  const imgContainerRef = useRef<HTMLDivElement | null>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const itemsContainerRef = useRef<HTMLDivElement | null>(null);
+  const imgContainerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   useEffect(() => {
-    const container = imgContainerRef.current;
-    const imgElement = imgRef.current;
-    const itemsContainer = itemsContainerRef.current;
+    const containers = imgContainerRefs.current.filter(Boolean);
+    const images = imgRefs.current.filter(Boolean);
 
-    const scaleTrigger = ScrollTrigger.create({
-      trigger: container,
-      start: "top bottom",
-      end: "top top",
-      onUpdate: (self) => {
-        gsap.to(imgElement, {
-          scale: 2 - self.progress,
-          duration: 0.1,
-          ease: "none",
-        });
-      },
-    });
+    containers.forEach((container, i) => {
+      const imgElement = images[i];
 
-    const pinTrigger = ScrollTrigger.create({
-      trigger: container,
-      start: "top top",
-      end: `+=${window.innerHeight * 3}`,
-      pin: true,
-      pinSpacing: false,
-      invalidateOnRefresh: true,
+      ScrollTrigger.create({
+        trigger: container,
+        start: "top bottom",
+        end: "top top",
+        onUpdate: (self) => {
+          gsap.to(imgElement, {
+            scale: 2 - self.progress,
+            duration: 0.1,
+            ease: "none",
+          });
+        },
+      });
+
+      ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: () => {
+          const itemHeight = stepItemRef.current?.offsetHeight || 800;
+          return `+=${itemHeight * (containers.length - i - 1)}`;
+        },
+        pin: true,
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+      });
     });
 
     return () => {
-      scaleTrigger.kill();
-      pinTrigger.kill();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
@@ -85,11 +95,10 @@ export default function Portfolio() {
       <section className="portofolio" id="portofolio">
         <div className="portofolio-content">
           <div className="col">
-            <p className="primary">[Look What I Did]</p>
+            <p className="primary">[Portofolio ]</p>
           </div>
           <div className="container">
             <ShuffleText
-              className="font-bold"
               as="h2"
               text={portfolioData.mainProject.title}
               triggerOnScroll={true}
@@ -107,7 +116,7 @@ export default function Portfolio() {
         </div>
       </section>
       <section className="portofolio-items">
-        <div className="portofolio-items-content col" ref={itemsContainerRef}>
+        <div className="portofolio-items-content col">
           {portfolioData.projectSteps.map((step, i) => (
             <div
               key={i}
@@ -116,24 +125,40 @@ export default function Portfolio() {
             >
               <div className="container">
                 <h3>{step.title}</h3>
+                <p className="primary">[ {step.imgAlt} ]</p>
+                <div className="portofolio-item-inner-img">
+                  <Image
+                    src={step.imgSrc}
+                    alt={step.imgAlt}
+                    width={800}
+                    height={600}
+                  />
+                </div>
                 <p>{step.description}</p>
               </div>
             </div>
           ))}
         </div>
         <div className="portofolio-items-images col">
-          <div
-            className="portofolio-img portofolio-img-main"
-            ref={imgContainerRef}
-          >
-            <Image
-              ref={imgRef}
-              src={portfolioData.mainProject.imgSrc}
-              alt={portfolioData.mainProject.imgAlt}
-              width={1200}
-              height={800}
-            />
-          </div>
+          {portfolioData.projectSteps.map((step, i) => (
+            <div
+              key={i}
+              className={`portofolio-img portofolio-img-${i + 1}`}
+              ref={(el) => {
+                imgContainerRefs.current[i] = el;
+              }}
+            >
+              <Image
+                ref={(el) => {
+                  imgRefs.current[i] = el as HTMLImageElement;
+                }}
+                src={step.imgSrc}
+                alt={step.imgAlt}
+                width={1200}
+                height={800}
+              />
+            </div>
+          ))}
         </div>
       </section>
     </main>

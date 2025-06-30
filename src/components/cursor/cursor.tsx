@@ -10,17 +10,16 @@ const Cursor: React.FC = () => {
   useEffect(() => {
     const cursor = cursorRef.current;
     const icon = iconRef.current;
-    const projects = document.querySelectorAll<HTMLElement>(".project");
+    const projects = document.querySelectorAll<HTMLElement>(".contact-button");
 
     if (!cursor || !icon) return;
 
-    console.log("Cursor component mounted", {
-      cursor,
-      icon,
-      projectsCount: projects.length,
-    });
+    // console.log("Cursor component mounted", {
+    //   cursor,
+    //   icon,
+    //   projectsCount: projects.length,
+    // });
 
-    // Initial setup
     gsap.set(cursor, {
       scale: 0.1,
       opacity: 1,
@@ -42,7 +41,7 @@ const Cursor: React.FC = () => {
     };
 
     const handleMouseEnter = () => {
-      console.log("Mouse entered project");
+      // console.log("Mouse entered project");
       gsap.to(cursor, {
         scale: 1,
         duration: 0.5,
@@ -56,7 +55,7 @@ const Cursor: React.FC = () => {
     };
 
     const handleMouseLeave = () => {
-      console.log("Mouse left project");
+      // console.log("Mouse left project");
       gsap.to(cursor, {
         scale: 0.1,
         duration: 0.5,
