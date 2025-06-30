@@ -1,3 +1,10 @@
+/* Ensure proper box sizing for all popup elements */
+.popup-content *,
+.popup-content *::before,
+.popup-content *::after {
+  box-sizing: border-box;
+}
+
 /* contact cta */
 .contact-cta {
   position: absolute;
@@ -105,7 +112,8 @@
   box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
 }
 
-/* Popup Overlay Styles */
+/* Popup */
+
 .popup-overlay {
   position: fixed;
   inset: 0;
@@ -117,18 +125,20 @@
   z-index: 1000;
 }
 
-/* Popup Content Styles */
 .popup-content {
   border: 1px solid #000;
   background: #272727;
   border-radius: 1rem;
   width: 90%;
-  max-width: 500px;
+  height: auto;
   max-height: 90vh;
+  max-width: 500px;
   animation: popupSlideIn 0.3s ease-out;
-  position: absolute;
+  position: relative;
   pointer-events: auto;
-  overflow: visible;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 @property --angle {
@@ -183,6 +193,7 @@
   align-items: center;
   padding: 1.5rem 2rem 1rem;
   border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
 }
 
 .popup-header h2 {
@@ -215,6 +226,10 @@
 .contact-form {
   padding: 1.5rem 2rem 2rem;
   position: relative;
+  flex-shrink: 1;
+  flex-grow: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .form-group {
@@ -239,6 +254,7 @@
   font-size: 1rem;
   transition: border-color 0.2s;
   font-family: inherit;
+  box-sizing: border-box;
 }
 
 .form-group input:focus,

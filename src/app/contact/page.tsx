@@ -51,77 +51,115 @@ export default function Contact() {
       </div>
 
       {showPopup && (
-        <div className="popup-overlay" onClick={() => setShowPopup(false)}>
-          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <div className="popup-header">
-              <h2>Contact Me</h2>
-              <button className="close-btn" onClick={() => setShowPopup(false)}>
+        <div className="fixed inset-0 flex items-center justify-center z-[1000] bg-black/40 backdrop-blur-sm">
+          <div className="relative w-[90vw] max-w-[500px] h-auto max-h-[90vh] bg-zinc-800 border border-black rounded-xl flex flex-col shadow-2xl">
+            <div className="flex-shrink-0 flex justify-between items-center px-6 py-3 border-b border-zinc-200/30">
+              <h2 className="text-xl text-zinc-200 font-semibold m-0">
+                Contact Me
+              </h2>
+              <button
+                className="text-2xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 rounded-full w-8 h-8 flex items-center justify-center transition"
+                onClick={() => setShowPopup(false)}
+              >
                 ×
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="contact-form">
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="subject">Subject</label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  rows={5}
-                  required
-                />
-              </div>
-              <button type="submit" className="submit-btn">
-                Send Message
-              </button>
-            </form>
-            <div className="mt-4 pt-4 border-t border-white/10 text-center">
-              <p className="text-white/80 text-sm mb-4">
+
+            <div className="flex flex-col overflow-y-auto max-h-[calc(90vh-120px)]">
+              <form
+                className="flex-1 px-6 py-4 flex flex-col gap-3"
+                onSubmit={handleSubmit}
+              >
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block mb-1 font-semibold text-zinc-100 text-sm"
+                  >
+                    Name
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    className="w-full px-4 py-2 border-2 border-zinc-200/20 rounded-lg text-base focus:outline-none focus:border-blue-500 bg-zinc-900 text-white"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block mb-1 font-semibold text-zinc-100 text-sm"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className="w-full px-4 py-2 border-2 border-zinc-200/20 rounded-lg text-base focus:outline-none focus:border-blue-500 bg-zinc-900 text-white"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="subject"
+                    className="block mb-1 font-semibold text-zinc-100 text-sm"
+                  >
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    className="w-full px-4 py-2 border-2 border-zinc-200/20 rounded-lg text-base focus:outline-none focus:border-blue-500 bg-zinc-900 text-white"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block mb-1 font-semibold text-zinc-100 text-sm"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    className="w-full px-4 py-2 border-2 border-zinc-200/20 rounded-lg text-base focus:outline-none focus:border-blue-500 bg-zinc-900 text-white"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={2}
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg- -to-r from-blue-500 to-cyan-400 text-white font-semibold py-2 rounded-lg shadow transition hover:-translate-y-1 hover:shadow-lg mt-2"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
+
+            <div className="flex-shrink-0 pt-2 px-6 pb-3 border-t border-white/10 text-center mt-auto">
+              <p className="text-white/80 text-sm mb-2">
                 Or connect with me on:
               </p>
-              <div className="flex justify-center gap-4 pb-4">
+              <div className="flex justify-center gap-4">
                 <a
                   href="https://linkedin.com/in/dikyrahmatillah"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-blue-500/30 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-blue-500/30 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
                 >
                   <svg
-                    width="20"
-                    height="20"
+                    width="15"
+                    height="15"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
@@ -132,11 +170,11 @@ export default function Contact() {
                   href="https://github.com/dikyrahmatillah"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-gray-800/60 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-gray-800/60 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
                 >
                   <svg
-                    width="20"
-                    height="20"
+                    width="15"
+                    height="15"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
@@ -147,11 +185,11 @@ export default function Contact() {
                   href="https://twitter.com/dikyrahmatillah"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-blue-400/40 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-blue-400/40 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
                 >
                   <svg
-                    width="20"
-                    height="20"
+                    width="15"
+                    height="15"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
@@ -160,11 +198,11 @@ export default function Contact() {
                 </a>
                 <a
                   href="mailto:diky@email.com"
-                  className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-cyan-400/40 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-cyan-400/40 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
                 >
                   <svg
-                    width="20"
-                    height="20"
+                    width="15"
+                    height="15"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
