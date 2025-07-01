@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
+import { FaLinkedin, FaGithub, FaTwitter, FaEnvelope } from "react-icons/fa";
 import "./contact.css";
+import { SocialIconLink } from "@/components/SocialIconLink";
+import { Field } from "@/components/Field";
 
 export default function Contact() {
   const [showPopup, setShowPopup] = useState(false);
@@ -36,29 +39,27 @@ export default function Contact() {
 
   return (
     <section className="w-full h-screen">
-      <div className="contact-cta">
+      <div className="absolute z-0 h-screen w-screen p-4 md:p-8 flex justify-center items-center">
         <div
-          className="contact-button hover:animate-ping hover:scale-105 transition-transform duration-300 shadow-xl bg-gradient-to-br from-blue-500 via-cyan-400 to-blue-300/80 hover:shadow-2xl hover:bg-blue-500/90"
+          className="bg-gradient relative w-11/12 max-w-md md:w-3/6 md:h-2/8 border-[6px] md:border-[12px] border-black rounded-full flex flex-col justify-center gap-2 shadow-[6px_6px_0px_3px_#000] md:shadow-[10px_10px_0px_5px_#000] overflow-hidden cursor-pointer"
           onClick={() => setShowPopup(true)}
         >
-          <div className="contact-text-small">
-            <p>Ready for collaboration?</p>
-          </div>
-          <div className="contact-text-large">
-            <h1>Hit Me Up</h1>
+          <div className="relative flex flex-col items-center">
+            <p className="text-sm md:text-lg">Ready for collaboration?</p>
+            <h1 className="text-4xl md:text-[7rem]">Hit Me Up</h1>
           </div>
         </div>
       </div>
 
       {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center z-[1000] bg-black/40 backdrop-blur-sm">
-          <div className="relative w-[90vw] max-w-[500px] h-auto max-h-[90vh] bg-zinc-800 border border-black rounded-xl flex flex-col shadow-2xl">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="border-animate relative w-[90vw] max-w-[500px] bg-zinc-800 border border-black rounded-xl flex flex-col">
             <div className="flex-shrink-0 flex justify-between items-center px-6 py-3 border-b border-zinc-200/30">
               <h2 className="text-xl text-zinc-200 font-semibold m-0">
                 Contact Me
               </h2>
               <button
-                className="text-2xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 rounded-full w-8 h-8 flex items-center justify-center transition"
+                className="text-2xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 rounded-full w-8 h-8 flex items-center justify-center transition cursor-pointer"
                 onClick={() => setShowPopup(false)}
               >
                 ×
@@ -70,78 +71,46 @@ export default function Contact() {
                 className="flex-1 px-6 py-4 flex flex-col gap-3"
                 onSubmit={handleSubmit}
               >
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block mb-1 font-semibold text-zinc-100 text-sm"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    className="w-full px-4 py-2 border-2 border-zinc-200/20 rounded-lg text-base focus:outline-none focus:border-blue-500 bg-zinc-900 text-white"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block mb-1 font-semibold text-zinc-100 text-sm"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="w-full px-4 py-2 border-2 border-zinc-200/20 rounded-lg text-base focus:outline-none focus:border-blue-500 bg-zinc-900 text-white"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="subject"
-                    className="block mb-1 font-semibold text-zinc-100 text-sm"
-                  >
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    className="w-full px-4 py-2 border-2 border-zinc-200/20 rounded-lg text-base focus:outline-none focus:border-blue-500 bg-zinc-900 text-white"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block mb-1 font-semibold text-zinc-100 text-sm"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    className="w-full px-4 py-2 border-2 border-zinc-200/20 rounded-lg text-base focus:outline-none focus:border-blue-500 bg-zinc-900 text-white"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={2}
-                    required
-                  />
-                </div>
+                <Field
+                  label="Name"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
+                <Field
+                  label="Email"
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
+                <Field
+                  label="Subject"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  required
+                />
+                <Field
+                  label="Message"
+                  id="message"
+                  name="message"
+                  textarea
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                  rows={2}
+                />
                 <button
                   type="submit"
-                  className="w-full bg- -to-r from-blue-500 to-cyan-400 text-white font-semibold py-2 rounded-lg shadow transition hover:-translate-y-1 hover:shadow-lg mt-2"
+                  className="relative bg-gradient text-white font-semibold py-2 rounded-lg shadow transition hover:-translate-y-1 hover:shadow-lg mt-2"
                 >
-                  Send Message
+                  <p className="relative">Send Message</p>
                 </button>
               </form>
             </div>
@@ -151,64 +120,30 @@ export default function Contact() {
                 Or connect with me on:
               </p>
               <div className="flex justify-center gap-4">
-                <a
+                <SocialIconLink
                   href="https://linkedin.com/in/dikyrahmatillah"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-blue-500/30 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
+                  hoverBg="hover:bg-blue-500/30"
                 >
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
-                </a>
-                <a
+                  <FaLinkedin size={18} />
+                </SocialIconLink>
+                <SocialIconLink
                   href="https://github.com/dikyrahmatillah"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-gray-800/60 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
+                  hoverBg="hover:bg-gray-800/60"
                 >
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                  </svg>
-                </a>
-                <a
+                  <FaGithub size={18} />
+                </SocialIconLink>
+                <SocialIconLink
                   href="https://twitter.com/dikyrahmatillah"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-blue-400/40 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
+                  hoverBg="hover:bg-blue-400/40"
                 >
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-                  </svg>
-                </a>
-                <a
+                  <FaTwitter size={18} />
+                </SocialIconLink>
+                <SocialIconLink
                   href="mailto:diky@email.com"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white transition-all duration-300 hover:bg-cyan-400/40 hover:-translate-y-1 hover:shadow-lg border border-white/20 backdrop-blur"
+                  hoverBg="hover:bg-cyan-400/40"
                 >
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                  </svg>
-                </a>
+                  <FaEnvelope size={18} />
+                </SocialIconLink>
               </div>
             </div>
           </div>
