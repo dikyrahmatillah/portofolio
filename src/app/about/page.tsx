@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { aboutContent } from "@/data/data";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +14,8 @@ export default function About() {
     useRef<HTMLParagraphElement>(null),
     useRef<HTMLParagraphElement>(null),
   ];
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined" || !aboutRef.current) return;
@@ -22,7 +25,7 @@ export default function About() {
 
     if (paragraphs.length === 0) return;
 
-    const pinTrigger = ScrollTrigger.create({
+    scrollTriggerRef.current = ScrollTrigger.create({
       trigger: aboutSection,
       start: "top top",
       end: `+=${window.innerHeight * 4}`,
@@ -67,33 +70,35 @@ export default function About() {
         );
     });
 
+    timelineRef.current = tl;
+
     return () => {
-      pinTrigger.kill();
-      tl.kill();
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+        timelineRef.current = null;
+      }
     };
   }, []);
 
   return (
     <section
       ref={aboutRef}
-      id="about"
-      className="h-screen flex items-center justify-center"
+      className="min-h-screen flex items-center justify-center px-4 sm:px-8"
     >
-      <div className="about-content text-white text-center max-w-4xl px-8">
-        <p ref={paragraphRefs[0]} className="text-element text-4xl mb-6">
-          I build interactive web interfaces using React, TypeScript, and modern
-          technologies. Always learning new frameworks to deliver quality
-          solutions.
-        </p>
-        <p ref={paragraphRefs[1]} className="text-element text-4xl mb-6">
-          Focusing on JavaScript, TypeScript, React, Next.js, GSAP, Tailwind
-          CSS, HTML, CSS, Git, REST APIs.
-        </p>
-        <p ref={paragraphRefs[2]} className="text-element text-4xl">
-          I strive to deliver work on schedule, ensure every aspect meets high
-          standards, and maintain open, effective communication throughout every
-          project.
-        </p>
+      <div className="text-white text-center max-w-2xl sm:max-w-4xl w-full">
+        {aboutContent.map((text, index) => (
+          <p
+            key={index}
+            ref={paragraphRefs[index]}
+            className="text-lg sm:text-2xl md:text-4xl mb-6 last:mb-0"
+          >
+            {text}
+          </p>
+        ))}
       </div>
     </section>
   );

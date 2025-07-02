@@ -44,16 +44,22 @@ export default function Contact() {
           className="bg-gradient relative w-11/12 max-w-md md:w-3/6 md:h-2/8 border-[6px] md:border-[12px] border-black rounded-full flex flex-col justify-center gap-2 shadow-[6px_6px_0px_3px_#000] md:shadow-[10px_10px_0px_5px_#000] overflow-hidden cursor-pointer"
           onClick={() => setShowPopup(true)}
         >
-          <div className="relative flex flex-col items-center">
-            <p className="text-sm md:text-lg">Ready for collaboration?</p>
-            <h1 className="text-4xl md:text-[7rem]">Hit Me Up</h1>
+          <div className="relative flex flex-col items-center py-2">
+            <p className="text-sm">Ready for collaboration?</p>
+            <h1 className="text-4xl">Hit Me Up</h1>
           </div>
         </div>
       </div>
 
       {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="border-animate relative w-[90vw] max-w-[500px] bg-zinc-800 border border-black rounded-xl flex flex-col">
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          onClick={() => setShowPopup(false)}
+        >
+          <div
+            className="border-animate relative w-[90vw] max-w-[500px] bg-zinc-800 border border-black rounded-xl flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex-shrink-0 flex justify-between items-center px-6 py-3 border-b border-zinc-200/30">
               <h2 className="text-xl text-zinc-200 font-semibold m-0">
                 Contact Me
@@ -108,7 +114,7 @@ export default function Contact() {
                 />
                 <button
                   type="submit"
-                  className="relative bg-gradient text-white font-semibold py-2 rounded-lg shadow transition hover:-translate-y-1 hover:shadow-lg mt-2"
+                  className="relative bg-gradient text-white font-semibold py-2 rounded-lg shadow hover:scale-102 hover:shadow-lg transition-all mt-2 cursor-pointer"
                 >
                   <p className="relative">Send Message</p>
                 </button>

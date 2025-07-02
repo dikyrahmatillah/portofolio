@@ -4,55 +4,25 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ShuffleText from "@/components/shuffleText/ShuffleText";
 import Image from "next/image";
-// import { portfolioData } from "@/data/data";
-import "./portofolio.css";
-
-export const portfolioData = {
-  mainProject: {
-    title: "E-commerce Platform for XYZ Retailer",
-    description:
-      "This project involved developing a full-stack e-commerce platform for XYZ Retail, a traditional retail business transitioning to online sales. The goal was to create a scalable, user-friendly web application that catered to both desktop and mobile users, with features like secure checkout, product reviews, and real-time inventory updates.",
-    imgSrc: "/images/portofolio/portofolio-1.jpg",
-    imgAlt: "E-commerce platform for XYZ Retail",
-  },
-  projectSteps: [
-    {
-      title: "Situation:",
-      description:
-        "XYZ Retail, an established retail company, sought to expand into e-commerce to reach a wider audience and streamline its sales processes. They needed a scalable, user-friendly platform to support both desktop and mobile users with features like product browsing, user reviews, secure checkout, and real-time inventory updates.",
-    },
-    {
-      title: "Task",
-      description:
-        "I was responsible for building the front-end and back-end components of the platform, ensuring seamless integration with the client’s inventory and payment systems. The project goal was to create an efficient, high-performing application with a smooth user experience.",
-    },
-    {
-      title: "Action",
-      description:
-        "Using React for the front-end, I designed a responsive, intuitive UI focused on user engagement and easy navigation. On the back end, I developed RESTful APIs with Node.js and MongoDB for data management. Additionally, I integrated the platform with AWS to optimize loading times and set up a CI/CD pipeline for faster deployment and testing. I worked closely with designers and QA to address usability and accessibility standards.",
-    },
-    {
-      title: "Result",
-      description:
-        "The project was completed on time, leading to a 35% increase in online sales within the first three months. User feedback highlighted the site's speed and ease of use, and the client reported a substantial reduction in manual inventory management tasks.",
-    },
-  ],
-};
+import { portfolioData } from "@/data/data";
+import SlideRevealText from "@/components/slideRevealText/slideRevealText";
+// import "./portofolio.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Portfolio() {
-  const stepItemRef = useRef<HTMLDivElement>(null);
   const imgContainerRef = useRef<HTMLDivElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const itemsContainerRef = useRef<HTMLDivElement | null>(null);
+  const scaleTriggerRef = useRef<ScrollTrigger | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   useEffect(() => {
+    if (window.innerWidth < 768) return;
+
     const container = imgContainerRef.current;
     const imgElement = imgRef.current;
-    const itemsContainer = itemsContainerRef.current;
 
-    const scaleTrigger = ScrollTrigger.create({
+    scaleTriggerRef.current = ScrollTrigger.create({
       trigger: container,
       start: "top bottom",
       end: "top top",
@@ -65,7 +35,7 @@ export default function Portfolio() {
       },
     });
 
-    const pinTrigger = ScrollTrigger.create({
+    scrollTriggerRef.current = ScrollTrigger.create({
       trigger: container,
       start: "top top",
       end: `+=${window.innerHeight * 3}`,
@@ -75,55 +45,74 @@ export default function Portfolio() {
     });
 
     return () => {
-      scaleTrigger.kill();
-      pinTrigger.kill();
+      if (scaleTriggerRef.current) {
+        scaleTriggerRef.current.kill();
+        scaleTriggerRef.current = null;
+      }
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
     };
   }, []);
 
   return (
     <main>
-      <section className="portofolio" id="portofolio">
-        <div className="portofolio-content">
-          <div className="col">
-            <p className="primary">[Look What I Did]</p>
+      <section className="relative mt-[-0.5px] w-full h-full p-4 md:p-16 flex flex-col">
+        <div className="w-full flex flex-col gap-8">
+          <div className="flex flex-col gap-8">
+            <div className="flex-1">
+              <p className="font-semibold text-base md:text-lg">
+                [Look What I Did]
+              </p>
+            </div>
+            <div className="flex flex-col-reverse gap-4 md:gap-8">
+              <ShuffleText
+                className="font-bold uppercase text-4xl md:text-7xl leading-none"
+                as="h2"
+                text={portfolioData.mainProject.title}
+                triggerOnScroll={true}
+              />
+            </div>
           </div>
-          <div className="container">
-            <ShuffleText
-              className="font-bold"
-              as="h2"
-              text={portfolioData.mainProject.title}
-              triggerOnScroll={true}
-            />
-          </div>
-        </div>
-        <div className="portofolio-content">
-          <div className="container">
-            <div className="col">
-              <div className="portofolio-desc">
-                <p>{portfolioData.mainProject.description}</p>
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col-reverse gap-4 md:gap-8">
+              <div className="flex-1">
+                <div className="w-full md:w-[70%]">
+                  <p className="text-base md:text-lg">
+                    {portfolioData.mainProject.description}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <section className="portofolio-items">
-        <div className="portofolio-items-content col" ref={itemsContainerRef}>
+      <section className="relative w-full h-full flex flex-col md:flex-row px-4 md:px-16 mt-[-0.5px]">
+        <div className="w-full md:flex-1 relative z-10 flex flex-col justify-center">
           {portfolioData.projectSteps.map((step, i) => (
             <div
               key={i}
-              className="portofolio-item"
-              ref={i === 0 ? stepItemRef : undefined}
+              className="w-full h-auto md:h-screen flex items-center py-8 md:py-0"
             >
-              <div className="container">
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
+              <div className="flex flex-col justify-center h-full">
+                <SlideRevealText>
+                  <h3 className="font-normal text-2xl md:text-[2.5rem] lg:text-[4rem] mb-2">
+                    {step.title}
+                  </h3>
+                </SlideRevealText>
+                <SlideRevealText duration={0.05} delay={0.01}>
+                  <p className="mb-2 text-base md:text-lg">
+                    {step.description}
+                  </p>
+                </SlideRevealText>
               </div>
             </div>
           ))}
         </div>
-        <div className="portofolio-items-images col">
+        <div className="relative w-full md:w-2/5 h-64 md:h-screen ml-0 md:ml-8 mt-8 md:mt-0">
           <div
-            className="portofolio-img portofolio-img-main"
+            className="relative w-full h-full rounded-xl overflow-hidden"
             ref={imgContainerRef}
           >
             <Image
@@ -132,6 +121,7 @@ export default function Portfolio() {
               alt={portfolioData.mainProject.imgAlt}
               width={1200}
               height={800}
+              className="w-full h-full object-cover object-top"
             />
           </div>
         </div>

@@ -3,95 +3,123 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import "./experience.css";
 import { experienceData } from "@/data/data";
 import ShuffleText from "@/components/shuffleText/ShuffleText";
 
 export default function Experience() {
+  const experienceCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const experienceCardInnerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const scrollTriggerRef = useRef<ScrollTrigger[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const experience = gsap.utils.toArray(".experience-card") as HTMLElement[];
+    scrollTriggerRef.current.forEach((trigger) => trigger.kill());
+    scrollTriggerRef.current = [];
 
-    experience.forEach((experienceEl, index) => {
-      const isLast = index === experience.length - 1;
+    experienceCardRefs.current.forEach((experienceEl, index) => {
+      const isLast = index === experienceCardRefs.current.length - 1;
       const experienceCardInner = experienceCardInnerRefs.current[index];
       if (!isLast && experienceCardInner) {
-        ScrollTrigger.create({
+        const pinTrigger = ScrollTrigger.create({
           trigger: experienceEl,
           start: "top 45%",
           endTrigger: ".contact-cta",
-          end: "top 90%",
           pin: true,
           pinSpacing: false,
         });
-        gsap.to(experienceCardInner, {
-          y: `-${(experience.length - index) * 14}vh`,
+        scrollTriggerRef.current.push(pinTrigger);
+
+        const yTween = gsap.to(experienceCardInner, {
+          y: `-${(experienceCardRefs.current.length - index) * 14}vh`,
           ease: "none",
           scrollTrigger: {
             trigger: experienceEl,
             start: "top 45%",
             endTrigger: ".contact-cta",
-            end: "top 90%",
             scrub: true,
           },
         });
+
+        if (yTween.scrollTrigger) {
+          scrollTriggerRef.current.push(yTween.scrollTrigger);
+        }
       }
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((el) => el.kill());
+      scrollTriggerRef.current.forEach((trigger) => trigger.kill());
+      scrollTriggerRef.current = [];
     };
   }, []);
+
   return (
     <>
-      <section className="experience-header">
-        <div className="experience-header-content">
-          <div className="experience-header-title"></div>
-          <div className="experience-header-arrow-icon">
+      <section className="w-full flex justify-center items-center text-center py-8 px-4">
+        <div className="flex flex-col justify-center items-center gap-4 w-full">
+          <div className="mb-24" />
+          <div>
             <ShuffleText
               as="h2"
               text="Been There Done That"
-              className="text-9xl"
+              className="text-4xl md:text-7xl font-bold"
               triggerOnScroll={true}
             />
-            <h2>&#8595;</h2>
+            <h2 className="text-3xl mt-4">&#8595;</h2>
           </div>
         </div>
       </section>
-      <section className="experience">
-        {experienceData.map((experience, index) => (
-          <div
-            key={experience.id}
-            className="experience-card"
-            id={`experience-card-${index + 1}`}
-          >
+      <section>
+        {experienceData.map((experience, index) => {
+          const bgClasses = [
+            "bg-[#5f626d]",
+            "bg-[#807686]",
+            "bg-[#71808a]",
+            "bg-[#c7baa9] text-[#2c2427]",
+          ];
+          const cardClass = bgClasses[index] || "";
+
+          return (
             <div
-              className="experience-card-inner"
+              key={experience.id}
               ref={(el) => {
-                experienceCardInnerRefs.current[index] = el;
+                experienceCardRefs.current[index] = el;
               }}
+              className="relative min-h-[200px]"
+              id={`experience-card-${index + 1}`}
             >
-              <h1>{experience.title}</h1>
-              <p>{experience.company}</p>
-              <ul>
-                {experience.achievements.map((achievement, i) => (
-                  <li key={i}>{achievement}</li>
-                ))}
-              </ul>
-              <div className="experience-card-img">
-                <Image
-                  src={experience.image}
-                  alt={experience.title}
-                  width={250}
-                  height={250}
-                />
+              <div
+                className={`relative will-change-transform w-[95%] md:w-[calc(100vw-4em)] h-auto md:h-1/2 mx-auto p-4 md:p-8 flex flex-col md:flex-row justify-between gap-6 md:gap-16 rounded-2xl min-h-[300px] ${cardClass}`}
+                ref={(el) => {
+                  experienceCardInnerRefs.current[index] = el;
+                }}
+              >
+                <div className="flex-1 flex flex-col justify-center space-y-2 md:space-y-4">
+                  <h1 className="text-xl md:text-2xl font-semibold">
+                    {experience.title}
+                  </h1>
+                  <p className="text-base md:text-lg font-medium">
+                    {experience.company}
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 md:space-y-2 pl-4">
+                    {experience.achievements.map((achievement, i) => (
+                      <li key={i}>{achievement}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-2xl overflow-hidden flex-shrink-0 mt-4 md:mt-0 flex items-center justify-center">
+                  <Image
+                    src={experience.image}
+                    alt={experience.title}
+                    width={140}
+                    height={140}
+                    className="md:w-[250px] md:h-[250px] w-[140px] h-[140px] object-cover"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
     </>
   );

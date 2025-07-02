@@ -30,19 +30,16 @@ const SlideRevealText: React.FC<SlideRevealTextProps> = ({
     if (!textRef.current) return;
 
     const element = textRef.current;
-
     const firstChild = element.firstElementChild as HTMLElement;
-    let originalStyles: CSSStyleDeclaration | null = null;
     let originalTagName = "span";
 
     if (firstChild) {
-      originalStyles = window.getComputedStyle(firstChild);
       originalTagName = firstChild.tagName.toLowerCase();
     }
 
     const text = element.innerText;
-
     element.innerHTML = "";
+
     const styledWrapper = document.createElement(originalTagName);
     if (firstChild) {
       styledWrapper.className = firstChild.className;
@@ -51,31 +48,41 @@ const SlideRevealText: React.FC<SlideRevealTextProps> = ({
       }
     }
 
-    const chars: HTMLElement[] = [];
+    const words = text.split(/(\s+)/);
 
-    text.split("").forEach((char, index) => {
-      const span = document.createElement("span");
-      span.className = "slide-char";
-      span.style.display = "inline-block";
-      span.style.overflow = "hidden";
-      span.style.verticalAlign = "top";
+    const allChars: HTMLElement[] = [];
 
-      const inner = document.createElement("span");
-      inner.textContent = char === " " ? "\u00A0" : char;
-      inner.style.display = "inline-block";
+    words.forEach((word) => {
+      const wordSpan = document.createElement("span");
+      wordSpan.style.display = "inline-block";
+      wordSpan.style.whiteSpace = "nowrap";
 
-      gsap.set(inner, {
-        [direction]: direction === "x" ? distance : -distance,
+      word.split("").forEach((char) => {
+        const span = document.createElement("span");
+        span.className = "slide-char";
+        span.style.display = "inline-block";
+        span.style.overflow = "hidden";
+        span.style.verticalAlign = "top";
+
+        const inner = document.createElement("span");
+        inner.textContent = char === " " ? "\u00A0" : char;
+        inner.style.display = "inline-block";
+
+        gsap.set(inner, {
+          [direction]: direction === "x" ? distance : -distance,
+        });
+
+        span.appendChild(inner);
+        wordSpan.appendChild(span);
+        allChars.push(inner);
       });
 
-      span.appendChild(inner);
-      styledWrapper.appendChild(span);
-      chars.push(inner);
+      styledWrapper.appendChild(wordSpan);
     });
 
     element.appendChild(styledWrapper);
 
-    gsap.to(chars, {
+    gsap.to(allChars, {
       [direction]: 0,
       duration: duration,
       ease: "power4.out",
