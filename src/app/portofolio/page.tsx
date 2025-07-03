@@ -3,37 +3,22 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ShuffleText from "@/components/shuffleText/ShuffleText";
-import Image from "next/image";
+import ImageCarousel from "@/components/ImageCarousel";
 import { portfolioData } from "@/data/data";
 import SlideRevealText from "@/components/slideRevealText/slideRevealText";
-// import "./portofolio.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Portfolio() {
   const imgContainerRef = useRef<HTMLDivElement | null>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const scaleTriggerRef = useRef<ScrollTrigger | null>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+
+  const images = portfolioData.mainProject.imgSrc;
 
   useEffect(() => {
     if (window.innerWidth < 768) return;
 
     const container = imgContainerRef.current;
-    const imgElement = imgRef.current;
-
-    scaleTriggerRef.current = ScrollTrigger.create({
-      trigger: container,
-      start: "top bottom",
-      end: "top top",
-      onUpdate: (self) => {
-        gsap.to(imgElement, {
-          scale: 2 - self.progress,
-          duration: 0.1,
-          ease: "none",
-        });
-      },
-    });
 
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: container,
@@ -45,10 +30,6 @@ export default function Portfolio() {
     });
 
     return () => {
-      if (scaleTriggerRef.current) {
-        scaleTriggerRef.current.kill();
-        scaleTriggerRef.current = null;
-      }
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
         scrollTriggerRef.current = null;
@@ -57,13 +38,13 @@ export default function Portfolio() {
   }, []);
 
   return (
-    <main>
+    <div id="portfolio">
       <section className="relative mt-[-0.5px] w-full h-full p-4 md:p-16 flex flex-col">
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-8">
             <div className="flex-1">
               <p className="font-semibold text-base md:text-lg">
-                [Look What I Did]
+                [Look How I Did It]
               </p>
             </div>
             <div className="flex flex-col-reverse gap-4 md:gap-8">
@@ -111,21 +92,9 @@ export default function Portfolio() {
           ))}
         </div>
         <div className="relative w-full md:w-2/5 h-64 md:h-screen ml-0 md:ml-8 mt-8 md:mt-0">
-          <div
-            className="relative w-full h-full rounded-xl overflow-hidden"
-            ref={imgContainerRef}
-          >
-            <Image
-              ref={imgRef}
-              src={portfolioData.mainProject.imgSrc}
-              alt={portfolioData.mainProject.imgAlt}
-              width={1200}
-              height={800}
-              className="w-full h-full object-cover object-top"
-            />
-          </div>
+          <ImageCarousel images={images} containerRef={imgContainerRef} />
         </div>
       </section>
-    </main>
+    </div>
   );
 }

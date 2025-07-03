@@ -1,0 +1,155 @@
+"use client";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import { useEffect, useRef, useState } from "react";
+import "./hero.css";
+import SlideRevealText from "@/components/slideRevealText/slideRevealText";
+import { useRouter } from "next/navigation";
+// import Link from "next/link";
+
+export default function Hero() {
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const heroSectionRef = useRef<HTMLElement | null>(null);
+  const welcomeRef = useRef<HTMLDivElement | null>(null);
+  const welcomeH1Ref = useRef<HTMLDivElement | null>(null);
+  const footerRef = useRef<HTMLDivElement | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const finishAboutHeaderClipReveal = window.innerHeight;
+    const heroSectionPinnedHeight = window.innerHeight * 5;
+
+    scrollTriggerRef.current = ScrollTrigger.create({
+      trigger: heroSectionRef.current,
+      start: "1% top",
+      end: `+=${finishAboutHeaderClipReveal}`,
+      scrub: 1,
+      onUpdate: (self) => {
+        const startTop = gsap.utils.interpolate(50, 0, self.progress);
+        const endBottom = gsap.utils.interpolate(50, 100, self.progress);
+
+        const clipPath = `polygon(0% ${startTop}%, 100% ${startTop}%, 100% ${endBottom}%, 0% ${endBottom}%)`;
+        gsap.set(welcomeRef.current, {
+          clipPath: clipPath,
+        });
+      },
+    });
+
+    ScrollTrigger.create({
+      trigger: heroSectionRef.current,
+      start: "bottom top",
+      end: `+=${finishAboutHeaderClipReveal}`,
+      scrub: 0.25,
+      onUpdate: (self) => {
+        const opacity = gsap.utils.interpolate(0.3, 0.1, self.progress);
+
+        gsap.set(welcomeH1Ref.current, {
+          opacity: opacity,
+        });
+      },
+    });
+
+    ScrollTrigger.create({
+      trigger: heroSectionRef.current,
+      start: "top top",
+      end: `+=${heroSectionPinnedHeight}`,
+      pin: true,
+      pinSpacing: false,
+    });
+
+    // Footer transition trigger
+    const footerTrigger = ScrollTrigger.create({
+      trigger: footerRef.current,
+      start: "top bottom",
+      end: `+=${window.innerHeight}px`,
+      pin: true,
+      pinSpacing: true,
+      onUpdate: (self) => {
+        // When user reaches the end and keeps scrolling
+        if (self.progress >= 1 && !isTransitioning) {
+          setIsTransitioning(true);
+
+          // Animate transition out
+          const tl = gsap.timeline();
+          tl.to(document.body, {
+            opacity: 0.5,
+            duration: 0.5,
+            ease: "power2.inOut",
+          });
+          tl.call(() => {
+            // Navigate to projects page or wherever you want
+            router.push("/about");
+          });
+        }
+      },
+    });
+
+    return () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+        footerTrigger.kill();
+      }
+    };
+  }, [isTransitioning, router]);
+
+  return (
+    <>
+      <section ref={heroSectionRef} className="relative overflow-x-hidden">
+        <div className="bg-[url('/bg3.jpg')] bg-cover bg-center h-screen w-screen opacity-70"></div>
+        <div className="absolute top-7 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl sm:text-3xl font-semibold">
+          <span>Diky Rahmatillah</span>
+        </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center px-2 sm:px-4 w-full max-w-6xl">
+          <SlideRevealText duration={1.2}>
+            <h1 className="text-3xl sm:text-6xl font-bold">
+              An Independent Full-Stack Web Developer
+            </h1>
+          </SlideRevealText>
+        </div>
+        <div className="absolute bottom-4 left-4 w-auto px-2">
+          <SlideRevealText duration={0.2} delay={0.01}>
+            <p className="text-base sm:text-xl max-w-xs sm:max-w-md">
+              I build, break, and rebuild with code, coffee, and curiosity.
+              Passionate about software, art, anime & solving weird problems.
+              I’m here to build weirdly cool stuff, break it, and fix it better.
+            </p>
+          </SlideRevealText>
+          <div className="mt-2 text-sm sm:text-base">
+            <p>[Scroll to explore]</p>
+            {/* <Link href="#">Let's Console.log("Talk")</Link> */}
+          </div>
+        </div>
+        <div
+          ref={welcomeRef}
+          className="absolute inset-0 w-screen h-screen flex justify-center items-center bg-black text-white"
+          style={{
+            clipPath: "polygon(0% 50%, 100% 50%, 100% 50%, 0% 50%)",
+            willChange: "clip-path",
+          }}
+        >
+          <h1
+            ref={welcomeH1Ref}
+            className="text-[5rem] sm:text-[10rem] md:text-[15rem] lg:text-[25rem] whitespace-nowrap opacity-30"
+          >
+            Hello!
+          </h1>
+        </div>
+      </section>
+      <div
+        ref={footerRef}
+        className="h-screen flex items-center justify-center bg-gray-900 text-white"
+      >
+        <div className="text-center">
+          <h2 className="text-4xl font-bold mb-4">
+            Continue scrolling to view projects
+          </h2>
+          <p className="text-xl">→</p>
+        </div>
+      </div>
+    </>
+  );
+}

@@ -55,72 +55,74 @@ export default function Experience() {
 
   return (
     <>
-      <section className="w-full flex justify-center items-center text-center py-8 px-4">
-        <div className="flex flex-col justify-center items-center gap-4 w-full">
-          <div className="mb-24" />
-          <div>
-            <ShuffleText
-              as="h2"
-              text="Been There Done That"
-              className="text-4xl md:text-7xl font-bold"
-              triggerOnScroll={true}
-            />
-            <h2 className="text-3xl mt-4">&#8595;</h2>
+      <div id="experience">
+        <section className="w-full flex justify-center items-center text-center py-8 px-4">
+          <div className="flex flex-col justify-center items-center gap-4 w-full">
+            <div className="mb-24" />
+            <div>
+              <ShuffleText
+                as="h2"
+                text="Been There Done That"
+                className="text-4xl md:text-7xl font-bold"
+                triggerOnScroll={true}
+              />
+              <h2 className="text-3xl mt-4">&#8595;</h2>
+            </div>
           </div>
-        </div>
-      </section>
-      <section>
-        {experienceData.map((experience, index) => {
-          const bgClasses = [
-            "bg-[#5f626d]",
-            "bg-[#807686]",
-            "bg-[#71808a]",
-            "bg-[#c7baa9] text-[#2c2427]",
-          ];
-          const cardClass = bgClasses[index] || "";
+        </section>
+        <section>
+          {experienceData.map((experience, index) => {
+            const bgClasses = [
+              "bg-[#5f626d]",
+              "bg-[#807686]",
+              "bg-[#71808a]",
+              "bg-[#c7baa9] text-[#2c2427]",
+            ];
+            const cardClass = bgClasses[index] || "";
 
-          return (
-            <div
-              key={experience.id}
-              ref={(el) => {
-                experienceCardRefs.current[index] = el;
-              }}
-              className="relative min-h-[200px]"
-              id={`experience-card-${index + 1}`}
-            >
+            return (
               <div
-                className={`relative will-change-transform w-[95%] md:w-[calc(100vw-4em)] h-auto md:h-1/2 mx-auto p-4 md:p-8 flex flex-col md:flex-row justify-between gap-6 md:gap-16 rounded-2xl min-h-[300px] ${cardClass}`}
+                key={experience.id}
                 ref={(el) => {
-                  experienceCardInnerRefs.current[index] = el;
+                  experienceCardRefs.current[index] = el;
                 }}
+                className="relative min-h-[200px]"
+                id={`experience-card-${index + 1}`}
               >
-                <div className="flex-1 flex flex-col justify-center space-y-2 md:space-y-4">
-                  <h1 className="text-xl md:text-2xl font-semibold">
-                    {experience.title}
-                  </h1>
-                  <p className="text-base md:text-lg font-medium">
-                    {experience.company}
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 md:space-y-2 pl-4">
-                    {experience.achievements.map((achievement, i) => (
-                      <li key={i}>{achievement}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="rounded-2xl overflow-hidden flex-shrink-0 mt-4 md:mt-0 flex items-center justify-center">
-                  <Image
-                    src={experience.image}
-                    alt={experience.title}
-                    width={140}
-                    height={140}
-                    className="md:w-[250px] md:h-[250px] w-[140px] h-[140px] object-cover"
-                  />
+                <div
+                  className={`relative will-change-transform w-[95%] md:w-[calc(100vw-4em)] h-auto md:h-1/2 mx-auto p-4 md:p-8 flex flex-col md:flex-row justify-between gap-6 md:gap-16 rounded-2xl min-h-[300px] ${cardClass}`}
+                  ref={(el) => {
+                    experienceCardInnerRefs.current[index] = el;
+                  }}
+                >
+                  <div className="flex-1 flex flex-col justify-center space-y-2 md:space-y-4">
+                    <h1 className="text-xl md:text-2xl font-semibold">
+                      {experience.title}
+                    </h1>
+                    <p className="text-base md:text-lg font-medium">
+                      {experience.company}
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 md:space-y-2 pl-4">
+                      {experience.achievements.map((achievement, i) => (
+                        <li key={i}>{achievement}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="rounded-2xl overflow-hidden flex-shrink-0 mt-4 md:mt-0 flex items-center justify-center">
+                    <Image
+                      src={experience.image}
+                      alt={experience.title}
+                      width={140}
+                      height={140}
+                      className="md:w-[250px] md:h-[250px] w-[140px] h-[140px] object-cover"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </section>
+            );
+          })}
+        </section>
+      </div>
     </>
   );
 }

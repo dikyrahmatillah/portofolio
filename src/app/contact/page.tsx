@@ -4,29 +4,45 @@ import { FaLinkedin, FaGithub, FaTwitter, FaEnvelope } from "react-icons/fa";
 import "./contact.css";
 import { SocialIconLink } from "@/components/SocialIconLink";
 import { Field } from "@/components/Field";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Zod schema for validation
+const contactSchema = z.object({
+  name: z.string().min(2, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  subject: z.string().min(2, "Subject is required"),
+  message: z.string().min(2, "Message is required"),
+});
+
+type ContactForm = z.infer<typeof contactSchema>;
 
 export default function Contact() {
   const [showPopup, setShowPopup] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<ContactForm>({
+    resolver: zodResolver(contactSchema),
   });
 
-  const handleInputChange = (
+  // Handler to update field values
+  const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setValue(e.target.name as keyof ContactForm, e.target.value, {
+      shouldValidate: true,
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const { name, email, subject, message } = formData;
+  const onSubmit = (data: ContactForm) => {
+    const { name, email, subject, message } = data;
     const mailtoLink = `mailto:diky@email.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(
@@ -34,25 +50,27 @@ export default function Contact() {
     )}`;
     window.location.href = mailtoLink;
     setShowPopup(false);
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    reset();
   };
 
   return (
-    <section className="w-full h-screen">
-      <div className="absolute z-0 h-screen w-screen p-4 md:p-8 flex justify-center items-center">
-        <div
-          className="bg-gradient relative w-11/12 max-w-md md:w-3/6 md:h-2/8 border-[6px] md:border-[12px] border-black rounded-full flex flex-col justify-center gap-2 shadow-[6px_6px_0px_3px_#000] md:shadow-[10px_10px_0px_5px_#000] overflow-hidden cursor-pointer"
-          onClick={() => setShowPopup(true)}
-        >
-          <div className="relative flex flex-col items-center py-2">
-            <p className="text-sm">Ready for collaboration?</p>
-            <h1 className="text-4xl">Hit Me Up</h1>
+    <div id="contact">
+      <section className="w-full h-screen">
+        <div className="absolute z-0 h-screen w-screen p-4 md:p-8 flex justify-center items-center">
+          <div
+            className="bg-gradient relative w-11/12 max-w-md md:w-3/6 md:h-2/8 border-[6px] md:border-[12px] border-black rounded-full flex flex-col justify-center gap-2 shadow-[6px_6px_0px_3px_#000] md:shadow-[10px_10px_0px_5px_#000] overflow-hidden cursor-pointer"
+            onClick={() => setShowPopup(true)}
+          >
+            <div className="relative flex flex-col items-center py-2">
+              <p className="text-sm">Ready for collaboration?</p>
+              <h1 className="text-4xl">Hit Me Up</h1>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {showPopup && (
-        <div
+        <section
           className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm"
           onClick={() => setShowPopup(false)}
         >
@@ -71,55 +89,57 @@ export default function Contact() {
                 ×
               </button>
             </div>
-
-            <div className="flex flex-col overflow-y-auto max-h-[calc(90vh-120px)]">
-              <form
-                className="flex-1 px-6 py-4 flex flex-col gap-3"
-                onSubmit={handleSubmit}
+            <form
+              className="flex flex-col gap-2 px-6 py-4"
+              onSubmit={handleSubmit(onSubmit)}
+              autoComplete="off"
+            >
+              <Field
+                label="Name"
+                id="name"
+                name="name"
+                value={watch("name") || ""}
+                onChange={handleChange}
+                required
+                error={errors.name?.message}
+              />
+              <Field
+                label="Email"
+                id="email"
+                name="email"
+                type="email"
+                value={watch("email") || ""}
+                onChange={handleChange}
+                required
+                error={errors.email?.message}
+              />
+              <Field
+                label="Subject"
+                id="subject"
+                name="subject"
+                value={watch("subject") || ""}
+                onChange={handleChange}
+                required
+                error={errors.subject?.message}
+              />
+              <Field
+                label="Message"
+                id="message"
+                name="message"
+                textarea
+                rows={2}
+                value={watch("message") || ""}
+                onChange={handleChange}
+                required
+                error={errors.message?.message}
+              />
+              <button
+                type="submit"
+                className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 font-medium"
               >
-                <Field
-                  label="Name"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-                <Field
-                  label="Email"
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-                <Field
-                  label="Subject"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                />
-                <Field
-                  label="Message"
-                  id="message"
-                  name="message"
-                  textarea
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows={2}
-                />
-                <button
-                  type="submit"
-                  className="relative bg-gradient text-white font-semibold py-2 rounded-lg shadow hover:scale-102 hover:shadow-lg transition-all mt-2 cursor-pointer"
-                >
-                  <p className="relative">Send Message</p>
-                </button>
-              </form>
-            </div>
+                <p className="relative">Send Message</p>
+              </button>
+            </form>
 
             <div className="flex-shrink-0 pt-2 px-6 pb-3 border-t border-white/10 text-center mt-auto">
               <p className="text-white/80 text-sm mb-2">
@@ -153,8 +173,8 @@ export default function Contact() {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       )}
-    </section>
+    </div>
   );
 }

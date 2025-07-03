@@ -8,7 +8,7 @@ import { aboutContent } from "@/data/data";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
-  const aboutRef = useRef<HTMLElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
   const paragraphRefs = [
     useRef<HTMLParagraphElement>(null),
     useRef<HTMLParagraphElement>(null),
@@ -85,21 +85,20 @@ export default function About() {
   }, []);
 
   return (
-    <section
-      ref={aboutRef}
-      className="min-h-screen flex items-center justify-center px-4 sm:px-8"
-    >
-      <div className="text-white text-center max-w-2xl sm:max-w-4xl w-full">
-        {aboutContent.map((text, index) => (
-          <p
-            key={index}
-            ref={paragraphRefs[index]}
-            className="text-lg sm:text-2xl md:text-4xl mb-6 last:mb-0"
-          >
-            {text}
-          </p>
-        ))}
-      </div>
-    </section>
+    <div id="about" ref={aboutRef}>
+      <section className="min-h-screen flex items-center justify-center px-4 sm:px-8">
+        <div className="text-white text-center max-w-2xl sm:max-w-4xl w-full">
+          {aboutContent.map((text, index) => (
+            <p
+              key={index}
+              ref={paragraphRefs[index]}
+              className="text-lg sm:text-2xl md:text-4xl mb-6 last:mb-0"
+            >
+              {text}
+            </p>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

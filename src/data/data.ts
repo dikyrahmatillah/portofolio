@@ -1,39 +1,57 @@
-export const carouselItems = [
+export const testimonials = [
   {
-    id: "01",
-    title: "Rosemary",
-    review:
-      "Working with this developer was an exceptional experience. They delivered high-quality code on time and exceeded our expectations.",
-    tags: [
-      "UI/UX designs, Build responsive user interfaces, Optimize web pages for speed and performance",
-    ],
-    bg: "/images/carousel/bg-1.jpg",
-    main: "/images/carousel/main-1.jpg",
-    url: "#",
+    client: "Sophie Martinez",
+    image: "/images/testimonials/websites/art-portofolio.webp",
+    profile: "/images/testimonials/clients/Sophie-Martinez.jpeg",
+    reviews:
+      "Working with this developer was an amazing experience — they perfectly captured my artistic vision and made everything so easy to update.",
+    altImage:
+      "Screenshot of Sophie Martinez's colorful online art portfolio showcasing original paintings and creative works.",
   },
   {
-    id: "02",
-    title: "Winnie",
-    review:
-      "The developer's attention to detail and problem-solving skills were impressive. They communicated effectively and were a pleasure to work with.",
-    tags: [
-      "Build APIs and services, Manage databases, Authentication and authorization",
-    ],
-    bg: "/images/carousel/bg-2.jpg",
-    main: "/images/carousel/main-2.jpg",
-    url: "#",
+    client: "Budi Santoso",
+    image: "/images/testimonials/websites/books.webp",
+    profile: "/images/testimonials/clients/Budi-Santoso.jpeg",
+    reviews:
+      "The developer built a beautiful, intuitive site that truly feels like my physical bookstore — I couldn't be happier with the result.",
+    altImage:
+      "Screenshot of Budi Santoso's modern bookstore website featuring book collections and staff recommendations.",
   },
   {
-    id: "03",
-    title: "Shahnaz",
-    review:
-      "This developer's expertise in full-stack development was evident in the quality of their work. They were proactive and delivered results that aligned perfectly with our project goals.",
-    tags: [
-      "Application architecture, Debug issues across the stack, Work on integration of third-party APIs and services",
-    ],
-    bg: "/images/carousel/bg-3.jpg",
-    main: "/images/carousel/main-3.jpg",
-    url: "#",
+    client: "Hana Lee",
+    image: "/images/testimonials/websites/flourist.webp",
+    profile: "/images/testimonials/clients/Hana-Lee.jpeg",
+    reviews:
+      "He understood my brand perfectly and delivered a stunning, easy-to-use website that my customers love.",
+    altImage:
+      "Screenshot of Hana Lee's elegant florist website showcasing handcrafted floral arrangements and event decor.",
+  },
+  {
+    client: "Andi Pratama",
+    image: "/images/testimonials/websites/furniture.webp",
+    profile: "/images/testimonials/clients/Andi-Pratama.jpeg",
+    reviews:
+      "Incredible attention to detail and technical skill — my website looks exactly how I imagined and functions flawlessly.",
+    altImage:
+      "Screenshot of Andi Pratama's furniture website highlighting handcrafted wooden pieces and custom designs.",
+  },
+  {
+    client: "Emily Quinn",
+    image: "/images/testimonials/websites/portofolio.webp",
+    profile: "/images/testimonials/clients/Emily-Quinn.jpeg",
+    reviews:
+      "An outstanding developer who truly understands design and user experience — my portfolio has never looked better.",
+    altImage:
+      "Screenshot of Emily Quinn's design portfolio website showcasing branding and UI/UX case studies.",
+  },
+  {
+    client: "Chef Marco Wijaya",
+    image: "/images/testimonials/websites/restaurant.webp",
+    profile: "/images/testimonials/clients/Chef-Marco-Wijaya.jpeg",
+    reviews:
+      "He created a website that captures the heart of my restaurant and makes it so easy for guests to engage and book.",
+    altImage:
+      "Screenshot of Chef Marco Wijaya's restaurant website featuring seasonal dishes and reservation options.",
   },
 ];
 
@@ -86,11 +104,41 @@ export const experienceData = [
 
 export const portfolioData = {
   mainProject: {
-    title: "E-commerce Platform for XYZ Retailer",
+    title: "E-commerce for Recycled Shoe Store",
     description:
       "This project involved developing a full-stack e-commerce platform for XYZ Retail, a traditional retail business transitioning to online sales. The goal was to create a scalable, user-friendly web application that catered to both desktop and mobile users, with features like secure checkout, product reviews, and real-time inventory updates.",
-    imgSrc: "/images/portofolio/portofolio-1.jpg",
-    imgAlt: "E-commerce platform for XYZ Retail",
+    imgSrc: [
+      {
+        src: "/images/portofolio/recycled-shoe-store-home.jpg",
+        alt: "Recycled Shoe Store Home Page",
+        width: 401,
+        height: 4228,
+      },
+      {
+        src: "/images/portofolio/recycled-shoe-store-story.jpg",
+        alt: "Recycled Shoe Store Story Page",
+        width: 1200,
+        height: 4039,
+      },
+      {
+        src: "/images/portofolio/recycled-shoe-store-lookbook.jpg",
+        alt: "Recycled Shoe Store Lookbook Page",
+        width: 1200,
+        height: 4722,
+      },
+      {
+        src: "/images/portofolio/recycled-shoe-store-sale.jpg",
+        alt: "Recycled Shoe Store Sale Page",
+        width: 1200,
+        height: 3820,
+      },
+      {
+        src: "/images/portofolio/recycled-shoe-store-contact.jpg",
+        alt: "Recycled Shoe Store Contact Page",
+        width: 1200,
+        height: 2569,
+      },
+    ],
   },
   projectSteps: [
     {
@@ -116,7 +164,7 @@ export const portfolioData = {
   ],
 };
 
-export const skillsContent = [
+export const skills = [
   {
     type: "title",
     text: "Skill Playground",
@@ -127,12 +175,155 @@ export const skillsContent = [
   },
   {
     type: "category",
-    text: "Back-End Skills: Node.js, Express, REST APIs, and databases.",
+    text: "Back-End Skills: Node.js, Express, REST APIs, and Myqsl.",
   },
   {
     type: "category",
     text: "DevOps & Tools: Docker, Git and GitHub, CI/CD pipelines.",
   },
+];
+
+export const skillImages = [
+  {
+    name: "html",
+    image: "/images/skill-items/html.png",
+    width: 1000,
+    height: 709,
+    pos: {
+      small: { x: 100, y: 100 },
+      large: { x: 500, y: 800 },
+    },
+  },
+  {
+    name: "css",
+    image: "/images/skill-items/css.png",
+    width: 1000,
+    height: 714,
+    pos: {
+      small: { x: 1000, y: 150 },
+      large: { x: 3000, y: 2000 },
+    },
+  },
+  {
+    name: "javascript",
+    image: "/images/skill-items/javascript.png",
+    width: 1000,
+    height: 1000,
+    pos: {
+      small: { x: 1950, y: 1250 },
+      large: { x: 4450, y: 240 },
+    },
+  },
+  {
+    name: "typescript",
+    image: "/images/skill-items/typescript.png",
+    width: 1000,
+    height: 1000,
+    pos: {
+      small: { x: 850, y: 1500 },
+      large: { x: 3450, y: 1200 },
+    },
+  },
+  {
+    name: "react",
+    image: "/images/skill-items/react.png",
+    width: 1000,
+    height: 899,
+    pos: {
+      small: { x: 2100, y: 200 },
+      large: { x: 2200, y: 500 },
+    },
+  },
+  {
+    name: "next-js",
+    image: "/images/skill-items/next-js.png",
+    width: 999,
+    height: 602,
+    pos: {
+      small: { x: 600, y: 250 },
+      large: { x: 1100, y: 750 },
+    },
+  },
+  {
+    name: "gsap",
+    image: "/images/skill-items/gsap.png",
+    width: 1024,
+    height: 1024,
+    pos: {
+      small: { x: 1650, y: 1100 },
+      large: { x: 3350, y: 1850 },
+    },
+  },
+  {
+    name: "tailwind-css",
+    image: "/images/skill-items/tailwind-css.png",
+    width: 1000,
+    height: 600,
+    pos: {
+      small: { x: 1400, y: 200 },
+      large: { x: 2600, y: 800 },
+    },
+  },
+  {
+    name: "node-js",
+    image: "/images/skill-items/node-js.png",
+    width: 1000,
+    height: 888,
+    pos: {
+      small: { x: 800, y: 1000 },
+      large: { x: 1300, y: 2200 },
+    },
+  },
+  {
+    name: "express-js",
+    image: "/images/skill-items/express-js.png",
+    width: 1000,
+    height: 224,
+    pos: {
+      small: { x: 1600, y: 150 },
+      large: { x: 4500, y: 500 },
+    },
+  },
+  {
+    name: "mysql",
+    image: "/images/skill-items/mysql.png",
+    width: 1000,
+    height: 520,
+    pos: {
+      small: { x: 300, y: 1800 },
+      large: { x: 1800, y: 2700 },
+    },
+  },
+  {
+    name: "docker",
+    image: "/images/skill-items/docker.png",
+    width: 1000,
+    height: 733,
+    pos: {
+      small: { x: 2000, y: 600 },
+      large: { x: 3700, y: 900 },
+    },
+  },
+  // {
+  //   name: "git",
+  //   image: "/images/skill-items/git.png",
+  //   width: 1000,
+  //   height: 999,
+  //   pos: {
+  //     small: { x: 400, y: 1200 },
+  //     large: { x: 900, y: 1600 },
+  //   },
+  // },
+  // {
+  //   name: "github",
+  //   image: "/images/skill-items/github.png",
+  //   width: 1000,
+  //   height: 975,
+  //   pos: {
+  //     small: { x: 1800, y: 400 },
+  //     large: { x: 3200, y: 400 },
+  //   },
+  // },
 ];
 
 export const aboutContent = [

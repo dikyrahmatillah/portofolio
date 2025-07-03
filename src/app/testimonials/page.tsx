@@ -3,8 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { carouselItems } from "@/data/data";
-// import "./testimonials.css";
+import { testimonials } from "@/data/data";
 import ShuffleText from "@/components/shuffleText/ShuffleText";
 import Image from "next/image";
 
@@ -79,66 +78,73 @@ export default function Testimonials() {
       }
     };
   }, []);
+
   return (
     <>
-      <section className="relative w-screen bg-[var(--background-light)]">
-        <div className="w-full h-[200px] bg-[var(--background)] mb-[5px]" />
-        <div className="w-full h-[15px] bg-[var(--background)] mb-[10px]" />
-        <div className="w-full h-[15px] bg-[var(--background)] mb-[20px]" />
-        <div className="w-full h-[15px] bg-[var(--background)] mb-[30px]" />
-        <div className="w-full h-[15px] bg-[var(--background)] mb-[50px]" />
-        <div className="w-full h-[15px] bg-[var(--background)] mb-[80px]" />
-        <div className="w-full h-[15px] bg-[var(--background)] " />
-      </section>
-      <section className="relative w-screen bg-[var(--background-light)]">
-        <div className="grid grid-rows-1 place-content-center text-center text-white py-7 text-4xl md:text-7xl font-bold">
-          <ShuffleText as="h2" text="What People Say" triggerOnScroll={true} />
-        </div>
-      </section>
-      <section
-        className="relative w-screen h-screen overflow-hidden"
-        ref={container}
-      >
-        {carouselItems.map((item, index) => (
-          <div
-            key={item.id}
-            ref={(el) => {
-              projectRefs.current[index] = el;
-            }}
-            className="absolute top-0 left-0 w-screen h-screen"
-            style={{
-              clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-            }}
-          >
-            <div className="absolute inset-0">
-              <Image
-                src={item.bg}
-                alt={item.title}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute inset-0 bg-black/50" />
-            <div className="absolute aspect-square rounded-lg overflow-hidden -translate-x-1/2 -translate-y-1/2 w-32 top-[35%] left-1/2 sm:w-40 md:w-1/4 md:top-1/2 md:left-[35%]">
-              <Image
-                src={item.main}
-                alt={`${item.title}'s portrait`}
-                fill
-                className="object-cover"
-                sizes="100vw"
-              />
-            </div>
-            <div className="absolute flex flex-col gap-4 text-white text-shadow w-full top-[55%] left-0 -translate-y-1/2 px-4 sm:px-6 md:top-1/2 md:w-[35%] md:left-2/4 text-center md:text-left">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold">
-                {item.title}
-              </h2>
-              <div className="text-base sm:text-lg md:text-2xl">
-                {item.review}
+      <div id="testimonials">
+        <section className="relative w-screen bg-[var(--background-light)]">
+          <div className="w-full h-[200px] bg-[var(--background)] mb-[5px]" />
+          <div className="w-full h-[15px] bg-[var(--background)] mb-[10px]" />
+          <div className="w-full h-[15px] bg-[var(--background)] mb-[20px]" />
+          <div className="w-full h-[15px] bg-[var(--background)] mb-[30px]" />
+          <div className="w-full h-[15px] bg-[var(--background)] mb-[50px]" />
+          <div className="w-full h-[15px] bg-[var(--background)] mb-[80px]" />
+          <div className="w-full h-[15px] bg-[var(--background)] " />
+        </section>
+        <section className="relative w-screen bg-[var(--background-light)]">
+          <div className="grid grid-rows-1 place-content-center text-center text-white py-7 text-4xl md:text-7xl font-bold">
+            <ShuffleText
+              as="h2"
+              text="What People Say"
+              triggerOnScroll={true}
+            />
+          </div>
+        </section>
+        <section
+          className="relative w-screen h-screen overflow-hidden"
+          ref={container}
+        >
+          {testimonials.map((item, index) => (
+            <div
+              key={item.client}
+              ref={(el) => {
+                projectRefs.current[index] = el;
+              }}
+              className="absolute top-0 left-0 w-screen h-screen"
+              style={{
+                clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+              }}
+            >
+              <div className="absolute inset-0">
+                <Image
+                  src={item.image}
+                  alt={item.altImage}
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                />
+              </div>
+              <div className="absolute inset-0 bg-black/60" />
+              <div className="absolute aspect-square rounded-lg overflow-hidden -translate-x-1/2 -translate-y-1/2 w-32 top-[35%] left-1/2 sm:w-40 md:w-1/4 md:top-1/2 md:left-[35%]">
+                <Image
+                  src={item.profile}
+                  alt={`${item.client}'s portrait`}
+                  width={1024}
+                  height={1024}
+                />
+              </div>
+              <div className="absolute flex flex-col gap-4 text-white text-shadow w-full top-[55%] left-0 -translate-y-1/2 px-4 sm:px-6 md:top-1/2 md:w-[35%] md:left-2/4 text-center md:text-left">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold">
+                  {item.client}
+                </h2>
+                <div className="text-base sm:text-lg md:text-2xl">
+                  {item.reviews}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </section>
+          ))}
+        </section>
+      </div>
     </>
   );
 }

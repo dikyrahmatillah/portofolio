@@ -10,7 +10,7 @@ export default function Hero() {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const heroSectionRef = useRef<HTMLElement | null>(null);
   const welcomeRef = useRef<HTMLDivElement | null>(null);
-  const welcomeH1Ref = useRef<HTMLDivElement | null>(null);
+  const welcomeH3Ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -42,7 +42,7 @@ export default function Hero() {
       onUpdate: (self) => {
         const opacity = gsap.utils.interpolate(0.3, 0.1, self.progress);
 
-        gsap.set(welcomeH1Ref.current, {
+        gsap.set(welcomeH3Ref.current, {
           opacity: opacity,
         });
       },
@@ -66,47 +66,50 @@ export default function Hero() {
 
   return (
     <>
-      <section ref={heroSectionRef} className="relative overflow-x-hidden">
-        <div className="bg-[url('/bg3.jpg')] bg-cover bg-center h-screen w-screen opacity-70"></div>
-        <div className="absolute top-7 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl sm:text-3xl font-semibold">
-          <span>Diky Rahmatillah</span>
-        </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center px-2 sm:px-4 w-full max-w-6xl">
-          <SlideRevealText duration={1.2}>
-            <h1 className="text-3xl sm:text-6xl font-bold">
-              An Independent Full-Stack Web Developer
-            </h1>
-          </SlideRevealText>
-        </div>
-        <div className="absolute bottom-4 left-4 w-auto px-2">
-          <SlideRevealText duration={0.2} delay={0.01}>
-            <p className="text-base sm:text-xl max-w-xs sm:max-w-md">
-              I build, break, and rebuild with code, coffee, and curiosity.
-              Passionate about software, art, anime & solving weird problems.
-              I’m here to build weirdly cool stuff, break it, and fix it better.
-            </p>
-          </SlideRevealText>
-          <div className="mt-2 text-sm sm:text-base">
-            <p>[Scroll to explore]</p>
-            {/* <Link href="#">Let's Console.log("Talk")</Link> */}
+      <div id="hero">
+        <section ref={heroSectionRef} className="relative overflow-x-hidden">
+          <div className="bg-[url('/diky-rahmatillah.jpg')] bg-cover bg-center h-screen w-screen opacity-70"></div>
+          <div className="absolute top-7 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl sm:text-3xl font-semibold">
+            <span>Diky Rahmatillah</span>
           </div>
-        </div>
-        <div
-          ref={welcomeRef}
-          className="absolute inset-0 w-screen h-screen flex justify-center items-center bg-black text-white"
-          style={{
-            clipPath: "polygon(0% 50%, 100% 50%, 100% 50%, 0% 50%)",
-            willChange: "clip-path",
-          }}
-        >
-          <h1
-            ref={welcomeH1Ref}
-            className="text-[5rem] sm:text-[10rem] md:text-[15rem] lg:text-[25rem] whitespace-nowrap opacity-30"
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center px-2 sm:px-4 w-full max-w-6xl">
+            <SlideRevealText duration={1.2}>
+              <h1 className="text-3xl sm:text-6xl font-bold">
+                An Independent Full-Stack Web Developer
+              </h1>
+            </SlideRevealText>
+          </div>
+          <div className="absolute bottom-4 left-4 w-auto px-2">
+            <SlideRevealText duration={0.2} delay={0.01}>
+              <p className="text-base sm:text-xl max-w-xs sm:max-w-md">
+                I build, break, and rebuild with code, coffee, and curiosity.
+                Passionate about software, art, anime & solving weird problems.
+                I’m here to build weirdly cool stuff, break it, and fix it
+                better.
+              </p>
+            </SlideRevealText>
+            <div className="mt-2 text-sm sm:text-base">
+              <p>[Scroll to explore]</p>
+              {/* <Link href="#">Let's Console.log("Talk")</Link> */}
+            </div>
+          </div>
+          <div
+            ref={welcomeRef}
+            className="absolute inset-0 w-screen h-screen flex justify-center items-center bg-black text-white"
+            style={{
+              clipPath: "polygon(0% 50%, 100% 50%, 100% 50%, 0% 50%)",
+              willChange: "clip-path",
+            }}
           >
-            Hello!
-          </h1>
-        </div>
-      </section>
+            <h3
+              ref={welcomeH3Ref}
+              className="text-[5rem] sm:text-[10rem] md:text-[15rem] lg:text-[25rem] whitespace-nowrap opacity-30"
+            >
+              Hello!
+            </h3>
+          </div>
+        </section>
+      </div>
     </>
   );
 }
