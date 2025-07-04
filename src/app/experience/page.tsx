@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { experienceData } from "@/data/data";
-import ShuffleText from "@/components/shuffleText/ShuffleText";
+import ShuffleText from "@/components/ShuffleText/ShuffleText";
 
 export default function Experience() {
   const experienceCardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -87,9 +87,9 @@ export default function Experience() {
                 }}
               >
                 <div className="flex-1 flex flex-col justify-center space-y-2 md:space-y-4">
-                  <h1 className="text-xl md:text-2xl font-semibold">
+                  <h2 className="text-xl md:text-2xl font-semibold">
                     {experience.title}
-                  </h1>
+                  </h2>
                   <p className="text-base md:text-lg font-medium">
                     {experience.company}
                   </p>

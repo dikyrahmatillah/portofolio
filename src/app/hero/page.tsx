@@ -2,9 +2,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useEffect, useRef } from "react";
-import "./hero.css";
-import SlideRevealText from "@/components/slideRevealText/slideRevealText";
-// import Link from "next/link";
+import SlideRevealText from "@/components/SlideRevealText/slideRevealText";
 
 export default function Hero() {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
@@ -67,11 +65,20 @@ export default function Hero() {
   return (
     <>
       <div id="hero">
-        <section ref={heroSectionRef} className="relative overflow-x-hidden">
-          <div className="bg-[url('/diky-rahmatillah.jpg')] bg-cover bg-center h-screen w-screen opacity-70 will-change-transform"></div>
-          <div className="absolute top-7 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl sm:text-3xl font-semibold">
-            <span>Diky Rahmatillah</span>
-          </div>
+        <section
+          ref={heroSectionRef}
+          className="relative overflow-x-hidden"
+          role="banner"
+          aria-label="Hero section introducing Diky Rahmatillah"
+        >
+          <div
+            className="bg-[url('/diky-rahmatillah.jpg')] bg-cover bg-center h-screen w-screen opacity-70 will-change-transform"
+            role="img"
+            aria-label="Background image of Diky Rahmatillah"
+          ></div>
+          <header className="absolute top-7 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl sm:text-3xl font-semibold">
+            <span aria-label="Developer name">Diky Rahmatillah</span>
+          </header>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center px-2 sm:px-4 w-full max-w-6xl">
             <SlideRevealText duration={1.2}>
               <h1 className="text-3xl sm:text-6xl font-bold">
@@ -90,7 +97,6 @@ export default function Hero() {
             </SlideRevealText>
             <div className="mt-2 text-sm sm:text-base">
               <p>[Scroll to explore]</p>
-              {/* <Link href="#">Let's Console.log("Talk")</Link> */}
             </div>
           </div>
           <div

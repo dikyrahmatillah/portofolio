@@ -53,7 +53,7 @@ export default function Contact() {
           >
             <div className="relative flex flex-col items-center py-2">
               <p className="text-sm">Ready for collaboration?</p>
-              <h1 className="text-4xl">Hit Me Up</h1>
+              <h2 className="text-4xl">Hit Me Up</h2>
             </div>
           </div>
         </div>

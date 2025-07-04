@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { testimonials } from "@/data/data";
-import ShuffleText from "@/components/shuffleText/ShuffleText";
+import ShuffleText from "@/components/ShuffleText/ShuffleText";
 import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);

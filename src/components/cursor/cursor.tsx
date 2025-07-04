@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import "./cursor.css";
 import gsap from "gsap";
 import { MdOutlineArrowOutward } from "react-icons/md";
@@ -7,6 +7,8 @@ import { throttle } from "@/utils/performanceOptimizer";
 const Cursor: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   const handleMouseEnter = useCallback(() => {
     const cursor = cursorRef.current;
@@ -43,8 +45,22 @@ const Cursor: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Only show cursor on desktop
-    if (window.innerWidth <= 900) return;
+    // Set mounted state and check if desktop
+    setIsMounted(true);
+    setIsDesktop(window.innerWidth > 900);
+
+    // Add resize listener to update desktop state
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth > 900);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    // Only run cursor logic if mounted and on desktop
+    if (!isMounted || !isDesktop) return;
 
     const cursor = cursorRef.current;
     const icon = iconRef.current;
@@ -100,10 +116,10 @@ const Cursor: React.FC = () => {
         project.removeEventListener("mouseleave", handleMouseLeave);
       });
     };
-  }, [handleMouseEnter, handleMouseLeave]);
+  }, [handleMouseEnter, handleMouseLeave, isMounted, isDesktop]);
 
-  // Don't render on mobile
-  if (typeof window !== "undefined" && window.innerWidth <= 900) {
+  // Prevent hydration mismatch by not rendering until mounted and on desktop
+  if (!isMounted || !isDesktop) {
     return null;
   }
 

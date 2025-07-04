@@ -31,7 +31,6 @@ export default function Portfolio() {
 
       const container = imgContainerRef.current;
       if (!container) {
-        console.log("ScrollTrigger setup: Container not found, retrying...");
         setTimeout(setupScrollTrigger, 100);
         return;
       }
@@ -39,23 +38,22 @@ export default function Portfolio() {
       // Kill existing scroll trigger if it exists
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
-        console.log("ScrollTrigger setup: Killed existing trigger");
       }
+
+      // Also kill any other ScrollTriggers targeting this container
+      ScrollTrigger.getAll().forEach((st) => {
+        if (st.vars.trigger === container) {
+          st.kill();
+        }
+      });
 
       // Make sure the container has proper dimensions before setting up ScrollTrigger
       const rect = container.getBoundingClientRect();
       if (rect.height === 0) {
-        console.log(
-          "ScrollTrigger setup: Container has no height, retrying..."
-        );
         setTimeout(setupScrollTrigger, 100);
         return;
       }
 
-      console.log(
-        "ScrollTrigger setup: Creating new trigger for container:",
-        container
-      );
       scrollTriggerRef.current = ScrollTrigger.create({
         trigger: container,
         start: "top top",
@@ -64,20 +62,8 @@ export default function Portfolio() {
         pinSpacing: false,
         invalidateOnRefresh: true,
         anticipatePin: 1,
-        onUpdate: (self) => {
-          if (self.isActive) {
-            container.style.willChange = "transform";
-          }
-        },
-        onToggle: (self) => {
-          console.log(
-            "ScrollTrigger toggle:",
-            self.isActive ? "active" : "inactive"
-          );
-        },
+        refreshPriority: 0,
       });
-
-      console.log("ScrollTrigger setup: Complete!", scrollTriggerRef.current);
     };
 
     // Setup with a slight delay to ensure DOM is ready
@@ -97,26 +83,16 @@ export default function Portfolio() {
     };
   }, []);
 
-  // Additional effect to ensure ScrollTrigger works after ImageCarousel is mounted
-  useEffect(() => {
-    const refreshScrollTrigger = () => {
-      // Wait for ImageCarousel to be fully rendered
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-    };
-
-    // Refresh ScrollTrigger after component mount
-    refreshScrollTrigger();
-  }, []);
-
   return (
-    <div>
-      <section className="relative mt-[-0.5px] w-full h-full p-4 md:p-16 flex flex-col">
-        <div className="w-full flex flex-col gap-8">
+    <div id="portofolio">
+      <article className="relative mt-[-0.5px] w-full h-full p-4 md:p-16 flex flex-col">
+        <header className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-8">
             <div className="flex-1">
-              <p className="font-semibold text-base md:text-lg">
+              <p
+                className="font-semibold text-base md:text-lg"
+                role="doc-subtitle"
+              >
                 [Look How I Did It]
               </p>
             </div>
@@ -141,10 +117,17 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      <section className="relative w-full h-full flex flex-col md:flex-row px-4 md:px-16 mt-[-0.5px]">
-        <div className="w-full md:flex-1 relative z-10 flex flex-col justify-center">
+        </header>
+      </article>
+      <section
+        className="relative w-full h-full flex flex-col md:flex-row px-4 md:px-16 mt-[-0.5px]"
+        aria-label="Project development process"
+      >
+        <div
+          className="w-full md:flex-1 relative z-10 flex flex-col justify-center"
+          role="region"
+          aria-label="Project steps"
+        >
           {portfolioData.projectSteps.map((step, i) => (
             <div
               key={i}
@@ -152,7 +135,7 @@ export default function Portfolio() {
             >
               <div className="flex flex-col justify-center h-full">
                 <OptimizedSlideRevealText
-                  duration={0.8}
+                  duration={1.2}
                   delay={0.1}
                   direction="y"
                   distance={30}
@@ -162,7 +145,7 @@ export default function Portfolio() {
                   </h3>
                 </OptimizedSlideRevealText>
                 <OptimizedSlideRevealText
-                  duration={0.6}
+                  duration={1}
                   delay={0.2}
                   direction="y"
                   distance={20}
