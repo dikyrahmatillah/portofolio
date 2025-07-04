@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo, lazy, Suspense } from "react";
 import Image from "next/image";
 
 interface CarouselImage {
@@ -13,7 +13,10 @@ interface ImageCarouselProps {
   containerRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-export default function ImageCarousel({
+// Lazy load the modal to reduce initial bundle
+const ModalContent = lazy(() => import("./ImageCarouselModal"));
+
+const ImageCarousel = memo(function ImageCarousel({
   images,
   containerRef,
 }: ImageCarouselProps) {
@@ -26,117 +29,77 @@ export default function ImageCarousel({
     setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
 
   return (
-    <div
-      className="relative w-full h-full rounded-xl overflow-hidden flex items-center justify-center"
-      ref={containerRef}
-    >
-      <button
-        onClick={prevImage}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/70 hover:bg-white text-black rounded-full p-2 shadow transition"
-        aria-label="Previous image"
-        type="button"
+    <>
+      <div
+        className="relative w-full h-full rounded-xl overflow-hidden flex items-center justify-center"
+        ref={containerRef}
       >
-        &#8592;
-      </button>
-      <button
-        onClick={nextImage}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/70 hover:bg-white text-black rounded-full p-2 shadow transition"
-        aria-label="Next image"
-        type="button"
-      >
-        &#8594;
-      </button>
+        <button
+          onClick={prevImage}
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/70 hover:bg-white text-black rounded-full p-2 shadow transition"
+          aria-label="Previous image"
+          type="button"
+        >
+          &#8592;
+        </button>
+        <button
+          onClick={nextImage}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/70 hover:bg-white text-black rounded-full p-2 shadow transition"
+          aria-label="Next image"
+          type="button"
+        >
+          &#8594;
+        </button>
 
-      <Image
-        src={images[current].src}
-        alt={images[current].alt}
-        width={images[current].width}
-        height={images[current].height}
-        className="w-full h-full object-cover object-top cursor-pointer transition duration-300"
-        onClick={() => setShowModal(true)}
-        priority
-      />
+        <Image
+          src={images[current].src}
+          alt={images[current].alt}
+          width={images[current].width}
+          height={images[current].height}
+          className="w-full h-full object-cover object-top cursor-pointer transition duration-300"
+          onClick={() => setShowModal(true)}
+          priority={current === 0}
+          quality={75}
+          sizes="(max-width: 768px) 100vw, 40vw"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+        />
 
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            className={`w-3 h-3 rounded-full border border-white ${
-              current === index ? "bg-white" : "bg-transparent"
-            }`}
-            onClick={() => setCurrent(index)}
-            aria-label={`Go to image ${index + 1}`}
-            type="button"
-          />
-        ))}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              className={`w-3 h-3 rounded-full border border-white transition-colors ${
+                current === index ? "bg-white" : "bg-transparent"
+              }`}
+              onClick={() => setCurrent(index)}
+              aria-label={`Go to image ${index + 1}`}
+              type="button"
+            />
+          ))}
+        </div>
       </div>
 
       {showModal && (
-        <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="relative max-w-4xl w-full p-4 flex flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-2 right-2 text-white text-2xl z-10"
-              onClick={() => setShowModal(false)}
-              aria-label="Close"
-              type="button"
-            >
-              &times;
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                prevImage();
-              }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/70 hover:bg-white text-black rounded-full p-2 shadow transition"
-              aria-label="Previous image"
-              type="button"
-            >
-              &#8592;
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                nextImage();
-              }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/70 hover:bg-white text-black rounded-full p-2 shadow transition"
-              aria-label="Next image"
-              type="button"
-            >
-              &#8594;
-            </button>
-            <Image
-              src={images[current].src}
-              alt={images[current].alt}
-              width={images[current].width}
-              height={images[current].height}
-              className="w-full h-auto max-h-[80vh] object-contain rounded-xl bg-white"
-              priority
-            />
-            <div className="flex gap-2 mt-4 z-20">
-              {images.map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-3 h-3 rounded-full border border-white ${
-                    current === index ? "bg-white" : "bg-transparent"
-                  }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrent(index);
-                  }}
-                  aria-label={`Go to image ${index + 1}`}
-                  type="button"
-                />
-              ))}
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
             </div>
-          </div>
-        </div>
+          }
+        >
+          <ModalContent
+            images={images}
+            current={current}
+            setCurrent={setCurrent}
+            onClose={() => setShowModal(false)}
+            prevImage={prevImage}
+            nextImage={nextImage}
+          />
+        </Suspense>
       )}
-    </div>
+    </>
   );
-}
+});
+
+export default ImageCarousel;

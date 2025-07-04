@@ -51,41 +51,51 @@ export default function Skills() {
       });
     }
 
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: skillImagesRef.current,
-      start: "top top",
-      end: `+=${moveDistance}px`,
-      pin: true,
-      scrub: 1,
-      onUpdate: (self) => {
-        const xPosition = -moveDistance * self.progress;
-        if (skillTitlesRef.current) {
-          gsap.set(skillTitlesRef.current, { x: xPosition });
-        }
+    // Use a slight delay to ensure About section's ScrollTrigger is properly initialized
+    const timer = setTimeout(() => {
+      scrollTriggerRef.current = ScrollTrigger.create({
+        trigger: skillImagesRef.current,
+        start: "top top",
+        end: `+=${moveDistance}px`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 1,
+        // Lower priority to ensure it runs after About section
+        refreshPriority: -1,
+        onUpdate: (self) => {
+          const xPosition = -moveDistance * self.progress;
+          if (skillTitlesRef.current) {
+            gsap.set(skillTitlesRef.current, { x: xPosition });
+          }
 
-        if (!isMobile) {
-          imageCardRefs.current.forEach((card, index) => {
-            if (card) {
-              const staggerOffset = index * 0.075;
-              const scaledProgress = (self.progress - staggerOffset) * 2;
-              const individualProgress = Math.max(
-                0,
-                Math.min(1, scaledProgress)
-              );
-              const newZ = -1500 + 3000 * individualProgress;
-              const scale = Math.max(0, Math.min(1, individualProgress * 1.2));
-              gsap.set(card, {
-                z: newZ,
-                scale,
-                opacity: scale,
-              });
-            }
-          });
-        }
-      },
-    });
+          if (!isMobile) {
+            imageCardRefs.current.forEach((card, index) => {
+              if (card) {
+                const staggerOffset = index * 0.075;
+                const scaledProgress = (self.progress - staggerOffset) * 2;
+                const individualProgress = Math.max(
+                  0,
+                  Math.min(1, scaledProgress)
+                );
+                const newZ = -1500 + 3000 * individualProgress;
+                const scale = Math.max(
+                  0,
+                  Math.min(1, individualProgress * 1.2)
+                );
+                gsap.set(card, {
+                  z: newZ,
+                  scale,
+                  opacity: scale,
+                });
+              }
+            });
+          }
+        },
+      });
+    }, 100);
 
     return () => {
+      clearTimeout(timer);
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
         scrollTriggerRef.current = null;

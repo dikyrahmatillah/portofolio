@@ -68,7 +68,7 @@ export default function Hero() {
     <>
       <div id="hero">
         <section ref={heroSectionRef} className="relative overflow-x-hidden">
-          <div className="bg-[url('/diky-rahmatillah.jpg')] bg-cover bg-center h-screen w-screen opacity-70"></div>
+          <div className="bg-[url('/diky-rahmatillah.jpg')] bg-cover bg-center h-screen w-screen opacity-70 will-change-transform"></div>
           <div className="absolute top-7 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl sm:text-3xl font-semibold">
             <span>Diky Rahmatillah</span>
           </div>

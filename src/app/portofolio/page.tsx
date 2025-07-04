@@ -2,10 +2,10 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ShuffleText from "@/components/shuffleText/ShuffleText";
+import OptimizedShuffleText from "@/components/optimizedShuffleText/OptimizedShuffleText";
+import OptimizedSlideRevealText from "@/components/optimizedSlideRevealText/OptimizedSlideRevealText";
 import ImageCarousel from "@/components/ImageCarousel";
 import { portfolioData } from "@/data/data";
-import SlideRevealText from "@/components/slideRevealText/slideRevealText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,20 +16,80 @@ export default function Portfolio() {
   const images = portfolioData.mainProject.imgSrc;
 
   useEffect(() => {
-    if (window.innerWidth < 768) return;
+    // Debounce resize events
+    let resizeTimeout: NodeJS.Timeout;
 
-    const container = imgContainerRef.current;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 150);
+    };
 
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: container,
-      start: "top top",
-      end: `+=${window.innerHeight * 3}`,
-      pin: true,
-      pinSpacing: false,
-      invalidateOnRefresh: true,
-    });
+    const setupScrollTrigger = () => {
+      if (window.innerWidth < 768) return;
+
+      const container = imgContainerRef.current;
+      if (!container) {
+        console.log("ScrollTrigger setup: Container not found, retrying...");
+        setTimeout(setupScrollTrigger, 100);
+        return;
+      }
+
+      // Kill existing scroll trigger if it exists
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        console.log("ScrollTrigger setup: Killed existing trigger");
+      }
+
+      // Make sure the container has proper dimensions before setting up ScrollTrigger
+      const rect = container.getBoundingClientRect();
+      if (rect.height === 0) {
+        console.log(
+          "ScrollTrigger setup: Container has no height, retrying..."
+        );
+        setTimeout(setupScrollTrigger, 100);
+        return;
+      }
+
+      console.log(
+        "ScrollTrigger setup: Creating new trigger for container:",
+        container
+      );
+      scrollTriggerRef.current = ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: `+=${window.innerHeight * 3}`,
+        pin: true,
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          if (self.isActive) {
+            container.style.willChange = "transform";
+          }
+        },
+        onToggle: (self) => {
+          console.log(
+            "ScrollTrigger toggle:",
+            self.isActive ? "active" : "inactive"
+          );
+        },
+      });
+
+      console.log("ScrollTrigger setup: Complete!", scrollTriggerRef.current);
+    };
+
+    // Setup with a slight delay to ensure DOM is ready
+    const timer = setTimeout(setupScrollTrigger, 200);
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
+      clearTimeout(timer);
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", handleResize);
+
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
         scrollTriggerRef.current = null;
@@ -37,8 +97,21 @@ export default function Portfolio() {
     };
   }, []);
 
+  // Additional effect to ensure ScrollTrigger works after ImageCarousel is mounted
+  useEffect(() => {
+    const refreshScrollTrigger = () => {
+      // Wait for ImageCarousel to be fully rendered
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+    };
+
+    // Refresh ScrollTrigger after component mount
+    refreshScrollTrigger();
+  }, []);
+
   return (
-    <div id="portfolio">
+    <div>
       <section className="relative mt-[-0.5px] w-full h-full p-4 md:p-16 flex flex-col">
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-8">
@@ -48,11 +121,12 @@ export default function Portfolio() {
               </p>
             </div>
             <div className="flex flex-col-reverse gap-4 md:gap-8">
-              <ShuffleText
+              <OptimizedShuffleText
                 className="font-bold uppercase text-4xl md:text-7xl leading-none"
                 as="h2"
                 text={portfolioData.mainProject.title}
                 triggerOnScroll={true}
+                duration={1.2}
               />
             </div>
           </div>
@@ -77,16 +151,26 @@ export default function Portfolio() {
               className="w-full h-auto md:h-screen flex items-center py-8 md:py-0"
             >
               <div className="flex flex-col justify-center h-full">
-                <SlideRevealText>
+                <OptimizedSlideRevealText
+                  duration={0.8}
+                  delay={0.1}
+                  direction="y"
+                  distance={30}
+                >
                   <h3 className="font-normal text-2xl md:text-[2.5rem] lg:text-[4rem] mb-2">
                     {step.title}
                   </h3>
-                </SlideRevealText>
-                <SlideRevealText duration={0.05} delay={0.01}>
+                </OptimizedSlideRevealText>
+                <OptimizedSlideRevealText
+                  duration={0.6}
+                  delay={0.2}
+                  direction="y"
+                  distance={20}
+                >
                   <p className="mb-2 text-base md:text-lg">
                     {step.description}
                   </p>
-                </SlideRevealText>
+                </OptimizedSlideRevealText>
               </div>
             </div>
           ))}
