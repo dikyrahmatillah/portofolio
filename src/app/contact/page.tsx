@@ -1,22 +1,20 @@
 "use client";
 import { useState } from "react";
-import { FaLinkedin, FaGithub, FaTwitter, FaEnvelope } from "react-icons/fa";
 import "./contact.css";
-import { SocialIconLink } from "@/components/SocialIconLink";
-import { Field } from "@/components/Field";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ContactPopup } from "@/components/ContactPopup";
+import { toast } from "react-toastify";
 
-// Zod schema for validation
 const contactSchema = z.object({
-  name: z.string().min(2, "Name is required"),
+  name: z.string().min(3, "Name is required"),
   email: z.string().email("Invalid email address"),
-  subject: z.string().min(2, "Subject is required"),
-  message: z.string().min(2, "Message is required"),
+  subject: z.string().min(3, "Subject is required"),
+  message: z.string().min(5, "Message is required"),
 });
 
-type ContactForm = z.infer<typeof contactSchema>;
+export type ContactForm = z.infer<typeof contactSchema>;
 
 export default function Contact() {
   const [showPopup, setShowPopup] = useState(false);
@@ -25,32 +23,24 @@ export default function Contact() {
     register,
     handleSubmit,
     reset,
-    watch,
-    setValue,
     formState: { errors },
   } = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
   });
 
-  // Handler to update field values
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setValue(e.target.name as keyof ContactForm, e.target.value, {
-      shouldValidate: true,
+  const onSubmit = async (data: ContactForm) => {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     });
-  };
-
-  const onSubmit = (data: ContactForm) => {
-    const { name, email, subject, message } = data;
-    const mailtoLink = `mailto:diky@email.com?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    )}`;
-    window.location.href = mailtoLink;
-    setShowPopup(false);
-    reset();
+    if (res.ok) {
+      toast.success("Message sent! Thank you 🙌");
+      setShowPopup(false);
+      reset();
+    } else {
+      toast.error("Failed to send message. Please try again.");
+    }
   };
 
   return (
@@ -69,112 +59,13 @@ export default function Contact() {
         </div>
       </section>
 
-      {showPopup && (
-        <section
-          className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm"
-          onClick={() => setShowPopup(false)}
-        >
-          <div
-            className="border-animate relative w-[90vw] max-w-[500px] bg-zinc-800 border border-black rounded-xl flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex-shrink-0 flex justify-between items-center px-6 py-3 border-b border-zinc-200/30">
-              <h2 className="text-xl text-zinc-200 font-semibold m-0">
-                Contact Me
-              </h2>
-              <button
-                className="text-2xl text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 rounded-full w-8 h-8 flex items-center justify-center transition cursor-pointer"
-                onClick={() => setShowPopup(false)}
-              >
-                ×
-              </button>
-            </div>
-            <form
-              className="flex flex-col gap-2 px-6 py-4"
-              onSubmit={handleSubmit(onSubmit)}
-              autoComplete="off"
-            >
-              <Field
-                label="Name"
-                id="name"
-                name="name"
-                value={watch("name") || ""}
-                onChange={handleChange}
-                required
-                error={errors.name?.message}
-              />
-              <Field
-                label="Email"
-                id="email"
-                name="email"
-                type="email"
-                value={watch("email") || ""}
-                onChange={handleChange}
-                required
-                error={errors.email?.message}
-              />
-              <Field
-                label="Subject"
-                id="subject"
-                name="subject"
-                value={watch("subject") || ""}
-                onChange={handleChange}
-                required
-                error={errors.subject?.message}
-              />
-              <Field
-                label="Message"
-                id="message"
-                name="message"
-                textarea
-                rows={2}
-                value={watch("message") || ""}
-                onChange={handleChange}
-                required
-                error={errors.message?.message}
-              />
-              <button
-                type="submit"
-                className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 font-medium"
-              >
-                <p className="relative">Send Message</p>
-              </button>
-            </form>
-
-            <div className="flex-shrink-0 pt-2 px-6 pb-3 border-t border-white/10 text-center mt-auto">
-              <p className="text-white/80 text-sm mb-2">
-                Or connect with me on:
-              </p>
-              <div className="flex justify-center gap-4">
-                <SocialIconLink
-                  href="https://linkedin.com/in/dikyrahmatillah"
-                  hoverBg="hover:bg-blue-500/30"
-                >
-                  <FaLinkedin size={18} />
-                </SocialIconLink>
-                <SocialIconLink
-                  href="https://github.com/dikyrahmatillah"
-                  hoverBg="hover:bg-gray-800/60"
-                >
-                  <FaGithub size={18} />
-                </SocialIconLink>
-                <SocialIconLink
-                  href="https://twitter.com/dikyrahmatillah"
-                  hoverBg="hover:bg-blue-400/40"
-                >
-                  <FaTwitter size={18} />
-                </SocialIconLink>
-                <SocialIconLink
-                  href="mailto:diky@email.com"
-                  hoverBg="hover:bg-cyan-400/40"
-                >
-                  <FaEnvelope size={18} />
-                </SocialIconLink>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      <ContactPopup
+        show={showPopup}
+        onClose={() => setShowPopup(false)}
+        onSubmit={handleSubmit(onSubmit)}
+        register={register}
+        errors={errors}
+      />
     </div>
   );
 }

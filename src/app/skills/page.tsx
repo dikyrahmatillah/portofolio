@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
 import { skills, skillImages } from "@/data/data";
-import SlideRevealText from "@/components/slideRevealText/slideRevealText";
+import SkillTitles from "@/components/skills/SkillTitles";
+import SkillImagesMobile from "@/components/skills/SkillImagesMobile";
+import SkillImages3D from "@/components/skills/SkillImages3D";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -98,75 +99,16 @@ export default function Skills() {
         className="relative w-screen h-[100svh] overflow-hidden"
         ref={skillImagesRef}
       >
-        <div
-          className="relative flex flex-col gap-2 sm:flex-row h-[60vh] sm:h-screen w-full sm:w-[500vw] will-change-transform"
-          ref={skillTitlesRef}
-        >
-          {skills.map((item, i) => (
-            <div
-              key={i}
-              className={`flex-1 flex flex-col justify-center items-center px-4 ${
-                item.type === "title" ? "" : "text-base sm:text-2xl md:text-4xl"
-              }`}
-            >
-              {item.type === "title" ? (
-                <h1 className="text-center text-2xl sm:text-4xl md:text-6xl translate-y-10 font-bold mb-2">
-                  {item.text}
-                </h1>
-              ) : (
-                <SlideRevealText>
-                  <h2 className="text-center">{item.text}</h2>
-                </SlideRevealText>
-              )}
-            </div>
-          ))}
-        </div>
+        <SkillTitles skills={skills} skillTitlesRef={skillTitlesRef} />
 
         {isMobile ? (
-          <div className="grid grid-cols-4 gap-4 justify-items-center items-center w-full h-auto py-8 mt-4">
-            {skillImages.map((item) => (
-              <div
-                key={item.name}
-                className="rounded-xl overflow-hidden bg-white/20 p-2"
-                style={{ width: 80, height: 80 }}
-              >
-                <Image
-                  src={item.image}
-                  alt={`skill image ${item.name}`}
-                  width={item.width}
-                  height={item.height}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            ))}
-          </div>
+          <SkillImagesMobile skillImages={skillImages} />
         ) : (
-          <div className="absolute top-1/2 left-1/2 w-[200vw] h-[200vh] -translate-x-1/2 -translate-y-1/2 [transform-style:preserve-3d] [perspective:500px]">
-            {skillImages.map((item, idx) => (
-              <div
-                key={item.name}
-                ref={(el) => {
-                  imageCardRefs.current[idx] = el;
-                }}
-                className="absolute flex items-center justify-center"
-                style={{
-                  width: isLarge ? 300 : 120,
-                  height: isLarge ? 300 : 120,
-                  borderRadius: "1rem",
-                  overflow: "hidden",
-                }}
-              >
-                <div className="absolute inset-0 bg-white/70 dark:bg-white/30 rounded-xl pointer-events-none" />
-                <Image
-                  src={item.image}
-                  alt={`skill image ${item.name}`}
-                  width={item.width}
-                  height={item.height}
-                  className="w-full h-full object-contain relative z-10"
-                />
-              </div>
-            ))}
-          </div>
+          <SkillImages3D
+            skillImages={skillImages}
+            imageCardRefs={imageCardRefs}
+            isLarge={isLarge}
+          />
         )}
       </section>
     </div>

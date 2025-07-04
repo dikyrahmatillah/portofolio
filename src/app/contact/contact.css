@@ -51,7 +51,7 @@
   }
 }
 
-@property --angle {
+/* @property --angle {
   syntax: "<angle>";
   initial-value: -20deg;
   inherits: false;
@@ -86,4 +86,4 @@
   to {
     --angle: 340deg;
   }
-}
+} */

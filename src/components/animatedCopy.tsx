@@ -1,142 +1,142 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
+// "use client";
+// import { useEffect, useRef, useState } from "react";
 
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SplitType from "split-type";
+// import gsap from "gsap";
+// import { useGSAP } from "@gsap/react";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
+// import SplitType from "split-type";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+// gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-import { ReactNode } from "react";
+// import { ReactNode } from "react";
 
-interface AnimatedCopyProps {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-  duration?: number;
-  ease?: string;
-  stagger?: number;
-  lineSelector?: string;
-  animateOnScroll?: boolean;
-  direction?: "top" | "bottom";
-  tag?: React.ElementType;
-}
+// interface AnimatedCopyProps {
+//   children: ReactNode;
+//   className?: string;
+//   delay?: number;
+//   duration?: number;
+//   ease?: string;
+//   stagger?: number;
+//   lineSelector?: string;
+//   animateOnScroll?: boolean;
+//   direction?: "top" | "bottom";
+//   tag?: React.ElementType;
+// }
 
-const AnimatedCopy = ({
-  children,
-  className = "",
-  delay = 0,
-  duration = 1,
-  ease = "power4.out",
-  stagger = 0.05,
-  lineSelector = "",
-  animateOnScroll = true,
-  direction = "bottom",
-  tag = "p",
-}: AnimatedCopyProps) => {
-  const copyRef = useRef(null);
-  const [copyId, setCopyId] = useState<string | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const textSplitRef = useRef<SplitType | null>(null);
+// const AnimatedCopy = ({
+//   children,
+//   className = "",
+//   delay = 0,
+//   duration = 1,
+//   ease = "power4.out",
+//   stagger = 0.05,
+//   lineSelector = "",
+//   animateOnScroll = true,
+//   direction = "bottom",
+//   tag = "p",
+// }: AnimatedCopyProps) => {
+//   const copyRef = useRef(null);
+//   const [copyId, setCopyId] = useState<string | null>(null);
+//   const [isInitialized, setIsInitialized] = useState(false);
+//   const textSplitRef = useRef<SplitType | null>(null);
 
-  useEffect(() => {
-    setCopyId(`copy-${Math.floor(Math.random() * 10000)}`);
-  }, []);
+//   useEffect(() => {
+//     setCopyId(`copy-${Math.floor(Math.random() * 10000)}`);
+//   }, []);
 
-  useEffect(() => {
-    if (!copyId || !copyRef.current) return;
+//   useEffect(() => {
+//     if (!copyId || !copyRef.current) return;
 
-    const lineClass = `line-${copyId}`;
+//     const lineClass = `line-${copyId}`;
 
-    const text = new SplitType(copyRef.current, {
-      types: "lines",
-      lineClass: lineClass,
-    });
+//     const text = new SplitType(copyRef.current, {
+//       types: "lines",
+//       lineClass: lineClass,
+//     });
 
-    textSplitRef.current = text;
+//     textSplitRef.current = text;
 
-    const selector = lineSelector || `.${lineClass}`;
-    const lines = document.querySelectorAll(selector);
+//     const selector = lineSelector || `.${lineClass}`;
+//     const lines = document.querySelectorAll(selector);
 
-    lines.forEach((line) => {
-      const content = line.innerHTML;
-      line.innerHTML = `<span class="line-inner-${copyId}">${content}</span>`;
-    });
+//     lines.forEach((line) => {
+//       const content = line.innerHTML;
+//       line.innerHTML = `<span class="line-inner-${copyId}">${content}</span>`;
+//     });
 
-    const initialY = direction === "top" ? "-100%" : "100%";
+//     const initialY = direction === "top" ? "-100%" : "100%";
 
-    gsap.set(`.line-inner-${copyId}`, {
-      y: initialY,
-      display: "block",
-    });
+//     gsap.set(`.line-inner-${copyId}`, {
+//       y: initialY,
+//       display: "block",
+//     });
 
-    setIsInitialized(true);
+//     setIsInitialized(true);
 
-    return () => {
-      if (textSplitRef.current) textSplitRef.current.revert();
-    };
-  }, [copyId, lineSelector, direction]);
+//     return () => {
+//       if (textSplitRef.current) textSplitRef.current.revert();
+//     };
+//   }, [copyId, lineSelector, direction]);
 
-  useGSAP(
-    () => {
-      if (!isInitialized || !copyRef.current) return;
+//   useGSAP(
+//     () => {
+//       if (!isInitialized || !copyRef.current) return;
 
-      const tl = gsap.timeline({
-        defaults: {
-          ease,
-          duration,
-        },
-        ...(animateOnScroll
-          ? {
-              scrollTrigger: {
-                trigger: copyRef.current,
-                start: "top 80%",
-                toggleActions: "play none none none",
-              },
-            }
-          : {}),
-      });
+//       const tl = gsap.timeline({
+//         defaults: {
+//           ease,
+//           duration,
+//         },
+//         ...(animateOnScroll
+//           ? {
+//               scrollTrigger: {
+//                 trigger: copyRef.current,
+//                 start: "top 80%",
+//                 toggleActions: "play none none none",
+//               },
+//             }
+//           : {}),
+//       });
 
-      tl.to(`.line-inner-${copyId}`, {
-        y: "0%",
-        stagger,
-        delay,
-      });
+//       tl.to(`.line-inner-${copyId}`, {
+//         y: "0%",
+//         stagger,
+//         delay,
+//       });
 
-      return () => {
-        if (animateOnScroll) {
-          ScrollTrigger.getAll()
-            .filter((st) => st.vars.trigger === copyRef.current)
-            .forEach((st) => st.kill());
-        }
-      };
-    },
-    {
-      scope: copyRef,
-      dependencies: [
-        isInitialized,
-        animateOnScroll,
-        delay,
-        duration,
-        ease,
-        stagger,
-        direction,
-      ],
-    }
-  );
+//       return () => {
+//         if (animateOnScroll) {
+//           ScrollTrigger.getAll()
+//             .filter((st) => st.vars.trigger === copyRef.current)
+//             .forEach((st) => st.kill());
+//         }
+//       };
+//     },
+//     {
+//       scope: copyRef,
+//       dependencies: [
+//         isInitialized,
+//         animateOnScroll,
+//         delay,
+//         duration,
+//         ease,
+//         stagger,
+//         direction,
+//       ],
+//     }
+//   );
 
-  const Tag = tag;
+//   const Tag = tag;
 
-  return (
-    <Tag
-      ref={copyRef as React.Ref<any>}
-      className={`animated-copy ${className}`}
-      data-copy-id={copyId}
-    >
-      {children}
-    </Tag>
-  );
-};
+//   return (
+//     <Tag
+//       ref={copyRef as React.Ref<any>}
+//       className={`animated-copy ${className}`}
+//       data-copy-id={copyId}
+//     >
+//       {children}
+//     </Tag>
+//   );
+// };
 
-export default AnimatedCopy;
+// export default AnimatedCopy;

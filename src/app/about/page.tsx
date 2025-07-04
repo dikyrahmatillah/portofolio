@@ -9,11 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const aboutRef = useRef<HTMLDivElement>(null);
-  const paragraphRefs = [
-    useRef<HTMLParagraphElement>(null),
-    useRef<HTMLParagraphElement>(null),
-    useRef<HTMLParagraphElement>(null),
-  ];
+  const paragraphRefs = useRef<HTMLParagraphElement[]>([]);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
@@ -21,7 +17,9 @@ export default function About() {
     if (typeof window === "undefined" || !aboutRef.current) return;
 
     const aboutSection = aboutRef.current;
-    const paragraphs = paragraphRefs.map((ref) => ref.current).filter(Boolean);
+    const paragraphs = paragraphRefs.current.filter(
+      Boolean
+    ) as HTMLParagraphElement[];
 
     if (paragraphs.length === 0) return;
 
@@ -91,7 +89,9 @@ export default function About() {
           {aboutContent.map((text, index) => (
             <p
               key={index}
-              ref={paragraphRefs[index]}
+              ref={(el) => {
+                paragraphRefs.current[index] = el!;
+              }}
               className="text-lg sm:text-2xl md:text-4xl mb-6 last:mb-0"
             >
               {text}

@@ -35,13 +35,15 @@ export default function Home() {
     <>
       <Cursor />
       <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Portfolio />
-      <Experience />
-      <Testimonials />
-      <Contact />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Portfolio />
+        <Experience />
+        <Testimonials />
+        <Contact />
+      </main>
     </>
   );
 }

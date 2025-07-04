@@ -10,7 +10,7 @@ interface ShuffleTextProps {
   as?: React.ElementType;
   className?: string;
   triggerOnScroll?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const ShuffleText = ({

@@ -36,15 +36,6 @@ export const testimonials = [
       "Screenshot of Andi Pratama's furniture website highlighting handcrafted wooden pieces and custom designs.",
   },
   {
-    client: "Emily Quinn",
-    image: "/images/testimonials/websites/portofolio.webp",
-    profile: "/images/testimonials/clients/Emily-Quinn.jpeg",
-    reviews:
-      "An outstanding developer who truly understands design and user experience — my portfolio has never looked better.",
-    altImage:
-      "Screenshot of Emily Quinn's design portfolio website showcasing branding and UI/UX case studies.",
-  },
-  {
     client: "Chef Marco Wijaya",
     image: "/images/testimonials/websites/restaurant.webp",
     profile: "/images/testimonials/clients/Chef-Marco-Wijaya.jpeg",
@@ -66,6 +57,7 @@ export const experienceData = [
       "Optimized web applications for maximum speed and scalability, resulting in a 20% reduction in load times.",
     ],
     image: "/images/services/service-1.jpg",
+    bgClass: "bg-[#5f626d]",
   },
   {
     id: 2,
@@ -77,6 +69,7 @@ export const experienceData = [
       "Assisted in migrating legacy systems to modern web technologies, reducing maintenance costs by 40%.",
     ],
     image: "/images/services/service-2.jpg",
+    bgClass: "bg-[#807686]",
   },
   {
     id: 3,
@@ -88,6 +81,7 @@ export const experienceData = [
       "Collaborated with the client to ensure the app met user needs and business goals.",
     ],
     image: "/images/services/service-3.jpg",
+    bgClass: "bg-[#71808a]",
   },
   {
     id: 4,
@@ -99,6 +93,7 @@ export const experienceData = [
       "Collaborated with peers on group projects, fostering teamwork and communication skills.",
     ],
     image: "/images/services/service-4.jpg",
+    bgClass: "bg-[#c7baa9] text-[#2c2427]",
   },
 ];
 
