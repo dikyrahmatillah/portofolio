@@ -2,10 +2,12 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useEffect, useRef } from "react";
-import SlideRevealText from "@/components/SlideRevealText/slideRevealText";
+import SlideRevealText from "@/components/slideRevealText/slideRevealText";
 
 export default function Hero() {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const opacityScrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const pinScrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const heroSectionRef = useRef<HTMLElement | null>(null);
   const welcomeRef = useRef<HTMLDivElement | null>(null);
   const welcomeH3Ref = useRef<HTMLDivElement | null>(null);
@@ -32,7 +34,7 @@ export default function Hero() {
       },
     });
 
-    ScrollTrigger.create({
+    opacityScrollTriggerRef.current = ScrollTrigger.create({
       trigger: heroSectionRef.current,
       start: "bottom top",
       end: `+=${finishAboutHeaderClipReveal}`,
@@ -46,7 +48,7 @@ export default function Hero() {
       },
     });
 
-    ScrollTrigger.create({
+    pinScrollTriggerRef.current = ScrollTrigger.create({
       trigger: heroSectionRef.current,
       start: "top top",
       end: `+=${heroSectionPinnedHeight}`,
@@ -55,10 +57,11 @@ export default function Hero() {
     });
 
     return () => {
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-        scrollTriggerRef.current = null;
-      }
+      [scrollTriggerRef, opacityScrollTriggerRef, pinScrollTriggerRef].forEach(
+        (ref) => {
+          ref.current?.kill();
+        }
+      );
     };
   }, []);
 

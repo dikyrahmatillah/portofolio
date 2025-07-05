@@ -14,8 +14,6 @@ export default function About() {
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !aboutRef.current) return;
-
     const aboutSection = aboutRef.current;
     const paragraphs = paragraphRefs.current.filter(
       Boolean
