@@ -48,7 +48,7 @@ export default function Contact() {
       <section className="w-full h-screen">
         <div className="absolute z-0 h-screen w-screen p-4 md:p-8 flex justify-center items-center">
           <div
-            className="bg-gradient relative w-11/12 max-w-md md:w-3/6 md:h-2/8 border-[6px] md:border-[12px] border-black rounded-full flex flex-col justify-center gap-2 shadow-[6px_6px_0px_3px_#000] md:shadow-[10px_10px_0px_5px_#000] overflow-hidden cursor-pointer"
+            className="bg-gradient relative w-11/12 max-w-md md:w-3/6 md:h-2/8 border-[6px] md:border-[12px] border-black rounded-full flex flex-col justify-center gap-2 shadow-[6px_6px_0px_3px_#000] md:shadow-[10px_10px_0px_5px_#000] overflow-hidden hover:scale-105 cursor-pointer"
             onClick={() => setShowPopup(true)}
           >
             <div className="relative flex flex-col items-center py-2">

@@ -6,6 +6,7 @@ import {
   UseFormHandleSubmit,
 } from "react-hook-form";
 import { ContactForm } from "@/app/contact/page";
+import "@/components/contact-popup.css";
 
 type ContactPopupProps = {
   show: boolean;
@@ -26,11 +27,13 @@ export function ContactPopup({
 
   return (
     <section
-      className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-[2000]"
       onClick={onClose}
     >
       <div
-        className="border-animate relative w-[90vw] max-w-[500px] bg-zinc-800 border border-black rounded-xl flex flex-col"
+        className={`border-animate relative w-[90vw] max-w-[500px] bg-zinc-800 border border-black rounded-xl flex flex-col
+          transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+          scale-95 opacity-0 animate-contact-popup-in`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex-shrink-0 flex justify-between items-center px-6 py-3 border-b border-zinc-200/30">
@@ -111,7 +114,8 @@ export function ContactPopup({
 
           <button
             type="submit"
-            className="relative bg-gradient text-white font-semibold py-2 rounded-lg shadow hover:scale-102 hover:shadow-lg transition-all mt-2 cursor-pointer"
+            className="relative bg-gradient text-white font-semibold py-2 rounded-lg shadow transition-all mt-2 cursor-pointer
+              hover:scale-102 focus:scale-102 focus:shadow-[0_0_16px_2px_rgba(120,180,255,0.5)]"
           >
             Send Message
           </button>

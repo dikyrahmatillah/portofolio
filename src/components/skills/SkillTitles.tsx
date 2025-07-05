@@ -1,5 +1,5 @@
 import { SkillItem } from "@/app/types/skill";
-import SlideRevealText from "@/components/SlideRevealText/slideRevealText";
+import SlideRevealText from "@/components/slideRevealText/slideRevealText";
 
 export default function SkillTitles({
   skills,
