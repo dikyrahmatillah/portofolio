@@ -101,7 +101,7 @@ export const portfolioData = {
   mainProject: {
     title: "E-commerce for Recycled Shoe Store",
     description:
-      "This project involved developing a full-stack e-commerce platform for XYZ Retail, a traditional retail business transitioning to online sales. The goal was to create a scalable, user-friendly web application that catered to both desktop and mobile users, with features like secure checkout, product reviews, and real-time inventory updates.",
+      "A full-stack e-commerce platform for a recycled shoe store, featuring a responsive design, secure payment processing, and real-time inventory management.",
     imgSrc: [
       {
         src: "/images/portofolio/recycled-shoe-store-home.jpg",
@@ -139,22 +139,22 @@ export const portfolioData = {
     {
       title: "Situation:",
       description:
-        "XYZ Retail, an established retail company, sought to expand into e-commerce to reach a wider audience and streamline its sales processes. They needed a scalable, user-friendly platform to support both desktop and mobile users with features like product browsing, user reviews, secure checkout, and real-time inventory updates.",
+        "The client, a small business specializing in recycled footwear, needed a modern e-commerce platform to expand their online presence and streamline sales. They faced challenges with their existing website, which lacked user engagement and efficient inventory management.",
     },
     {
       title: "Task",
       description:
-        "I was responsible for building the front-end and back-end components of the platform, ensuring seamless integration with the client’s inventory and payment systems. The project goal was to create an efficient, high-performing application with a smooth user experience.",
+        "My role was to lead the development of a new e-commerce platform that would enhance user experience, improve sales conversion rates, and automate inventory management. The project required integrating a secure payment gateway and ensuring the site was mobile-responsive.",
     },
     {
       title: "Action",
       description:
-        "Using React for the front-end, I designed a responsive, intuitive UI focused on user engagement and easy navigation. On the back end, I developed RESTful APIs with Node.js and MongoDB for data management. Additionally, I integrated the platform with AWS to optimize loading times and set up a CI/CD pipeline for faster deployment and testing. I worked closely with designers and QA to address usability and accessibility standards.",
+        "I utilized React and Next.js for the front-end, ensuring a responsive design that worked seamlessly across devices. For the back-end, I implemented Node.js and Express to handle server-side logic and integrated MySQL for database management. I also set up a secure payment gateway using Stripe, allowing for safe transactions.",
     },
     {
       title: "Result",
       description:
-        "The project was completed on time, leading to a 35% increase in online sales within the first three months. User feedback highlighted the site's speed and ease of use, and the client reported a substantial reduction in manual inventory management tasks.",
+        "The new e-commerce platform significantly improved user engagement, with a 40% increase in average session duration and a 25% boost in sales conversion rates within the first three months of launch. The client reported enhanced customer satisfaction due to the streamlined shopping experience and efficient inventory management. The project was completed on time and within budget.",
     },
   ],
 };

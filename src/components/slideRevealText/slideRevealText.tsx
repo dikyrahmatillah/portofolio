@@ -16,6 +16,30 @@ interface SlideRevealTextProps {
   distance?: number;
 }
 
+function splitTextToSpans(text: string) {
+  // Split by words, preserve spaces
+  const words = text.split(/(\s+)/);
+  return words.map((word, wIdx) => (
+    <span key={wIdx} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+      {Array.from(word).map((char, cIdx) => (
+        <span
+          className="slide-char"
+          style={{
+            display: "inline-block",
+            overflow: "hidden",
+            verticalAlign: "top",
+          }}
+          key={cIdx}
+        >
+          <span className="slide-inner" style={{ display: "inline-block" }}>
+            {char === " " ? "\u00A0" : char}
+          </span>
+        </span>
+      ))}
+    </span>
+  ));
+}
+
 const SlideRevealText: React.FC<SlideRevealTextProps> = ({
   children,
   className = "",
@@ -27,85 +51,59 @@ const SlideRevealText: React.FC<SlideRevealTextProps> = ({
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!textRef.current) return;
-
     const element = textRef.current;
-    const firstChild = element.firstElementChild as HTMLElement;
-    let originalTagName = "span";
-
-    if (firstChild) {
-      originalTagName = firstChild.tagName.toLowerCase();
-    }
-
-    const text = element.innerText;
-    element.innerHTML = "";
-
-    const styledWrapper = document.createElement(originalTagName);
-    if (firstChild) {
-      styledWrapper.className = firstChild.className;
-      if (firstChild.style.cssText) {
-        styledWrapper.style.cssText = firstChild.style.cssText;
-      }
-    }
-
-    const words = text.split(/(\s+)/);
-
-    const allChars: HTMLElement[] = [];
-
-    words.forEach((word) => {
-      const wordSpan = document.createElement("span");
-      wordSpan.style.display = "inline-block";
-      wordSpan.style.whiteSpace = "nowrap";
-
-      word.split("").forEach((char) => {
-        const span = document.createElement("span");
-        span.className = "slide-char";
-        span.style.display = "inline-block";
-        span.style.overflow = "hidden";
-        span.style.verticalAlign = "top";
-
-        const inner = document.createElement("span");
-        inner.textContent = char === " " ? "\u00A0" : char;
-        inner.style.display = "inline-block";
-
-        gsap.set(inner, {
-          [direction]: direction === "x" ? distance : -distance,
-        });
-
-        span.appendChild(inner);
-        wordSpan.appendChild(span);
-        allChars.push(inner);
-      });
-
-      styledWrapper.appendChild(wordSpan);
+    if (!element) return;
+    // Animate all .slide-inner children
+    const chars = Array.from(
+      element.querySelectorAll<HTMLElement>(".slide-inner")
+    );
+    gsap.set(chars, { [direction]: direction === "x" ? distance : -distance });
+    const trigger = ScrollTrigger.create({
+      trigger: element,
+      start: "top 90%",
+      toggleActions: "play none none reverse",
     });
-
-    element.appendChild(styledWrapper);
-
-    gsap.to(allChars, {
+    const tween = gsap.to(chars, {
       [direction]: 0,
-      duration: duration,
+      duration,
       ease: "power4.out",
-      delay: (index) => index * delay,
-      scrollTrigger: {
-        trigger: element,
-        start: "top 90%",
-        toggleActions: "play none none reverse",
-      },
+      delay: (i: number) => i * delay,
+      scrollTrigger: trigger,
     });
-
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.trigger === element) {
-          trigger.kill();
-        }
-      });
+      trigger.kill();
+      tween.kill();
     };
-  }, [duration, delay, direction, distance]);
+  }, [duration, delay, direction, distance, children]);
 
+  // Only support a single text node or string child
+  let text = "";
+  let tag: string = "span";
+  let classNames = "";
+  if (typeof children === "string") {
+    text = children;
+  } else if (
+    React.isValidElement(children) &&
+    typeof children.type === "string"
+  ) {
+    const childElement = children as React.ReactElement<{
+      children?: React.ReactNode;
+      className?: string;
+    }>;
+    text = (childElement.props.children as string) || "";
+    tag = childElement.type as string;
+    classNames =
+      typeof childElement.props.className === "string"
+        ? childElement.props.className
+        : "";
+  }
   return (
     <div ref={textRef} className={`slide-reveal-text ${className}`.trim()}>
-      {children}
+      {React.createElement(
+        tag,
+        { className: classNames },
+        splitTextToSpans(text)
+      )}
     </div>
   );
 };

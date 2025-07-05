@@ -16,7 +16,6 @@ export default function Portfolio() {
   const images = portfolioData.mainProject.imgSrc;
 
   useEffect(() => {
-    // Debounce resize events
     let resizeTimeout: NodeJS.Timeout;
 
     const handleResize = () => {
@@ -35,19 +34,16 @@ export default function Portfolio() {
         return;
       }
 
-      // Kill existing scroll trigger if it exists
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
       }
 
-      // Also kill any other ScrollTriggers targeting this container
       ScrollTrigger.getAll().forEach((st) => {
         if (st.vars.trigger === container) {
           st.kill();
         }
       });
 
-      // Make sure the container has proper dimensions before setting up ScrollTrigger
       const rect = container.getBoundingClientRect();
       if (rect.height === 0) {
         setTimeout(setupScrollTrigger, 100);

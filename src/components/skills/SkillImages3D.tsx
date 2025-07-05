@@ -38,9 +38,9 @@ const SkillImages3D = memo(function SkillImages3D({
             width={item.width}
             height={item.height}
             className="w-full h-full object-contain relative z-10"
-            priority={idx < 3} // Prioritize first 3 images
+            priority={idx < 3}
             sizes={isLarge ? "300px" : "120px"}
-            quality={80} // Reduce quality for better performance
+            quality={80}
           />
         </div>
       ))}

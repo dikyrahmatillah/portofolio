@@ -1,5 +1,5 @@
 import { SkillItem } from "@/app/types/skill";
-import OptimizedSlideRevealText from "@/components/optimizedSlideRevealText/OptimizedSlideRevealText";
+import SlideRevealText from "../slideRevealText/slideRevealText";
 
 export default function SkillTitles({
   skills,
@@ -25,9 +25,9 @@ export default function SkillTitles({
               {item.text}
             </h3>
           ) : (
-            <OptimizedSlideRevealText>
+            <SlideRevealText>
               <h2 className="text-center">{item.text}</h2>
-            </OptimizedSlideRevealText>
+            </SlideRevealText>
           )}
         </div>
       ))}
