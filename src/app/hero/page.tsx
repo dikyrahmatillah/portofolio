@@ -6,8 +6,6 @@ import SlideRevealText from "@/components/slideRevealText/slideRevealText";
 
 export default function Hero() {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-  const opacityScrollTriggerRef = useRef<ScrollTrigger | null>(null);
-  const pinScrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const heroSectionRef = useRef<HTMLElement | null>(null);
   const welcomeRef = useRef<HTMLDivElement | null>(null);
   const welcomeH3Ref = useRef<HTMLDivElement | null>(null);
@@ -34,7 +32,7 @@ export default function Hero() {
       },
     });
 
-    opacityScrollTriggerRef.current = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: heroSectionRef.current,
       start: "bottom top",
       end: `+=${finishAboutHeaderClipReveal}`,
@@ -48,7 +46,7 @@ export default function Hero() {
       },
     });
 
-    pinScrollTriggerRef.current = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: heroSectionRef.current,
       start: "top top",
       end: `+=${heroSectionPinnedHeight}`,
@@ -57,11 +55,10 @@ export default function Hero() {
     });
 
     return () => {
-      [scrollTriggerRef, opacityScrollTriggerRef, pinScrollTriggerRef].forEach(
-        (ref) => {
-          ref.current?.kill();
-        }
-      );
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
     };
   }, []);
 

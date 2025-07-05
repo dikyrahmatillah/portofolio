@@ -31,7 +31,7 @@ const SkillImages3D = memo(function SkillImages3D({
             willChange: "transform, opacity",
           }}
         >
-          <div className="absolute inset-0 bg-white/70 dark:bg-white/30 rounded-xl pointer-events-none" />
+          <div className="absolute inset-0 bg-white/70 dark:bg-white/40 rounded-xl pointer-events-none" />
           <Image
             src={item.image}
             alt={`skill image ${item.name}`}

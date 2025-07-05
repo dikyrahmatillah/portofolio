@@ -11,7 +11,7 @@ export default function SkillImagesMobile({
       {skillImages.map((item) => (
         <div
           key={item.name}
-          className="rounded-xl overflow-hidden bg-white/20 p-2"
+          className="rounded-xl overflow-hidden bg-white/30 p-2"
           style={{ width: 80, height: 80 }}
         >
           <Image

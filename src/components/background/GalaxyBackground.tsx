@@ -58,25 +58,46 @@ export default function CanvasGalaxyBackground() {
     // Initialize stars
     const initStars = () => {
       const stars: Star[] = [];
-      
+
       // Different star layers for depth
       const starLayers = [
-        { count: 300, sizeRange: [0.5, 1], speedRange: [0.02, 0.05], opacity: [0.3, 0.6] }, // Far stars
-        { count: 200, sizeRange: [1, 2], speedRange: [0.05, 0.1], opacity: [0.6, 0.8] }, // Mid stars
-        { count: 100, sizeRange: [2, 3], speedRange: [0.1, 0.2], opacity: [0.8, 1.0] }, // Close stars
+        {
+          count: 300,
+          sizeRange: [0.5, 1],
+          speedRange: [0.02, 0.05],
+          opacity: [0.3, 0.6],
+        }, // Far stars
+        {
+          count: 200,
+          sizeRange: [1, 2],
+          speedRange: [0.05, 0.1],
+          opacity: [0.6, 0.8],
+        }, // Mid stars
+        {
+          count: 100,
+          sizeRange: [2, 3],
+          speedRange: [0.1, 0.2],
+          opacity: [0.8, 1.0],
+        }, // Close stars
       ];
 
-      starLayers.forEach(layer => {
+      starLayers.forEach((layer) => {
         for (let i = 0; i < layer.count; i++) {
           stars.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             z: Math.random() * 1000,
-            size: Math.random() * (layer.sizeRange[1] - layer.sizeRange[0]) + layer.sizeRange[0],
-            opacity: Math.random() * (layer.opacity[1] - layer.opacity[0]) + layer.opacity[0],
-            speed: Math.random() * (layer.speedRange[1] - layer.speedRange[0]) + layer.speedRange[0],
+            size:
+              Math.random() * (layer.sizeRange[1] - layer.sizeRange[0]) +
+              layer.sizeRange[0],
+            opacity:
+              Math.random() * (layer.opacity[1] - layer.opacity[0]) +
+              layer.opacity[0],
+            speed:
+              Math.random() * (layer.speedRange[1] - layer.speedRange[0]) +
+              layer.speedRange[0],
             twinkleOffset: Math.random() * Math.PI * 2,
-            twinkleSpeed: Math.random() * 0.02 + 0.01
+            twinkleSpeed: Math.random() * 0.02 + 0.01,
           });
         }
       });
@@ -95,7 +116,7 @@ export default function CanvasGalaxyBackground() {
           size: Math.random() * 30 + 20,
           opacity: Math.random() * 0.3 + 0.1,
           twinkleSpeed: Math.random() * 0.005 + 0.002,
-          twinkleOffset: Math.random() * Math.PI * 2
+          twinkleOffset: Math.random() * Math.PI * 2,
         });
       }
 
@@ -119,55 +140,74 @@ export default function CanvasGalaxyBackground() {
         progress: 0,
         speed: Math.random() * 0.02 + 0.01,
         life: 0,
-        maxLife: Math.random() * 60 + 30
+        maxLife: Math.random() * 60 + 30,
       });
     };
 
     // Draw star cluster
     const drawStarCluster = (cluster: StarCluster) => {
-      const twinkle = Math.sin(timeRef.current * cluster.twinkleSpeed + cluster.twinkleOffset);
+      const twinkle = Math.sin(
+        timeRef.current * cluster.twinkleSpeed + cluster.twinkleOffset
+      );
       const currentOpacity = cluster.opacity * (0.5 + 0.5 * twinkle);
-      
+
       ctx.save();
       ctx.globalAlpha = currentOpacity;
-      
+
       // Create a subtle cluster of tiny stars
       for (let i = 0; i < 8; i++) {
         const angle = (i / 8) * Math.PI * 2;
         const radius = cluster.size * (0.3 + Math.random() * 0.7);
         const x = cluster.x + Math.cos(angle) * radius;
         const y = cluster.y + Math.sin(angle) * radius;
-        
+
         ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
         ctx.beginPath();
         ctx.arc(x, y, 0.5, 0, Math.PI * 2);
         ctx.fill();
       }
-      
+
       ctx.restore();
     };
 
     // Draw star
     const drawStar = (star: Star) => {
-      const twinkle = Math.sin(timeRef.current * star.twinkleSpeed + star.twinkleOffset);
+      const twinkle = Math.sin(
+        timeRef.current * star.twinkleSpeed + star.twinkleOffset
+      );
       const currentOpacity = star.opacity * (0.7 + 0.3 * twinkle);
-      
+
       ctx.save();
       ctx.globalAlpha = currentOpacity;
-      
+
       // Add glow for brighter stars
       if (star.opacity > 0.7) {
-        const gradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 4);
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${currentOpacity * 0.3})`);
+        const gradient = ctx.createRadialGradient(
+          star.x,
+          star.y,
+          0,
+          star.x,
+          star.y,
+          star.size * 4
+        );
+        gradient.addColorStop(
+          0,
+          `rgba(255, 255, 255, ${currentOpacity * 0.3})`
+        );
         gradient.addColorStop(1, "transparent");
         ctx.fillStyle = gradient;
-        ctx.fillRect(star.x - star.size * 4, star.y - star.size * 4, star.size * 8, star.size * 8);
+        ctx.fillRect(
+          star.x - star.size * 4,
+          star.y - star.size * 4,
+          star.size * 8,
+          star.size * 8
+        );
       }
-      
+
       // Draw star
       ctx.fillStyle = "white";
       ctx.beginPath();
-      
+
       // Different star shapes based on size
       if (star.size < 1.5) {
         // Small circle stars
@@ -178,18 +218,18 @@ export default function CanvasGalaxyBackground() {
         ctx.fillRect(star.x - size, star.y - size * 0.3, size * 2, size * 0.6);
         ctx.fillRect(star.x - size * 0.3, star.y - size, size * 0.6, size * 2);
       }
-      
+
       ctx.fill();
       ctx.restore();
     };
 
     // Draw shooting star
     const drawShootingStar = (shootingStar: ShootingStar) => {
-      const alpha = 1 - (shootingStar.life / shootingStar.maxLife);
-      
+      const alpha = 1 - shootingStar.life / shootingStar.maxLife;
+
       ctx.save();
       ctx.globalAlpha = alpha;
-      
+
       // Main shooting star
       ctx.fillStyle = "white";
       ctx.shadowBlur = 10;
@@ -197,73 +237,87 @@ export default function CanvasGalaxyBackground() {
       ctx.beginPath();
       ctx.arc(shootingStar.x, shootingStar.y, 2, 0, Math.PI * 2);
       ctx.fill();
-      
+
       // Tail
       const tailX = shootingStar.x - (shootingStar.endX - shootingStar.x) * 0.1;
       const tailY = shootingStar.y - (shootingStar.endY - shootingStar.y) * 0.1;
-      
-      const gradient = ctx.createLinearGradient(shootingStar.x, shootingStar.y, tailX, tailY);
+
+      const gradient = ctx.createLinearGradient(
+        shootingStar.x,
+        shootingStar.y,
+        tailX,
+        tailY
+      );
       gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
       gradient.addColorStop(1, "transparent");
-      
+
       ctx.strokeStyle = gradient;
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(shootingStar.x, shootingStar.y);
       ctx.lineTo(tailX, tailY);
       ctx.stroke();
-      
+
       ctx.restore();
     };
 
     // Animation loop
     const animate = () => {
       timeRef.current += 1;
-      
+
       // Clear canvas with galaxy background
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       // Update and draw star clusters
-      starClustersRef.current.forEach(cluster => {
+      starClustersRef.current.forEach((cluster) => {
         // Subtle drift movement
         cluster.x += Math.sin(timeRef.current * 0.0001) * 0.05;
         cluster.y += Math.cos(timeRef.current * 0.0001) * 0.05;
         drawStarCluster(cluster);
       });
-      
+
       // Update and draw stars
-      starsRef.current.forEach(star => {
+      starsRef.current.forEach((star) => {
         // Subtle drift movement
-        star.x += Math.sin(timeRef.current * star.speed + star.twinkleOffset) * 0.02;
-        star.y += Math.cos(timeRef.current * star.speed * 0.7 + star.twinkleOffset) * 0.02;
-        
+        star.x +=
+          Math.sin(timeRef.current * star.speed + star.twinkleOffset) * 0.02;
+        star.y +=
+          Math.cos(timeRef.current * star.speed * 0.7 + star.twinkleOffset) *
+          0.02;
+
         // Wrap around screen
         if (star.x < -10) star.x = canvas.width + 10;
         if (star.x > canvas.width + 10) star.x = -10;
         if (star.y < -10) star.y = canvas.height + 10;
         if (star.y > canvas.height + 10) star.y = -10;
-        
+
         drawStar(star);
       });
-      
+
       // Create new shooting stars
       createShootingStar();
-      
+
       // Update and draw shooting stars
-      shootingStarsRef.current = shootingStarsRef.current.filter(shootingStar => {
-        shootingStar.progress += shootingStar.speed;
-        shootingStar.life += 1;
-        
-        shootingStar.x = shootingStar.x + (shootingStar.endX - shootingStar.x) * shootingStar.progress * 0.1;
-        shootingStar.y = shootingStar.y + (shootingStar.endY - shootingStar.y) * shootingStar.progress * 0.1;
-        
-        if (shootingStar.life < shootingStar.maxLife) {
-          drawShootingStar(shootingStar);
-          return true;
+      shootingStarsRef.current = shootingStarsRef.current.filter(
+        (shootingStar) => {
+          shootingStar.progress += shootingStar.speed;
+          shootingStar.life += 1;
+
+          shootingStar.x =
+            shootingStar.x +
+            (shootingStar.endX - shootingStar.x) * shootingStar.progress * 0.1;
+          shootingStar.y =
+            shootingStar.y +
+            (shootingStar.endY - shootingStar.y) * shootingStar.progress * 0.1;
+
+          if (shootingStar.life < shootingStar.maxLife) {
+            drawShootingStar(shootingStar);
+            return true;
+          }
+          return false;
         }
-        return false;
-      });
-      
+      );
+
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
@@ -283,10 +337,7 @@ export default function CanvasGalaxyBackground() {
   return (
     <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-[-1]">
       {/* Canvas for animated elements */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-      />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       {/* Static gradient background */}
       <div
         className="absolute inset-0 w-full h-full"
@@ -297,7 +348,7 @@ export default function CanvasGalaxyBackground() {
             radial-gradient(ellipse at center, #44474a 0%, transparent 60%),
             linear-gradient(to bottom, #000000 0%, #23272f 30%, #23272f 60%, #181a1b 100%)
           `,
-          zIndex: -1
+          zIndex: -1,
         }}
       />
     </div>
