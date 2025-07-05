@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { testimonials } from "@/data/data";
-import ShuffleText from "@/components/ShuffleText/ShuffleText";
+import OptimizedShuffleText from "@/components/optimizedShuffleText/OptimizedShuffleText";
 import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -93,7 +93,7 @@ export default function Testimonials() {
         </section>
         <section className="relative w-screen bg-[var(--background-light)]">
           <div className="grid grid-rows-1 place-content-center text-center text-white py-7 text-4xl md:text-7xl font-bold">
-            <ShuffleText
+            <OptimizedShuffleText
               as="h2"
               text="What People Say"
               triggerOnScroll={true}

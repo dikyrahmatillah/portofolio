@@ -2,7 +2,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useEffect, useRef } from "react";
-import SlideRevealText from "@/components/slideRevealText/slideRevealText";
+import OptimizedSlideRevealText from "@/components/optimizedSlideRevealText/OptimizedSlideRevealText";
 
 export default function Hero() {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
@@ -80,21 +80,21 @@ export default function Hero() {
             <span aria-label="Developer name">Diky Rahmatillah</span>
           </header>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center px-2 sm:px-4 w-full max-w-6xl">
-            <SlideRevealText duration={1.2}>
+            <OptimizedSlideRevealText duration={1.2}>
               <h1 className="text-3xl sm:text-6xl font-bold">
                 An Independent Full-Stack Web Developer
               </h1>
-            </SlideRevealText>
+            </OptimizedSlideRevealText>
           </div>
           <div className="absolute bottom-4 left-4 w-auto px-2">
-            <SlideRevealText duration={0.2} delay={0.01}>
+            <OptimizedSlideRevealText duration={0.2} delay={0.01}>
               <p className="text-base sm:text-xl max-w-xs sm:max-w-md">
                 I build, break, and rebuild with code, coffee, and curiosity.
                 Passionate about software, art, anime & solving weird problems.
                 I’m here to build weirdly cool stuff, break it, and fix it
                 better.
               </p>
-            </SlideRevealText>
+            </OptimizedSlideRevealText>
             <div className="mt-2 text-sm sm:text-base">
               <p>[Scroll to explore]</p>
             </div>

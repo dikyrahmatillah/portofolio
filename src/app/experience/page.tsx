@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { experienceData } from "@/data/data";
-import ShuffleText from "@/components/ShuffleText/ShuffleText";
+import OptimizedShuffleText from "@/components/optimizedShuffleText/OptimizedShuffleText";
 
 export default function Experience() {
   const experienceCardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -60,7 +60,7 @@ export default function Experience() {
           <div className="flex flex-col justify-center items-center gap-4 w-full">
             <div className="mb-24" />
             <div>
-              <ShuffleText
+              <OptimizedShuffleText
                 as="h2"
                 text="Been There Done That"
                 className="text-4xl md:text-7xl font-bold"
