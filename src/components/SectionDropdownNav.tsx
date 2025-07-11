@@ -65,7 +65,7 @@ export default function SectionDropdownNav() {
 
       setActive(current);
       setSectionProgress(progress);
-    }, 16); // ~60fps
+    }, 16);
 
     throttledHandler();
   }, []);
@@ -97,7 +97,7 @@ export default function SectionDropdownNav() {
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={handleKeyDown}
         className="flex justify-between items-center w-full gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-white shadow-lg transition-all duration-300 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/40 relative overflow-hidden
-          sm:min-w-[140px] min-w-[100px] max-w-xs"
+          sm:min-w-[140px] min-w-[100px] max-w-xs cursor-pointer"
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label={`Current section: ${activeSection?.label}. Click to open navigation menu.`}

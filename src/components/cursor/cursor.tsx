@@ -3,270 +3,207 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import "./cursor.css";
 
-const Cursor: React.FC = () => {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+const MAX_PARTICLES = 35;
+const PARTICLE_RADIUS = 13.5;
+const INNER_RADIUS = 6.5;
 
-  // Store trail particles
+const Cursor: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<
     Array<{ x: number; y: number; alpha: number; life: number }>
   >([]);
-  // Store animation frame id for cleanup
-  const rafId = useRef<number | null>(null);
+  const rafId = useRef<number>(0);
+  const [active, setActive] = useState(false);
+  const [desktop, setDesktop] = useState(false);
 
-  // Resize canvas to fill viewport
+  // Cursor state
+  const [cursor, setCursor] = useState({
+    x: 100,
+    y: 100,
+    scale: 1,
+    filter: "brightness(1) saturate(1)",
+    transition: "transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94)",
+  });
+
+  // Resize canvas to viewport
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }, []);
-
-  // Add particle to trail
-  const addParticle = useCallback((x: number, y: number) => {
-    particles.current.push({
-      x,
-      y,
-      alpha: 1,
-      life: 1,
-    });
-
-    // Limit particles for performance (optimized for enhanced effect)
-    if (particles.current.length > 35) {
-      particles.current.shift();
+    if (canvas) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
   }, []);
 
-  // Draw and update particles
+  // Add particle at (x, y)
+  const addParticle = useCallback((x: number, y: number) => {
+    particles.current.push({ x, y, alpha: 1, life: 1 });
+    if (particles.current.length > MAX_PARTICLES) particles.current.shift();
+  }, []);
+
+  // Draw all particles
   const drawParticles = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Clear canvas
+    const ctx = canvas?.getContext("2d");
+    if (!ctx || !canvas) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw all particles as light/glow
-    particles.current.forEach((particle, index) => {
+    particles.current.forEach((p, i) => {
       ctx.save();
-
-      // Use additive blending for smooth light overlay
       ctx.globalCompositeOperation = "screen";
-      ctx.globalAlpha = particle.alpha * 0.8;
-
-      // Create larger, softer radial gradient for enhanced light effect
-      const gradient = ctx.createRadialGradient(
-        particle.x,
-        particle.y,
+      ctx.globalAlpha = p.alpha * 0.8;
+      const grad = ctx.createRadialGradient(
+        p.x,
+        p.y,
         0,
-        particle.x,
-        particle.y,
-        18.75 // 25% smaller than 25
+        p.x,
+        p.y,
+        PARTICLE_RADIUS
       );
-      gradient.addColorStop(0, `rgba(255, 255, 255, ${particle.alpha * 1.0})`);
-      gradient.addColorStop(
-        0.15,
-        `rgba(240, 248, 255, ${particle.alpha * 0.9})`
-      );
-      gradient.addColorStop(
-        0.35,
-        `rgba(200, 230, 255, ${particle.alpha * 0.7})`
-      );
-      gradient.addColorStop(
-        0.65,
-        `rgba(150, 200, 255, ${particle.alpha * 0.4})`
-      );
-      gradient.addColorStop(
-        0.85,
-        `rgba(100, 170, 255, ${particle.alpha * 0.2})`
-      );
-      gradient.addColorStop(1, "rgba(80, 150, 255, 0)");
-
-      // Draw soft outer glow
-      ctx.fillStyle = gradient;
+      grad.addColorStop(0, `rgba(255,255,255,${p.alpha})`);
+      grad.addColorStop(0.15, `rgba(240,248,255,${p.alpha * 0.9})`);
+      grad.addColorStop(0.35, `rgba(200,230,255,${p.alpha * 0.7})`);
+      grad.addColorStop(0.65, `rgba(150,200,255,${p.alpha * 0.4})`);
+      grad.addColorStop(0.85, `rgba(100,170,255,${p.alpha * 0.2})`);
+      grad.addColorStop(1, "rgba(80,150,255,0)");
+      ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(particle.x, particle.y, 18.75, 0, Math.PI * 2); // 25% smaller
+      ctx.arc(p.x, p.y, PARTICLE_RADIUS, 0, Math.PI * 2);
       ctx.fill();
 
-      // Add bright inner core with enhanced glow
       ctx.globalCompositeOperation = "lighten";
-      ctx.globalAlpha = particle.alpha * 0.9;
-      const innerGradient = ctx.createRadialGradient(
-        particle.x,
-        particle.y,
+      ctx.globalAlpha = p.alpha * 0.9;
+      const innerGrad = ctx.createRadialGradient(
+        p.x,
+        p.y,
         0,
-        particle.x,
-        particle.y,
-        9 // 25% smaller than 12
+        p.x,
+        p.y,
+        INNER_RADIUS
       );
-      innerGradient.addColorStop(
-        0,
-        `rgba(255, 255, 255, ${particle.alpha * 0.95})`
-      );
-      innerGradient.addColorStop(
-        0.3,
-        `rgba(230, 240, 255, ${particle.alpha * 0.7})`
-      );
-      innerGradient.addColorStop(
-        0.7,
-        `rgba(180, 210, 255, ${particle.alpha * 0.4})`
-      );
-      innerGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-
-      ctx.fillStyle = innerGradient;
+      innerGrad.addColorStop(0, `rgba(255,255,255,${p.alpha * 0.95})`);
+      innerGrad.addColorStop(0.3, `rgba(230,240,255,${p.alpha * 0.7})`);
+      innerGrad.addColorStop(0.7, `rgba(180,210,255,${p.alpha * 0.4})`);
+      innerGrad.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = innerGrad;
       ctx.beginPath();
-      ctx.arc(particle.x, particle.y, 9, 0, Math.PI * 2); // 25% smaller
+      ctx.arc(p.x, p.y, INNER_RADIUS, 0, Math.PI * 2);
       ctx.fill();
 
-      // Add sparkle effect for extra brightness
-      if (particle.alpha > 0.7) {
+      if (p.alpha > 0.7) {
         ctx.globalCompositeOperation = "screen";
-        ctx.globalAlpha = particle.alpha * 0.6;
-        ctx.fillStyle = `rgba(255, 255, 255, ${particle.alpha * 0.8})`;
+        ctx.globalAlpha = p.alpha * 0.6;
+        ctx.fillStyle = `rgba(255,255,255,${p.alpha * 0.8})`;
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, 2.25, 0, Math.PI * 2); // 25% smaller than 3
+        ctx.arc(p.x, p.y, 2.25, 0, Math.PI * 2);
         ctx.fill();
       }
-
       ctx.restore();
 
-      // Update particle with enhanced fade curve
-      particle.life -= 0.018; // Slightly faster for more dynamic trail
-      particle.alpha = Math.pow(particle.life, 1.8); // Smoother fade curve
-
-      // Remove dead particles
-      if (particle.life <= 0) {
-        particles.current.splice(index, 1);
-      }
+      p.life -= 0.018;
+      p.alpha = Math.pow(p.life, 1.8);
+      if (p.life <= 0) particles.current.splice(i, 1);
     });
   }, []);
 
-  const handleMouseEnter = useCallback(() => {
-    const cursor = cursorRef.current;
-    if (!cursor) return;
-    cursor.dataset.scale = "1.8";
-    cursor.style.transform = `translate3d(-50%, -50%, 0) scale(1.8)`;
-    cursor.style.transition =
-      "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)";
-    cursor.style.filter = "brightness(1.3) saturate(1.2)";
-  }, []);
+  // Cursor scale handlers
+  const scaleCursor = useCallback(
+    (scale: number, filter: string, transition: string) => {
+      setCursor((c) => ({ ...c, scale, filter, transition }));
+    },
+    []
+  );
 
-  const handleMouseLeave = useCallback(() => {
-    const cursor = cursorRef.current;
-    if (!cursor) return;
-    cursor.dataset.scale = "1";
-    cursor.style.transform = `translate3d(-50%, -50%, 0) scale(1)`;
-    cursor.style.transition =
-      "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-    cursor.style.filter = "brightness(1) saturate(1)";
-  }, []);
-
+  // Setup
   useEffect(() => {
-    setIsMounted(true);
-    setIsDesktop(window.innerWidth > 900);
+    setActive(true);
+    setDesktop(window.innerWidth > 900);
     window.addEventListener("resize", resizeCanvas);
     return () => window.removeEventListener("resize", resizeCanvas);
   }, [resizeCanvas]);
 
+  // Animation and events
   useEffect(() => {
-    if (!isMounted || !isDesktop) return;
-    const cursorElement = cursorRef.current;
-    const canvas = canvasRef.current;
-    if (!cursorElement || !canvas) return;
-
+    if (!active || !desktop) return;
     resizeCanvas();
 
-    // Set initial cursor position with native CSS
-    cursorElement.style.left = "100px";
-    cursorElement.style.top = "100px";
-    cursorElement.style.transform = "translate3d(-50%, -50%, 0) scale(1)";
-    cursorElement.style.willChange = "transform";
+    // Store the current canvas ref value
+    const canvas = canvasRef.current;
 
-    // Animation loop for drawing particles
+    // Animation loop
     const animate = () => {
       drawParticles();
       rafId.current = requestAnimationFrame(animate);
     };
     animate();
 
-    // Simple throttle implementation with enhanced responsiveness
-    let lastTime = 0;
-    const throttleDelay = 12; // Higher FPS for smoother trail
-
-    // Mouse move handler
-    const moveCursor = (e: MouseEvent) => {
+    // Mouse move
+    let last = 0;
+    const move = (e: MouseEvent) => {
       const now = Date.now();
-      if (now - lastTime < throttleDelay) return;
-      lastTime = now;
-
-      if (cursorElement) {
-        cursorElement.style.left = `${e.clientX}px`;
-        cursorElement.style.top = `${e.clientY}px`;
-        cursorElement.style.transform = `translate3d(-50%, -50%, 0) scale(${cursorElement.dataset.scale || "1"})`;
-      }
-
-      // Add particle at current position
+      if (now - last < 12) return;
+      last = now;
+      setCursor((c) => ({
+        ...c,
+        x: e.clientX,
+        y: e.clientY,
+      }));
       addParticle(e.clientX, e.clientY);
     };
-    // Setup contact button listeners
-    const setupContactButtons = () => {
-      const contactButtons =
-        document.querySelectorAll<HTMLElement>(".contact-button");
-      contactButtons.forEach((button) => {
-        button.addEventListener("mouseenter", handleMouseEnter, {
-          passive: true,
-        });
-        button.addEventListener("mouseleave", handleMouseLeave, {
-          passive: true,
-        });
-      });
-      return contactButtons;
-    };
-    const contactButtons = setupContactButtons();
 
-    // Mouse leave handler to clear trail
-    const handleWindowMouseLeave = () => {
+    // Mouse leave
+    const clearTrail = () => {
       particles.current = [];
       if (canvas) {
         const ctx = canvas.getContext("2d");
-        if (ctx) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
       }
     };
-    window.addEventListener("mousemove", moveCursor, { passive: true });
-    window.addEventListener("mouseleave", handleWindowMouseLeave);
+
+    window.addEventListener("mousemove", move, { passive: true });
+    window.addEventListener("mouseleave", clearTrail);
+
     return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("mouseleave", handleWindowMouseLeave);
-      contactButtons.forEach((button) => {
-        button.removeEventListener("mouseenter", handleMouseEnter);
-        button.removeEventListener("mouseleave", handleMouseLeave);
-      });
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseleave", clearTrail);
       if (rafId.current) cancelAnimationFrame(rafId.current);
-      // Clear canvas
       if (canvas) {
         const ctx = canvas.getContext("2d");
-        if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
       }
     };
-  }, [
-    handleMouseEnter,
-    handleMouseLeave,
-    isMounted,
-    isDesktop,
-    resizeCanvas,
-    addParticle,
-    drawParticles,
-  ]);
+  }, [active, desktop, resizeCanvas, addParticle, drawParticles]);
 
-  // Prevent hydration mismatch by not rendering until mounted and on desktop
-  if (!isMounted || !isDesktop) {
-    return null;
-  }
+  // React way: handle hover via onMouseEnter/onMouseLeave
+  useEffect(() => {
+    if (!desktop) return;
+    const buttons = Array.from(
+      document.querySelectorAll<HTMLElement>(".contact-button")
+    );
+    const handleEnter = () =>
+      scaleCursor(
+        1.8,
+        "brightness(1.3) saturate(1.2)",
+        "transform 0.4s cubic-bezier(0.34,1.56,0.64,1)"
+      );
+    const handleLeave = () =>
+      scaleCursor(
+        1,
+        "brightness(1) saturate(1)",
+        "transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94)"
+      );
+    buttons.forEach((btn) => {
+      btn.onmouseenter = handleEnter;
+      btn.onmouseleave = handleLeave;
+    });
+    return () => {
+      buttons.forEach((btn) => {
+        btn.onmouseenter = null;
+        btn.onmouseleave = null;
+      });
+    };
+  }, [desktop, scaleCursor]);
+
+  if (!active || !desktop) return null;
 
   return (
     <>
@@ -286,7 +223,19 @@ const Cursor: React.FC = () => {
         }}
         tabIndex={-1}
       />
-      <div className="cursor-star" ref={cursorRef}>
+      <div
+        className="cursor-star"
+        style={{
+          left: cursor.x,
+          top: cursor.y,
+          transform: `translate3d(-50%, -50%, 0) scale(${cursor.scale})`,
+          filter: cursor.filter,
+          transition: cursor.transition,
+          position: "fixed",
+          pointerEvents: "none",
+          zIndex: 999,
+        }}
+      >
         <div className="star-core"></div>
         <div className="star-glow"></div>
       </div>

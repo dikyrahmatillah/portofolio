@@ -7,7 +7,7 @@ export default function SkillImagesMobile({
   skillImages: SkillImage[];
 }) {
   return (
-    <div className="grid grid-cols-4 gap-4 justify-items-center items-center w-full h-auto py-8 mt-4">
+    <div className="grid grid-cols-4 gap-4 justify-items-center items-center w-full h-auto p-4">
       {skillImages.map((item) => (
         <div
           key={item.name}

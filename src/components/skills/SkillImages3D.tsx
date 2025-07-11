@@ -8,7 +8,6 @@ interface SkillImages3DProps {
   isLarge: boolean;
 }
 
-// Memoize component to prevent unnecessary re-renders
 const SkillImages3D = memo(function SkillImages3D({
   skillImages,
   imageCardRefs,
