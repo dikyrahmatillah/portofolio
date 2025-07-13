@@ -2,10 +2,10 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import OptimizedShuffleText from "@/components/optimizedShuffleText/OptimizedShuffleText";
-import OptimizedSlideRevealText from "@/components/optimizedSlideRevealText/OptimizedSlideRevealText";
 import ImageCarousel from "@/components/ImageCarousel";
-import { portfolioData } from "@/data/data";
+import { portfolioData } from "@/data/potofolio";
+import SlideRevealText from "@/components/animations/slideRevealText/SlideRevealText";
+import ScrollRevealText from "@/components/animations/scrollRevealText/ScrollRevealText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +21,15 @@ export default function Portfolio() {
     const handleResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        ScrollTrigger.refresh();
+        if (window.innerWidth < 768) {
+          if (scrollTriggerRef.current) {
+            scrollTriggerRef.current.kill();
+            scrollTriggerRef.current = null;
+          }
+        } else {
+          ScrollTrigger.refresh();
+          setupScrollTrigger();
+        }
       }, 150);
     };
 
@@ -82,7 +90,7 @@ export default function Portfolio() {
   return (
     <div id="portofolio">
       <article className="relative mt-[-0.5px] w-full h-full p-4 md:p-16 flex flex-col">
-        <header className="w-full flex flex-col gap-8">
+        <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-8">
             <div className="flex-1">
               <p
@@ -93,13 +101,11 @@ export default function Portfolio() {
               </p>
             </div>
             <div className="flex flex-col-reverse gap-4 md:gap-8">
-              <OptimizedShuffleText
-                className="font-bold uppercase text-4xl md:text-7xl leading-none"
-                as="h2"
-                text={portfolioData.mainProject.title}
-                triggerOnScroll={true}
-                duration={1.2}
-              />
+              <SlideRevealText duration={1.2}>
+                <h2 className="font-bold uppercase text-4xl md:text-7xl">
+                  {portfolioData.mainProject.title}
+                </h2>
+              </SlideRevealText>
             </div>
           </div>
           <div className="flex flex-col gap-8">
@@ -113,7 +119,7 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-        </header>
+        </div>
       </article>
       <section
         className="relative w-full h-full flex flex-col md:flex-row px-4 md:px-16 mt-[-0.5px]"
@@ -130,17 +136,17 @@ export default function Portfolio() {
               className="w-full h-auto md:h-screen flex items-center py-8 md:py-0"
             >
               <div className="flex flex-col justify-center h-full">
-                <OptimizedSlideRevealText
+                <ScrollRevealText
                   duration={1.2}
                   delay={0.1}
                   direction="y"
                   distance={30}
                 >
-                  <h3 className="font-normal text-2xl md:text-[2.5rem] lg:text-[4rem] mb-2">
+                  <h3 className="font-bold text-2xl md:text-[2.5rem] lg:text-[4rem] mb-2">
                     {step.title}
                   </h3>
-                </OptimizedSlideRevealText>
-                <OptimizedSlideRevealText
+                </ScrollRevealText>
+                <ScrollRevealText
                   duration={1}
                   delay={0.2}
                   direction="y"
@@ -149,12 +155,12 @@ export default function Portfolio() {
                   <p className="mb-2 text-base md:text-lg">
                     {step.description}
                   </p>
-                </OptimizedSlideRevealText>
+                </ScrollRevealText>
               </div>
             </div>
           ))}
         </div>
-        <div className="relative w-full md:w-2/5 h-64 md:h-screen ml-0 md:ml-8 mt-8 md:mt-0">
+        <div className="relative w-full md:w-2/5 h-[24em] md:h-screen ml-0 md:ml-8 mt-8 md:mt-0">
           <ImageCarousel images={images} containerRef={imgContainerRef} />
         </div>
       </section>

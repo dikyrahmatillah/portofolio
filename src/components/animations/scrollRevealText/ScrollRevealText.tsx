@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface OptimizedSlideRevealTextProps {
+interface ScrollRevealTextProps {
   children: React.ReactNode;
   className?: string;
   duration?: number;
@@ -15,14 +15,14 @@ interface OptimizedSlideRevealTextProps {
   distance?: number;
 }
 
-const OptimizedSlideRevealText = memo(function OptimizedSlideRevealText({
+const ScrollRevealText = memo(function ScrollRevealText({
   children,
   className = "",
   duration = 0.8,
   delay = 0,
   direction = "y",
   distance = 50,
-}: OptimizedSlideRevealTextProps) {
+}: ScrollRevealTextProps) {
   const textRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<gsap.core.Tween | null>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
@@ -103,4 +103,4 @@ const OptimizedSlideRevealText = memo(function OptimizedSlideRevealText({
   );
 });
 
-export default OptimizedSlideRevealText;
+export default ScrollRevealText;

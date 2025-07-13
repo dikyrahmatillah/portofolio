@@ -1,5 +1,5 @@
 import { SkillItem } from "@/app/types/skill";
-import SlideRevealText from "../slideRevealText/slideRevealText";
+import SlideRevealText from "../animations/slideRevealText/SlideRevealText";
 
 export default function SkillTitles({
   skills,
@@ -10,7 +10,7 @@ export default function SkillTitles({
 }) {
   return (
     <div
-      className="relative flex flex-col gap-2 sm:flex-row h-[60vh] sm:h-screen w-full sm:w-[500vw] will-change-transform"
+      className="relative flex flex-col gap-2 sm:flex-row h-[55vh] sm:h-screen w-full sm:w-[500vw] will-change-transform"
       ref={skillTitlesRef}
     >
       {skills.map((item, i) => (
@@ -21,7 +21,7 @@ export default function SkillTitles({
           }`}
         >
           {item.type === "title" ? (
-            <h3 className="text-center text-2xl sm:text-4xl md:text-6xl translate-y-10 font-bold mb-2">
+            <h3 className="text-center text-2xl sm:text-4xl md:text-6xl translate-y-5 font-bold mb-2">
               {item.text}
             </h3>
           ) : (

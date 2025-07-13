@@ -2,7 +2,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useEffect, useRef } from "react";
-import SlideRevealText from "@/components/slideRevealText/slideRevealText";
+import SlideRevealText from "@/components/animations/slideRevealText/SlideRevealText";
 
 export default function Hero() {
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
@@ -77,7 +77,7 @@ export default function Hero() {
             aria-label="Background image of Diky Rahmatillah"
           ></div>
           <header className="absolute top-7 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl sm:text-3xl font-semibold">
-            <span aria-label="Developer name">Diky Rahmatillah</span>
+            <h3 aria-label="Developer name">Diky Rahmatillah</h3>
           </header>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center px-2 sm:px-4 w-full max-w-6xl">
             <SlideRevealText duration={1.2}>
@@ -86,15 +86,17 @@ export default function Hero() {
               </h1>
             </SlideRevealText>
           </div>
-          <div className="absolute bottom-4 left-4 w-auto px-2">
-            <SlideRevealText duration={0.2} delay={0.01}>
-              <p className="text-base sm:text-xl max-w-xs sm:max-w-md">
-                I build, break, and rebuild with code, coffee, and curiosity.
-                Passionate about software, art, anime & solving weird problems.
-                I’m here to build weirdly cool stuff, break it, and fix it
-                better.
-              </p>
-            </SlideRevealText>
+          <div className="absolute bottom-4 left-4 px-2 min-h-[96px] sm:min-h-[120px] w-[320px] sm:w-[400px] max-w-xs sm:max-w-md">
+            <div className="relative min-h-[72px] sm:min-h-[96px]">
+              <SlideRevealText duration={0.2} delay={0.01}>
+                <p className="text-base sm:text-xl max-w-xs sm:max-w-md">
+                  I build, break, and rebuild with code, coffee, and curiosity.
+                  Passionate about software, art, anime & solving weird
+                  problems. I’m here to build weirdly cool stuff, break it, and
+                  fix it better.
+                </p>
+              </SlideRevealText>
+            </div>
             <div className="mt-2 text-sm sm:text-base">
               <p>[Scroll to explore]</p>
             </div>
@@ -107,12 +109,12 @@ export default function Hero() {
               willChange: "clip-path",
             }}
           >
-            <h3
+            <h2
               ref={welcomeH3Ref}
               className="text-[5rem] sm:text-[10rem] md:text-[15rem] lg:text-[25rem] whitespace-nowrap opacity-30"
             >
               Hello!
-            </h3>
+            </h2>
           </div>
         </section>
       </div>

@@ -13,8 +13,11 @@ interface ImageCarouselProps {
   containerRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-// Lazy load the modal to reduce initial bundle
-const ModalContent = lazy(() => import("./ImageCarouselModal"));
+const ModalContent = lazy(() =>
+  import("./ImageCarouselModal").then((mod) => ({
+    default: mod.ImageCarouselModal,
+  }))
+);
 
 const ImageCarousel = memo(function ImageCarousel({
   images,
@@ -69,13 +72,14 @@ const ImageCarousel = memo(function ImageCarousel({
           {images.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full border border-white transition-colors ${
-                current === index ? "bg-white" : "bg-transparent"
-              }`}
+              className={`w-6 h-6 rounded-full border border-white transition-colors flex items-center justify-center mx-1
+    ${current === index ? "bg-white" : "bg-transparent"}`}
               onClick={() => setCurrent(index)}
               aria-label={`Go to image ${index + 1}`}
               type="button"
-            />
+            >
+              <span className="sr-only">{`Go to image ${index + 1}`}</span>
+            </button>
           ))}
         </div>
       </div>

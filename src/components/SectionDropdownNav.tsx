@@ -4,7 +4,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { throttle } from "@/utils/performanceOptimizer";
 
 const sections = [
-  { id: "hero", label: "Hero" },
+  { id: "hero", label: "Home" },
   { id: "about", label: "About" },
   { id: "skills", label: "Skills" },
   { id: "portofolio", label: "Portfolio" },

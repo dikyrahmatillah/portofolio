@@ -6,7 +6,6 @@ import {
   UseFormHandleSubmit,
 } from "react-hook-form";
 import { ContactForm } from "@/app/contact/page";
-import "@/components/contact-popup.css";
 
 type ContactPopupProps = {
   show: boolean;
@@ -27,7 +26,7 @@ export function ContactPopup({
 
   return (
     <section
-      className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-[2000]"
+      className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-[10]"
       onClick={onClose}
     >
       <div

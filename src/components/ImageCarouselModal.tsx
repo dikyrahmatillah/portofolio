@@ -16,7 +16,7 @@ interface ModalContentProps {
   nextImage: () => void;
 }
 
-export default function ImageCarouselModal({
+export function ImageCarouselModal({
   images,
   current,
   setCurrent,
@@ -76,16 +76,17 @@ export default function ImageCarouselModal({
           {images.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full border border-white transition-colors ${
-                current === index ? "bg-white" : "bg-transparent"
-              }`}
+              className={`w-6 h-6 rounded-full border border-white transition-colors flex items-center justify-center mx-1
+      ${current === index ? "bg-white" : "bg-transparent"}`}
               onClick={(e) => {
                 e.stopPropagation();
                 setCurrent(index);
               }}
               aria-label={`Go to image ${index + 1}`}
               type="button"
-            />
+            >
+              <span className="sr-only">{`Go to image ${index + 1}`}</span>
+            </button>
           ))}
         </div>
       </div>

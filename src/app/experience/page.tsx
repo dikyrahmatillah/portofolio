@@ -3,8 +3,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { experienceData } from "@/data/data";
-import OptimizedShuffleText from "@/components/optimizedShuffleText/OptimizedShuffleText";
+import { experienceData } from "@/data/experience";
+import SlideRevealText from "@/components/animations/slideRevealText/SlideRevealText";
 
 export default function Experience() {
   const experienceCardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -21,9 +21,12 @@ export default function Experience() {
       const isLast = index === experienceCardRefs.current.length - 1;
       const experienceCardInner = experienceCardInnerRefs.current[index];
       if (!isLast && experienceCardInner) {
+        const isMobile = window.innerWidth < 768;
+        const pinStart = isMobile ? "top 30%" : "top 25%";
+
         const pinTrigger = ScrollTrigger.create({
           trigger: experienceEl,
-          start: "top 45%",
+          start: pinStart,
           endTrigger: "#contact",
           pin: true,
           pinSpacing: false,
@@ -35,7 +38,7 @@ export default function Experience() {
           ease: "none",
           scrollTrigger: {
             trigger: experienceEl,
-            start: "top 45%",
+            start: pinStart,
             endTrigger: "#contact",
             scrub: true,
           },
@@ -60,13 +63,12 @@ export default function Experience() {
           <div className="flex flex-col justify-center items-center gap-4 w-full">
             <div className="mb-24" />
             <div>
-              <OptimizedShuffleText
-                as="h2"
-                text="Been There Done That"
-                className="text-4xl md:text-7xl font-bold"
-                triggerOnScroll={true}
-              />
-              <h2 className="text-3xl mt-4">&#8595;</h2>
+              <SlideRevealText>
+                <h2 className="text-4xl md:text-7xl font-bold">
+                  Been There Done That
+                </h2>
+              </SlideRevealText>
+              <span className="block text-3xl mt-4">&#8595;</span>
             </div>
           </div>
         </section>
@@ -102,9 +104,9 @@ export default function Experience() {
                 <div className="rounded-2xl overflow-hidden flex-shrink-0 mt-4 md:mt-0 flex items-center justify-center">
                   <Image
                     src={experience.image}
-                    alt={experience.title}
-                    width={140}
-                    height={140}
+                    alt={experience.altImage}
+                    width={experience.width}
+                    height={experience.height}
                     className="md:w-[250px] md:h-[250px] w-[140px] h-[140px] object-cover"
                   />
                 </div>

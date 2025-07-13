@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { testimonials } from "@/data/data";
-import OptimizedShuffleText from "@/components/optimizedShuffleText/OptimizedShuffleText";
+import { testimonials } from "@/data/testimonials";
+import OptimizedShuffleText from "@/components/animations/optimizedShuffleText/OptimizedShuffleText";
 import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -124,7 +124,7 @@ export default function Testimonials() {
                   sizes="100vw"
                 />
               </div>
-              <div className="absolute inset-0 bg-black/60" />
+              <div className="absolute inset-0 bg-black/70" />
               <div className="absolute aspect-square rounded-lg overflow-hidden -translate-x-1/2 -translate-y-1/2 w-32 top-[35%] left-1/2 sm:w-40 md:w-1/4 md:top-1/2 md:left-[35%]">
                 <Image
                   src={item.profile}

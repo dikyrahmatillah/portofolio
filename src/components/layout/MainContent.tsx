@@ -1,7 +1,6 @@
 import { lazy, Suspense } from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
-// Lazy load page components with better chunk names
 const Hero = lazy(() =>
   import("@/app/hero/page").then((module) => ({ default: module.default }))
 );
@@ -30,7 +29,6 @@ const Contact = lazy(() =>
   import("@/app/contact/page").then((module) => ({ default: module.default }))
 );
 
-// Optimized loading component with better accessibility
 const SectionLoadingSpinner = ({ sectionName }: { sectionName: string }) => (
   <div
     className="flex items-center justify-center h-screen"
@@ -44,7 +42,6 @@ const SectionLoadingSpinner = ({ sectionName }: { sectionName: string }) => (
   </div>
 );
 
-// Individual section wrapper with improved semantics
 const SectionWrapper = ({
   children,
   sectionName,

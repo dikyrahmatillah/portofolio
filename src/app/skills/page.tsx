@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { skills, skillImages } from "@/data/data";
+import { skills, skillImages } from "@/data/skills";
 import SkillTitles from "@/components/skills/SkillTitles";
 import SkillImagesMobile from "@/components/skills/SkillImagesMobile";
 import SkillImages3D from "@/components/skills/SkillImages3D";
