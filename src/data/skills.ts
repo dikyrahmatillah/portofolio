@@ -24,7 +24,7 @@ export const skillImages = [
     width: 1000,
     height: 709,
     pos: {
-      small: { x: 100, y: 100 },
+      small: { x: 600, y: 800 },
       large: { x: 500, y: 800 },
     },
   },
@@ -44,7 +44,7 @@ export const skillImages = [
     width: 1000,
     height: 1000,
     pos: {
-      small: { x: 1950, y: 1250 },
+      small: { x: 1000, y: 1100 },
       large: { x: 4450, y: 240 },
     },
   },
@@ -54,7 +54,7 @@ export const skillImages = [
     width: 1000,
     height: 1000,
     pos: {
-      small: { x: 850, y: 1500 },
+      small: { x: 1200, y: 500 },
       large: { x: 3450, y: 1200 },
     },
   },
@@ -64,7 +64,7 @@ export const skillImages = [
     width: 1000,
     height: 899,
     pos: {
-      small: { x: 2100, y: 200 },
+      small: { x: 800, y: 500 },
       large: { x: 2200, y: 500 },
     },
   },
@@ -74,7 +74,7 @@ export const skillImages = [
     width: 999,
     height: 602,
     pos: {
-      small: { x: 600, y: 250 },
+      small: { x: 600, y: 700 },
       large: { x: 1100, y: 750 },
     },
   },
@@ -94,7 +94,7 @@ export const skillImages = [
     width: 1000,
     height: 600,
     pos: {
-      small: { x: 1400, y: 200 },
+      small: { x: 1200, y: 200 },
       large: { x: 2600, y: 800 },
     },
   },
@@ -104,7 +104,7 @@ export const skillImages = [
     width: 1000,
     height: 888,
     pos: {
-      small: { x: 800, y: 1000 },
+      small: { x: 800, y: 900 },
       large: { x: 1300, y: 2200 },
     },
   },
@@ -114,7 +114,7 @@ export const skillImages = [
     width: 1000,
     height: 224,
     pos: {
-      small: { x: 1600, y: 150 },
+      small: { x: 1350, y: 150 },
       large: { x: 4500, y: 500 },
     },
   },
@@ -124,7 +124,7 @@ export const skillImages = [
     width: 1000,
     height: 520,
     pos: {
-      small: { x: 300, y: 1800 },
+      small: { x: 300, y: 800 },
       large: { x: 1800, y: 2700 },
     },
   },
@@ -134,7 +134,7 @@ export const skillImages = [
     width: 1000,
     height: 733,
     pos: {
-      small: { x: 2000, y: 600 },
+      small: { x: 1050, y: 600 },
       large: { x: 3700, y: 900 },
     },
   },

@@ -89,13 +89,25 @@ export default function Experience() {
                 }}
               >
                 <div className="flex-1 flex flex-col justify-center space-y-2 md:space-y-4">
-                  <h2 className="text-xl md:text-2xl font-semibold">
+                  <h2
+                    className={`text-xl md:text-2xl font-semibold ${
+                      experience.id === 4 ? "text-gray-900" : "text-white"
+                    }`}
+                  >
                     {experience.title}
                   </h2>
-                  <p className="text-base md:text-lg font-medium">
+                  <p
+                    className={`text-base md:text-lg font-medium ${
+                      experience.id === 4 ? "text-gray-800" : "text-gray-200"
+                    }`}
+                  >
                     {experience.company}
                   </p>
-                  <ul className="list-disc list-inside space-y-1 md:space-y-2 pl-4">
+                  <ul
+                    className={`list-disc list-inside space-y-1 md:space-y-2 pl-4 ${
+                      experience.id === 4 ? "text-gray-800" : "text-gray-100"
+                    }`}
+                  >
                     {experience.achievements.map((achievement, i) => (
                       <li key={i}>{achievement}</li>
                     ))}

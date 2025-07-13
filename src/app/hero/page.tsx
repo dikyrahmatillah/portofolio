@@ -90,10 +90,8 @@ export default function Hero() {
             <div className="relative min-h-[72px] sm:min-h-[96px]">
               <SlideRevealText duration={0.2} delay={0.01}>
                 <p className="text-base sm:text-xl max-w-xs sm:max-w-md">
-                  I build, break, and rebuild with code, coffee, and curiosity.
-                  Passionate about software, art, anime & solving weird
-                  problems. I’m here to build weirdly cool stuff, break it, and
-                  fix it better.
+                  I build, break, and rebuild with code and curiosity.
+                  Passionate about software, art, and solving unique problems.
                 </p>
               </SlideRevealText>
             </div>

@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import "./contact.css";
+import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,10 +7,10 @@ import { ContactPopup } from "@/components/ContactPopup";
 import { toast } from "react-toastify";
 
 const contactSchema = z.object({
-  name: z.string().min(3, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  subject: z.string().min(3, "Subject is required"),
-  message: z.string().min(5, "Message is required"),
+  name: z.string().min(3, "Please enter your name (at least 3 characters)."),
+  email: z.string().email("Please enter a valid email address."),
+  subject: z.string().min(3, "Please enter a subject (at least 3 characters)."),
+  message: z.string().min(5, "Please enter a message (at least 5 characters)."),
 });
 
 export type ContactForm = z.infer<typeof contactSchema>;

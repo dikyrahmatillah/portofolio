@@ -1,11 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --background-dark: #182a2a;
-  --background-light: #a59d8e;
+  --background-light: #656055;
   --font-sans: "Inter", "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
@@ -40,6 +39,84 @@ body {
 }
 
 @layer utilities {
+  /* Contact page animations */
+  @keyframes gradientMove {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes stripeMove {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .bg-gradient {
+    border-radius: 20em;
+    background: linear-gradient(
+      45deg,
+      var(--accent1),
+      var(--accent2),
+      var(--accent3),
+      var(--accent4)
+    );
+    background-size: 400% 400%;
+    transition: transform 0.2s ease;
+    animation: gradientMove 10s ease-in-out infinite;
+    overflow: hidden;
+  }
+
+  .bg-gradient::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.125) 0px,
+      rgba(0, 0, 0, 0.125) 15px,
+      transparent 15px,
+      transparent 30px
+    );
+    animation: stripeMove 30s linear infinite;
+  }
+
+  /* Slide reveal text animations */
+  .slide-reveal-text {
+    overflow: visible;
+    display: inline-block;
+  }
+
+  .slide-reveal-text .slide-char {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    line-height: 1;
+  }
+
+  .slide-reveal-text .slide-char span {
+    display: inline-block;
+    will-change: transform;
+  }
+
+  .slide-reveal-text h1,
+  .slide-reveal-text p,
+  .slide-reveal-text span {
+    margin: 0;
+    line-height: inherit;
+  }
+
+  /* Contact popup animation */
   @keyframes contact-popup-in {
     0% {
       opacity: 0;

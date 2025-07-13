@@ -57,6 +57,6 @@ export const experienceData = [
     width: 1030,
     height: 1030,
     altImage: "Purwadhika logo",
-    bgClass: "bg-[#c7baa9] text-[#2c2427]",
+    bgClass: "bg-[#d9c7b0] text-[#2c2427]",
   },
 ];

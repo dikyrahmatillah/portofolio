@@ -28,6 +28,18 @@ const nextConfig: NextConfig = {
       ...config.optimization,
       usedExports: true,
       sideEffects: false,
+      splitChunks: {
+        ...config.optimization.splitChunks,
+        cacheGroups: {
+          ...config.optimization.splitChunks?.cacheGroups,
+          styles: {
+            name: "styles",
+            type: "css/mini-extract",
+            chunks: "all",
+            enforce: true,
+          },
+        },
+      },
     };
 
     return config;
